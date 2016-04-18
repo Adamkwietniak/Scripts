@@ -12,9 +12,9 @@ public class VolumeHelperScript : MonoBehaviour {
 		//AssignOldVolume ();
 
 	}
-	private void AssignOldVolume ()
+	public void AssignOldVolume ()
 	{
-		switch(vms.valueOfVolumeMusic)
+		switch(VolumeAndMusicScript.valueOfVolumeMusic)
 		{
 		case 0:
 			vms.Button1(true);
@@ -34,7 +34,7 @@ public class VolumeHelperScript : MonoBehaviour {
 		default :
 			break;
 		}
-		switch(vms.valueOfVolumeSound)
+		switch(VolumeAndMusicScript.valueOfVolumeSound)
 		{
 		case 0:
 			vms.Button1(false);

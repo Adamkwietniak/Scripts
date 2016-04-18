@@ -76,7 +76,7 @@ public class AttendanceEnemy : MonoBehaviour {
 			ecs.agent.stoppingDistance = distanceToStop;
 			ecs.audiosorce.maxDistance = ecs.minDistance;
 		}
-		if (brumBrum.GetComponent<MissionCityScript> () != null) {
+		if (brumBrum.GetComponent<MissionCityScript> ().enabled == true) {
 			tankAndShooter [0] = GameObject.Find ("BattleTank Green").GetComponent<Transform> ();
 			tankAndShooter [1] = GameObject.Find ("CameraOfMinigun").GetComponent<Transform> ();
 		} else {
@@ -315,8 +315,8 @@ public class AttendanceEnemy : MonoBehaviour {
 	{
 		//for (int i = 0; i < mainEnemy.Count; i++) {
 				mainEnemy [i].distFromPlayer = ContDistance (target11.position, mainEnemy [i].enemyTr.position);
-			if (mainEnemy [i].enemyObject.name == "Army3-finalReady (3)")
-			Debug.Log ("Distans miedzy Army3-finalReady (3) a targetem "+ target11.gameObject.name +" wynosi: " + mainEnemy [i].distFromPlayer);
+			//if (mainEnemy [i].enemyObject.name == "Army3-finalReady (3)")
+			//Debug.Log ("Distans miedzy Army3-finalReady (3) a targetem "+ target11.gameObject.name +" wynosi: " + mainEnemy [i].distFromPlayer);
 			if (mainEnemy [i].enemyIsStatic == false){
 				mainEnemy [i].distFromDefPos = ContDistance (mainEnemy[i].enemyTr.position, mainEnemy [i].transDefPos.position);
 			}

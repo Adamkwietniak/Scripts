@@ -30,7 +30,6 @@ public class MissionRiverScript : MonoBehaviour {
 	{
 		ph = GetComponentInChildren<PlayerHealth>();
 		blackScreen.enabled = false;
-		radioFrame = radioFrame.GetComponent<Canvas> ();
 		rcc = GetComponent<RCCCarControllerV2> ();
 		gafw = GetComponent<GetOutFromWayScript> ();
 		obstacleToCleanWay.SetActive(false);
@@ -41,6 +40,7 @@ public class MissionRiverScript : MonoBehaviour {
 	}
 	void Start () {
 		message = message.GetComponent<Canvas> ();
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 		instructionsForBumper.enabled = false;
 		for (int o = 0; o < wounded.Length; o++) {
 			wounded [o].SetActive (false);
@@ -145,6 +145,7 @@ public class MissionRiverScript : MonoBehaviour {
 				radioFrame.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
+				//Cursor.visible = true;
 				
 			}
 			else
@@ -160,8 +161,8 @@ public class MissionRiverScript : MonoBehaviour {
 		foreach (GameObject mess in texts) {
 			if (mess.activeInHierarchy == true)
 				{
-				mess.SetActive(false);
 				radioFrame.enabled = false;
+				mess.SetActive(false);
 				Time.timeScale = 1;
 				y++;
 				}

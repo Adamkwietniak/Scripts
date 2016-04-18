@@ -45,6 +45,7 @@ public class MissionCityScript : MonoBehaviour {
 	public Image blackScreen;
 
 	CursorLockMode cursorMode;
+	[HideInInspector]public string keepTextFromMissionCity;
 
 	void Awake ()
 	{
@@ -191,7 +192,7 @@ public class MissionCityScript : MonoBehaviour {
 				enemyToKills.enabled = false;
 			}
 			if (suma > 0 && enemyToKills.enabled == true)
-				enemyToKills.text = (suma.ToString () + "kill to MC");
+				enemyToKills.text = (suma.ToString () + " " + keepTextFromMissionCity);
 
 			if (obiectWithMiniGun.isPlaying == false) {	//Jeślli animacja sie skonczy to co ma zrobic
 				if (Cursor.visible == false) {

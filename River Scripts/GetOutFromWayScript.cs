@@ -21,6 +21,8 @@ public class GetOutFromWayScript : MonoBehaviour {
 	private bool boolMissionComplete = false;
 	MissionRiverScript mrs;
 	[HideInInspector] public bool isComplete = false;
+
+	[HideInInspector]public string keepTextLanguageGetOutFromWay;
 	void Awake ()
 	{
 		helpToCount = maxItemsToAwayFromWay;
@@ -75,7 +77,7 @@ public class GetOutFromWayScript : MonoBehaviour {
 						maxItemsToAwayFromWay = helpToCount;
 						assignCount = true;
 					}
-					text.text = (maxItemsToAwayFromWay.ToString () + " Obstacles to go.");
+					text.text = (maxItemsToAwayFromWay.ToString () + " "+keepTextLanguageGetOutFromWay);
 				}
 			}
 			if (maxItemsToAwayFromWay <= 0) {

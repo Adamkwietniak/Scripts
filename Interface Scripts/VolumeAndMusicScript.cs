@@ -10,8 +10,8 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	private List <AudioSource> music = new List<AudioSource>();
 	private List <AudioSource> sounds = new List<AudioSource>();
 	RCCCarControllerV2 rcc;
-	[HideInInspector]public int valueOfVolumeMusic = 3;
-	[HideInInspector]public int valueOfVolumeSound = 3;
+	public static int valueOfVolumeMusic = 3;
+	public static int valueOfVolumeSound = 3;
 	MenuScript ms;
 	private float oldValue;
 	private float oldValue2;
@@ -28,8 +28,6 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	{
 		ms = GameObject.Find("MENU").GetComponent<MenuScript>();
 		Initiate ();
-		Button3(true);
-		Button3(false);
 	}
 	public void Initiate () {
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
@@ -178,7 +176,6 @@ public class VolumeAndMusicScript : MonoBehaviour {
 			rcc.startEngineVolume = volume;
 		}
 	}
-
 	/*private void AssignVolumeAudio(bool isIt)
 	{
 		for (int i = 0; i < sounds.Count; i++) {

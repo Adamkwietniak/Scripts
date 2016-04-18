@@ -2,19 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
+using System.Reflection;
 
 public class MultiLanguageScript : MonoBehaviour{
-	/*public TextsClass[] listOfClassWithoutScripts = new TextsClass[1];
+	public GameObject obiectWithScript;
+	public bool textsInScripts = false;
+	public TextsClass[] listOfClassWithoutScripts = new TextsClass[1];
 	public TextInsideScripts[] listTextsInsideScript = new TextInsideScripts[1];
 	private List<TextsClass> attTexts = new List<TextsClass> ();
 	private List<TextInsideScripts> insiderText = new List<TextInsideScripts>();
-	[HideInInspector]public int indexOfLang = 0;
-	private int actualIndex = 0;
+	public static int indexOfLang = 0;
+	private int actualIndex = 1;
 
 
 	void Start ()
 	{
 		actualIndex = indexOfLang;
+		indexOfLang++;
 		for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
 			//for (int j = 0; j < listOfClass [i].languages.Length; j++) {
 			attTexts.Add (new TextsClass (listOfClassWithoutScripts [i].obiectWithText, listOfClassWithoutScripts [i].obiectWithText.GetComponent<Text>(),
@@ -23,9 +28,7 @@ public class MultiLanguageScript : MonoBehaviour{
 		}
 		for(int i = 0; i < listTextsInsideScript.Length; i++)
 		{
-			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfScript, listTextsInsideScript[i].nameOfSht, listTextsInsideScript[i].languagesInScripts,
-				listTextsInsideScript[i].languagesInScripts, listTextsInsideScript[i].thisObiect, 
-//				listTextsInsideScript[i].thisObiect.GetComponent(typeof(listTextsInsideScript[i].nameOfScript)) as Component));
+			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfSht));
 		}
 	}
 	void Update ()
@@ -34,17 +37,31 @@ public class MultiLanguageScript : MonoBehaviour{
 			for (int i = 0; i < attTexts.Count; i++) {
 				attTexts [i].textsInsideObiect.text = attTexts [i].languages [indexOfLang];
 			}
-			for (int z = 0; z < listTextsInsideScript.Length; z++) {
-				
-				//listTextsInsideScript [z].thisObiect.Ge
-
+			if (textsInScripts == true) {
+				for (int z = 0; z < listTextsInsideScript.Length; z++) {
+					for (int j = 0; j < listTextsInsideScript [z].nameOfSht.Length; j++) {
+						string[] str = new string[2];
+						str [0] = listTextsInsideScript [z].nameOfSht [j].languagesScript [indexOfLang];
+						str [1] = listTextsInsideScript [z].nameOfSht [j].nameOfVariable;
+						obiectWithScript.SendMessage ("SetNewString", str);
+						/*if (obiectWithScript.name == "BomberArea") {
+						obiectWithScript.SendMessage ("SetNewString", str);
+					}*/
+					}
+				}
 			}
 			actualIndex = indexOfLang;
+		}
+		if (Input.GetKeyDown (KeyCode.Home)) {
+			if (indexOfLang == 0)
+				indexOfLang = 1;
+			else
+				indexOfLang = 0;
 		}
 	}
 
 }
-
+[Serializable]
 public class TextsClass{
 
 	public GameObject obiectWithText;
@@ -58,20 +75,24 @@ public class TextsClass{
 		this.languages = langs;
 	}
 }
+[Serializable]
 public class TextInsideScripts{
-	
-	public string nameOfScript;
-	public string nameOfSht;
-	public string[] languagesInScripts;
-	public GameObject thisObiect;
-	[HideInInspector]public Component [] komponent;
 
-	public TextInsideScripts(string nazwaSkryptu, string nazwaZmiennej, string [] wielojezyczneTlumaczenie, GameObject thsObj, Component [] comp)
+	public ZmienneDoNapisow[] nameOfSht;
+
+	public TextInsideScripts (ZmienneDoNapisow[] nazwaZmiennej)
 	{
-		this.nameOfScript = nazwaSkryptu;
 		this.nameOfSht = nazwaZmiennej;
-		this.languagesInScripts = wielojezyczneTlumaczenie;
-		this.thisObiect = thsObj;
-		this.komponent = comp;
-	}*/
+	}
+}
+[Serializable]
+public class ZmienneDoNapisow {
+	public string nameOfVariable;
+	public string [] languagesScript;
+
+	public ZmienneDoNapisow (string name, string [] langs)
+	{
+		this.nameOfVariable = name;
+		this.languagesScript = langs;
+	}
 }

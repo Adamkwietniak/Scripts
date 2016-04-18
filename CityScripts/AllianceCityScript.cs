@@ -38,6 +38,11 @@ public class AllianceCityScript : MonoBehaviour {
     public Text countThirdGroup;              //niezabrana liczba z grupy 3
     private int iloscOsobW3Grupie = 0;
 
+	public string keepTextAllianceCityScript;
+	[HideInInspector]public string cont1;
+	[HideInInspector]public string cont2;
+	[HideInInspector]public string cont3;
+
     public Transform targetInBase;
     RCCCarControllerV2 rcc;
     void Start ()
@@ -112,10 +117,10 @@ public class AllianceCityScript : MonoBehaviour {
             {
                 RemoveObjInBrum();
             }
-            textCounting.text = ("Persons in Car "+actualInsideBrum.ToString() + " / " + maxNumberInBrum.ToString());
-            countFirstGroup.text = ("First group " + iloscOsobW1Grupie.ToString());
-            countSecondGroup.text = ("Second group " + iloscOsobW2Grupie.ToString());
-            countThirdGroup.text = ("Third group " + iloscOsobW3Grupie.ToString());
+			textCounting.text = (keepTextAllianceCityScript+" "+actualInsideBrum.ToString() + "/" + maxNumberInBrum.ToString());
+			countFirstGroup.text = (cont1+" "+iloscOsobW1Grupie.ToString());
+			countSecondGroup.text = (cont2+" "+ iloscOsobW2Grupie.ToString());
+			countThirdGroup.text = (cont3+" "+ iloscOsobW3Grupie.ToString());
         }
 	}
 	private void PatrolTerrain ()		//Obsluga npc patrolowych (musi posiadac agenta)

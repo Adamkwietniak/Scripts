@@ -127,8 +127,8 @@ public class MissionsScript : MonoBehaviour {
 			{
 				if(Input.GetKeyUp (KeyCode.C))
 				{
-					mess.SetActive(false);
 					radioFrame.enabled = false;
+					mess.SetActive(false);
 					Time.timeScale = 1;
 					vms.isMsg = false;
 					y++;
