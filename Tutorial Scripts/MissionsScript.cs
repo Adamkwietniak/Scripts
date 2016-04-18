@@ -8,6 +8,7 @@ public class MissionsScript : MonoBehaviour {
 	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
 	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
 	public Canvas message;
+	public Canvas radioFrame;
 	public GameObject [] texts = new GameObject[1];
 	private GameObject brumBrume;
 	
@@ -27,6 +28,7 @@ public class MissionsScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		brumBrume = GameObject.Find ("BrumBrume");
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 		kmh.enabled = false;
 		sideMirrors.enabled = false;
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
@@ -106,6 +108,7 @@ public class MissionsScript : MonoBehaviour {
 
 			if (z == y)
 			{
+				radioFrame.enabled = true;
 				vms.isMsg = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
@@ -125,6 +128,7 @@ public class MissionsScript : MonoBehaviour {
 				if(Input.GetKeyUp (KeyCode.C))
 				{
 					mess.SetActive(false);
+					radioFrame.enabled = false;
 					Time.timeScale = 1;
 					vms.isMsg = false;
 					y++;

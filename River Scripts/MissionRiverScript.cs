@@ -7,6 +7,7 @@ public class MissionRiverScript : MonoBehaviour {
 	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
 	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
 	public Canvas message;
+	public Canvas radioFrame;
 	public GameObject [] texts = new GameObject[1];
 	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
 	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
@@ -29,6 +30,7 @@ public class MissionRiverScript : MonoBehaviour {
 	{
 		ph = GetComponentInChildren<PlayerHealth>();
 		blackScreen.enabled = false;
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 		rcc = GetComponent<RCCCarControllerV2> ();
 		gafw = GetComponent<GetOutFromWayScript> ();
 		obstacleToCleanWay.SetActive(false);
@@ -140,6 +142,7 @@ public class MissionRiverScript : MonoBehaviour {
 			
 			if (z == y)
 			{
+				radioFrame.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
 				//Cursor.visible = true;
@@ -159,6 +162,7 @@ public class MissionRiverScript : MonoBehaviour {
 			if (mess.activeInHierarchy == true)
 				{
 				mess.SetActive(false);
+				radioFrame.enabled = false;
 				Time.timeScale = 1;
 				y++;
 				}

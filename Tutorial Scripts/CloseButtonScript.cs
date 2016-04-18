@@ -10,6 +10,7 @@ public class CloseButtonScript : MonoBehaviour {
 	public AudioClip clickSound;
 	public AudioSource soundSource;
 	public GameObject obj;
+	public Canvas radioFrame;
 	VolumeAndMusicScript vms;
 	// Use this for initialization
 	MissionsScript m2fs;
@@ -18,6 +19,7 @@ public class CloseButtonScript : MonoBehaviour {
 		m2fs = obj.GetComponent<MissionsScript> ();
 		btnClose = btnClose.GetComponent<Button> ();
 		message = message.GetComponent<Image> ();
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 	}
 
 	public void CloseButton (){
@@ -28,12 +30,14 @@ public class CloseButtonScript : MonoBehaviour {
 		}
 		if(vms.isMsg == true)
 			vms.isMsg = false;
+		radioFrame.enabled = false;
 		Time.timeScale = 1;
 	}
 	private void Podmien ()
 	{
 		if (message.enabled == true) {
 			message.enabled = false;
+			radioFrame.enabled = false;
 			m2fs.y++;
 		}
 	}

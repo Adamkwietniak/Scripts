@@ -8,6 +8,7 @@ public class MissionForestScript : MonoBehaviour {
 	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
 	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
 	public Canvas message;
+	public Canvas radioFrame;
 	public GameObject [] texts = new GameObject[1];
 	public GameObject villageIsThere;
 	private SkinnedMeshRenderer smr1;
@@ -27,6 +28,7 @@ public class MissionForestScript : MonoBehaviour {
 	void Start () {
 
 		message = message.GetComponent<Canvas> ();
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 		rcc = GetComponent<RCCCarControllerV2> ();
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 
@@ -92,6 +94,7 @@ public class MissionForestScript : MonoBehaviour {
 			
 			if (z == y)
 			{
+				radioFrame.enabled = true;
 				vms.isMsg = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
@@ -111,6 +114,7 @@ public class MissionForestScript : MonoBehaviour {
 			{
 				if(Input.GetKeyUp (KeyCode.C))
 				{
+					radioFrame.enabled = false;
 					mess.SetActive(false);
 					vms.isMsg = false;
 					Time.timeScale = 1;
