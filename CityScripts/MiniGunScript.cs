@@ -6,7 +6,6 @@ public class MiniGunScript : MonoBehaviour {
 	//BrumBrume
 	private GameObject brumBrume;
 	private Light [] brumLights;
-	UseCameraScript ucs;
 	RCCCarControllerV2 rcc;
 	MissionCityScript mcs;
 
@@ -33,7 +32,7 @@ public class MiniGunScript : MonoBehaviour {
 
 
 	//Ogolne
-	private AudioSource audio;
+	private AudioSource audioS;
 	LayerMask mask = 0;
 	private AudioClip shooting;
 	private AudioClip plyUnshooting;
@@ -46,6 +45,8 @@ public class MiniGunScript : MonoBehaviour {
 	private float oY = 0; // os Y
 	public Vector2 rotationRange = new Vector3(70, 70);
 	public float rotationSpeed = 5.0f;
+	private float tempRotationSpeed = 0;
+	private float rotationSpeedInShoot = 0;
 	private Vector3 m_TargetAngles;
 	private Vector3 m_FollowAngles;
 	private Vector3 m_FollowVelocity;
@@ -54,6 +55,7 @@ public class MiniGunScript : MonoBehaviour {
 	private float dampingTime = 0.2f;
 	private Vector3 posContactRay;
 	private Vector3 rotContactRay;
+	//private AudioSource audioS;
 
 
 	AttendanceEnemy ae;
@@ -66,7 +68,6 @@ public class MiniGunScript : MonoBehaviour {
 		ae = FindObjectOfType (typeof(AttendanceEnemy)) as AttendanceEnemy;
 		brumLights = brumBrume.GetComponentsInChildren<Light>();
 		rcc = brumBrume.GetComponent<RCCCarControllerV2>();
-		ucs = brumBrume.GetComponent<UseCameraScript>();
 		mcs = brumBrume.GetComponent<MissionCityScript>();
 
 		camGun = GetComponentInChildren<Camera>();
@@ -79,14 +80,18 @@ public class MiniGunScript : MonoBehaviour {
 		groundHit = Resources.Load ((shtPath + "HitFloor"), typeof(GameObject)) as GameObject;
 		diffHit = Resources.Load ((shtPath + "DifferentHit"), typeof(GameObject)) as GameObject;
 		animOfGun = this.GetComponent<Animator>();
+		audioS = GetComponent<AudioSource> ();
 
 		ps = smokeParticles [0].GetComponent<ParticleSystem> ();
 		m_OriginalRotation = childRoot.localRotation;
 		bulletParticle.SetActive (false);
+		tempRotationSpeed = rotationSpeed;
+		rotationSpeedInShoot = rotationSpeed / 2;
 	}
 	void Start ()
 	{
 		camGun.enabled = false;
+		shootingParticle.SetActive (false);
 	}
 	void Update () {
         if (isTimeToShoot == true)
@@ -112,7 +117,9 @@ public class MiniGunScript : MonoBehaviour {
                     timerToShoot = 1;
                     isShooting = true;
                 }
-              //  MusicIs(audio.isPlaying, plyUnshooting);
+				if(rotationSpeed != rotationSpeedInShoot)
+					rotationSpeed = rotationSpeedInShoot;
+                MusicIs(audioS.isPlaying, plyUnshooting);
                 animOfGun.SetBool("isClick", true);
                 animOfGun.SetBool("isShooting", false);
             }
@@ -124,7 +131,8 @@ public class MiniGunScript : MonoBehaviour {
                 animOfGun.SetBool("isShooting", true);
 				bulletParticle.SetActive (true);
 				shootingParticle.SetActive (true);
-             //   MusicIs(audio.isPlaying, shooting);
+                MusicIs(audioS.isPlaying, shooting);
+				CheckRay ();							//Funcion to check of ray from Minigun
             }
             if (isClick == false && isShooting == true)
             {
@@ -140,7 +148,9 @@ public class MiniGunScript : MonoBehaviour {
 
 				if (checksmPart == false)
 					checksmPart = true;
-               // MusicIs(audio.isPlaying, plyUnshooting);
+                MusicIs(audioS.isPlaying, plyUnshooting);
+				if(rotationSpeed != tempRotationSpeed)
+					rotationSpeed = tempRotationSpeed;
             }
 			if(checksmPart == true && ps.isPlaying == false)
 			{
@@ -149,31 +159,6 @@ public class MiniGunScript : MonoBehaviour {
 					smokeParticles[i].SetActive(false);
 				}
 			}
-            if (isClick == true)
-            {
-                switch (CheckRay())
-                {
-				case 0:
-					
-                        Debug.Log("Trafiasz w gowno jakies");
-                        break;
-				case 1:
-						
-                        Debug.Log("Trafiasz we wroga");
-                        break;
-                    case 2:
-						
-                        Debug.Log("Trafiasz w sojusznika");
-                        break;
-                    case 3:
-						
-                        Debug.Log("Trafiasz w teren");
-                        break;
-
-                    default:
-                        break;
-                }
-            }
             oX = Input.GetAxis("Mouse X");
             oY = Input.GetAxis("Mouse Y");
             if (relative)
@@ -190,7 +175,7 @@ public class MiniGunScript : MonoBehaviour {
 
 	private int CheckRay ()
 	{
-		//Ray ray;// = camGun.ScreenPointToRay(Input.mousePosition);
+
 		Ray rey = new Ray(ray.position, ray.forward);
 		RaycastHit hit;
 		LayerMask mask = 0;
@@ -216,7 +201,7 @@ public class MiniGunScript : MonoBehaviour {
 					//Debug.Log("Trafiasz we gowno");
 					return 3; // trafiasz w Teren
 				} else { //Trafiasz w inne obiekty
-					InstaPref (diffHit, posContactRay, Quaternion.Euler (rotContactRay));
+					InstaPref (diffHit, posContactRay, Quaternion.Euler (new Vector3(rotContactRay.x, rotContactRay.y, rotContactRay.z)));
 					return 0;
 				}
 			}
@@ -226,10 +211,11 @@ public class MiniGunScript : MonoBehaviour {
 	}
 	private void MusicIs (bool plays, AudioClip clip)
 	{
-		if (audio.clip.name != clip.name)
-			audio.clip = clip;
+		//Debug.Log ("AudioClipName: " + audioS.clip);
+		if (audioS.clip != clip || audioS.clip == null)
+			audioS.clip = clip;
 		if (plays == false) {
-			audio.Play ();
+			audioS.Play ();
 		}
 	}
 	private void InstaPref(GameObject pref, Vector3 pos, Quaternion rot)

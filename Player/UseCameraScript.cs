@@ -6,6 +6,7 @@ public class UseCameraScript : MonoBehaviour {
 
 	public Camera [] camers = new Camera[1];
 	private List<Transform> camersTr = new List<Transform> ();
+	private List<AudioListener> audioL = new List<AudioListener> ();
 	RCCCarCamera rcCam;
 	private int c = 0; // zmienna pomocnicza
 	private string defaultCamera; //string domyslnej kamery
@@ -23,6 +24,7 @@ public class UseCameraScript : MonoBehaviour {
 	private int indexOfActCam = 0;
 	private Quaternion [] defRot = new Quaternion[2];
 	private Vector3 [] defPos = new Vector3[2];
+	[HideInInspector]public bool blockCamera = false;
 	// Wstępne ustawienie kamer. Domyslna 
 	/*private void LoadDefaultCOllider(Camera camo)
 	{
@@ -33,6 +35,12 @@ public class UseCameraScript : MonoBehaviour {
 			ch.adjustedCameraClipPoints = 
 			}
 	}*/
+	void Awake ()
+	{
+		for (int i = 0; i < camers.Length; i++) {
+			audioL.Add (camers [i].gameObject.GetComponent<AudioListener> ());
+		}
+	}
 	void Start () {
 		brumTr = GameObject.Find ("BrumBrume").GetComponent<Transform> ();
 		rcCam = (RCCCarCamera)FindObjectOfType (typeof(RCCCarCamera));
@@ -42,9 +50,11 @@ public class UseCameraScript : MonoBehaviour {
 			if (camers[i].name == defaultCamera)
 			{
 				camers[i].enabled = true;
+				audioL [i].enabled = true;
 			}else
 			{
 				camers[i].enabled = false;
+				audioL [i].enabled = false;
 			}
 			camersTr.Add(camers [i].GetComponent<Transform> ());
 		}
@@ -154,19 +164,19 @@ public class UseCameraScript : MonoBehaviour {
 	}
 	public void ChangeCams (int c)
 	{
+		if (blockCamera == false) {
+			for (int i = 0; i < camers.Length; i++) {
+				if (i == c) {
+					camers [i].enabled = true;
+					audioL [i].enabled = true;
+					activeCamera = camers [i];
+					isCameraToDistance = CheckGoodCamera (activeCamera);
+					//Debug.Log(camers[i] + " nastapila zmiana");
 
-		for (int i = 0; i < camers.Length; i++) {
-			if (i == c)
-			{
-				camers [i].enabled = true;
-				activeCamera = camers [i];
-				isCameraToDistance = CheckGoodCamera (activeCamera);
-				//Debug.Log(camers[i] + " nastapila zmiana");
-
-			}
-			else
-			{
-				camers [i].enabled = false;
+				} else {
+					audioL [i].enabled = false;
+					camers [i].enabled = false;
+				}
 			}
 		}
 	}

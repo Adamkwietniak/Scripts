@@ -31,6 +31,7 @@ public class EnemyClassScript {
 	[HideInInspector]public int actualInt;
 	[HideInInspector]public Rigidbody [] rigbodyList = new Rigidbody[13];
 	[HideInInspector]public Transform transDefPos;
+	[HideInInspector]public Transform enemyTr;
 	public GameObject PartSys;
 	[HideInInspector]public AudioSource audiosorce;
 
@@ -40,7 +41,7 @@ public class EnemyClassScript {
 	                         int maxDis, int minDis, int maxDisFDP, int dmgfs, bool eis, bool iS, 
 	                         bool iR, bool iWalk, bool iW, bool iL, bool wGU, bool oTG, float ttgu, float ttS, 
 	                         float distFrPl, float disFrDP, float actSp , int aktIn, Rigidbody[] rbb, 
-	                         Transform tr, GameObject partSystem, AudioSource audiosorc
+							 Transform tr, Transform trEnemy, GameObject partSystem, AudioSource audiosorc
 	                         ){
 		this.anim = anima;
 		this.agent = nma;
@@ -66,6 +67,7 @@ public class EnemyClassScript {
 		this.actualInt = aktIn;
 		this.rigbodyList = rbb;
 		this.transDefPos = tr;
+		this.enemyTr = trEnemy;
 		this.PartSys = partSystem;
 		this.audiosorce= audiosorc;
 	}

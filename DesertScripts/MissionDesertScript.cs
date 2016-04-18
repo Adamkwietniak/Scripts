@@ -20,7 +20,6 @@ public class MissionDesertScript : MonoBehaviour {
 	bool predkosc = false;
 	[HideInInspector]public bool czyDalej = false;
 	private bool tempCzyDalej = false;
-	//AllianceSoliderForestEvent ase;
 	RCCCarControllerV2 rcc;
 	VolumeAndMusicScript vms;
 	MissionCompleteDesertScript mcds;

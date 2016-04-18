@@ -5,11 +5,10 @@ using System.Collections.Generic;
 public class AttendanceHelpEnemyScript : MonoBehaviour {
 
 
-	public GameObject enemyObj;
 	AttendanceEnemy ae;
 	void Start ()
 	{
-		ae = enemyObj.GetComponent<AttendanceEnemy> ();
+		ae = (AttendanceEnemy)FindObjectOfType (typeof(AttendanceEnemy)) as AttendanceEnemy;
 
 	}
 

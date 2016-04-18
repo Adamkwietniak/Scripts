@@ -36,6 +36,7 @@ public class AttendanceMirrorScript : MonoBehaviour {
 		cameraTR = objWithCams.GetComponent<Transform> ();
 
 		CheckActiveCam ();
+		miniMap.enabled = false;
 
 	}
 	

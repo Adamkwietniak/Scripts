@@ -12,9 +12,6 @@ public class MissionCityScript : MonoBehaviour {
 	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
 	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
 	RCCCarControllerV2 rcc;
-	public Image blackScreen;
-	private float timer1;
-	private bool blackScreenIs = false;
 	private bool clearingBlackScreen = false;
 	[HideInInspector]public bool firstOfSecondScript = false;
 	PlayerHealth ph;
@@ -27,12 +24,27 @@ public class MissionCityScript : MonoBehaviour {
 	public Text enemyToKills;
 	AttendanceEnemy ae;
 	private int allEnemys = 0;
-	public int nowKill = 0;
+	[HideInInspector]public int nowKill = 0;
 	public int killToMC = 10;
 	private List<bool> listOfObj = new List<bool> ();
 	private bool changeMC = false; 
 	private float timerToEnd = 0;
 	private bool isOver = false;
+	public Animation obiectWithMiniGun;
+	public GameObject[] dustOfTank = new GameObject[2];
+	private AnimationClip animClip;
+	private bool isTimeToAnimationTank = false;
+	private AudioClip tankClip;
+
+
+
+	//Black screen
+	private bool timeToBlack = false;
+	private bool timeToWhite = false;
+	private float timerScreenBlack = 0;
+	public Image blackScreen;
+
+	CursorLockMode cursorMode;
 
 	void Awake ()
 	{
@@ -44,11 +56,49 @@ public class MissionCityScript : MonoBehaviour {
         ucs = GetComponentInChildren<UseCameraScript>();
 		ae = (AttendanceEnemy)FindObjectOfType (typeof(AttendanceEnemy)) as AttendanceEnemy;
 		mccs = (MissionCompleteCityScript)FindObjectOfType(typeof(MissionCompleteCityScript)) as MissionCompleteCityScript;
+		tankClip = Resources.Load ("Prefabs/MiniGun/tankSound", typeof(AudioClip)) as AudioClip;
 		engineWarning.enabled = false;
-		timer1 = 0;
-	
+		obiectWithMiniGun.playAutomatically = false;
 		enemyToKills.enabled = false;
+		for (int i = 0; i < dustOfTank.Length; i++) {
+			dustOfTank [i].SetActive (false);
+		}
+		GameObject.Find ("EngineHelp").SetActive (false);
 		//goalMC.SetActive (false);
+	}
+
+	private void BlackScreen (bool white, bool black, float timer)
+	{
+		if(white == false && black == false)
+		{
+			if(blackScreen.enabled == false)
+				blackScreen.enabled = true;
+			timer += Time.deltaTime;
+			if(timer>=1)
+				black = true;
+			else
+			{
+				float alpha = Mathf.Clamp(timer, 0, 255);
+				blackScreen.color = new Color (blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, alpha);
+			}
+		}
+		if(black == true && white == false)
+		{
+			timer -= Time.deltaTime;
+			if(timer<=0)
+				white = true;
+			else
+			{
+				float alpha = Mathf.Clamp(timer, 0, 255);
+				blackScreen.color = new Color (blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, alpha);
+			}
+		}
+		if(white == true && black == true && blackScreen.enabled == true)
+			blackScreen.enabled = false;
+
+		timeToBlack = black;
+		timeToWhite = white;
+		timerScreenBlack = timer;
 	}
 	void Start () {
 		message = message.GetComponent<Canvas> ();
@@ -77,37 +127,79 @@ public class MissionCityScript : MonoBehaviour {
 				if (killToMC > allEnemys)
 					killToMC = allEnemys;
 			}
+
         }
         if(canDoIt == true && changeMC == false)
-        {
+		{
+			if(timeToWhite == false && timeToBlack == false)
+				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
             //Wyczekuje na wcisniecie klawisza F
             if (Input.GetKeyDown(KeyCode.F) && acs.playerInBase == true)
-            {
+			{
                 rcc.engineRunning = false;
                 rcc.canControl = false;
+				mgs.camGun.enabled = true;
+				mgs.camGun.gameObject.GetComponent<AudioListener> ().enabled = true;
 				for(int u = 0; u < ucs.camers.Length; u++)
                 {
-                    ucs.camers[u].enabled = false;
+					if(ucs.camers [u].gameObject.GetComponent<AudioListener> ().enabled == true)
+						ucs.camers [u].gameObject.GetComponent<AudioListener> ().enabled = false;
+					if(ucs.camers[u].enabled == true)
+                    	ucs.camers[u].enabled = false;
+
                 }
-                mgs.camGun.enabled = true;
+				for (int i = 0; i < dustOfTank.Length; i++) {
+					dustOfTank [i].SetActive (true);
+				}
+				ucs.blockCamera = true;
                 mgs.isTimeToShoot = true;
 				changeMC = true;
+				isTimeToAnimationTank = true;
+				obiectWithMiniGun.Play ();
+				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().enabled = true;
+				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().clip = tankClip;
+				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().loop = true;
+				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().Play ();
+				mgs.camGun.gameObject.GetComponent<AudioListener> ().enabled = true;
+				DisableAllCanvass ();
+
             }
+			ae.isShooterNow = true;
             
         }
 
 		if(changeMC == true)
 		{
+			if(timeToWhite == false && timeToBlack == true)
+				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
+			if(timeToWhite == false)
+				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
 			int suma = killToMC - nowKill;
 			if(enemyToKills.enabled == false && suma > 0){
 				enemyToKills.enabled = true;
+				if (Cursor.visible == true) {
+					Cursor.visible = false;
+					Cursor.lockState = CursorLockMode.Confined;
+				}
 			}
 			else if(suma == 0 && enemyToKills.enabled == true && isOver == false){
+				if (Cursor.visible == false) {
+					Cursor.visible = true;
+					Cursor.lockState = CursorLockMode.Confined;
+				}
 				isOver = true;
 				enemyToKills.enabled = false;
 			}
 			if (suma > 0 && enemyToKills.enabled == true)
 				enemyToKills.text = (suma.ToString () + "kill to MC");
+
+			if (obiectWithMiniGun.isPlaying == false) {	//Jeślli animacja sie skonczy to co ma zrobic
+				if (Cursor.visible == false) {
+					Cursor.visible = true;
+					Cursor.lockState = CursorLockMode.None;
+				}
+				Debug.Log ("GameOver");
+			}
 
 		}
 		if (y == 0) {
@@ -118,7 +210,6 @@ public class MissionCityScript : MonoBehaviour {
 			if(timerToEnd > 3)
 				mccs.EnabledMissionComplete ();
 		}
-		
 		DisEnbl ();
 
 	}
@@ -195,6 +286,17 @@ public class MissionCityScript : MonoBehaviour {
 			break;
 		}
 		return false;
+	}
+	private void DisableAllCanvass ()
+	{
+		engineWarning.enabled = false;
+		GameObject.Find("KMH").SetActive(false);
+		GameObject.Find("RPM").SetActive(false);
+		GameObject.Find("DirtyMirror").SetActive(false);
+		GameObject.Find ("Group1").SetActive (false);
+		GameObject.Find ("Group2").SetActive (false);
+		GameObject.Find ("Group3").SetActive (false);
+		GameObject.Find ("CarSpace").SetActive (false);
 	}
 }
 

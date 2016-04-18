@@ -20,7 +20,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
-		mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
+		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
 	
 	}
 

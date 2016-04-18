@@ -26,15 +26,19 @@ public class AttendanceEnemy : MonoBehaviour {
 	public int maxSpeedToNotDead = 30;
 	public int endTimeToGetUp = 45;
 	public int multiForFarquencyHp = 1;//mnoznik Timera zwiekszajacego czestotliwosc ubytku hp
+	public int distanceToStop = 5;
+	[HideInInspector]public bool isShooterNow = false;
 
-	public GameObject brumBrum;
+	private GameObject brumBrum;
 
 	private float timerToNextStage = 0;
 	private float timerToHp;
-	private Transform targetBrum;
+	private Transform target;
 	//zalaczone skrypty
 	RCCCarControllerV2 rcv2;
 	PlayerHealth ph;
+	private Transform[] tankAndShooter = new Transform[2];
+	private bool changedTarget = false;
 
 	public AudioClip soundShoot;
 
@@ -43,7 +47,7 @@ public class AttendanceEnemy : MonoBehaviour {
 		if(brumBrum == null)
 			brumBrum = GameObject.Find ("BrumBrume");
 		driverTr = GameObject.Find("Kierowca").GetComponent<Transform>();
-		targetBrum = brumBrum.GetComponent<Transform> ();
+		target = brumBrum.GetComponent<Transform> ();
 		rcv2 = brumBrum.GetComponent<RCCCarControllerV2>();
 		ph = brumBrum.GetComponentInChildren<PlayerHealth> ();
 		tempEnemyToWriteList = GameObject.FindGameObjectsWithTag ("enemy");
@@ -56,7 +60,7 @@ public class AttendanceEnemy : MonoBehaviour {
 					                                   npcEnemy[j].enemyObject, npcEnemy[j].defaultPositionObject,npcEnemy[j].maxDistance, npcEnemy[j].minDistance, 
 					                                   npcEnemy[j].maxDistanceFromDefaultPosition, npcEnemy[j].dmgFromShoot, npcEnemy[j].enemyIsStatic, false, false, 
 					                                   false, true, true, false, false, 0, 0, 2000, 0, 0, 0, tempEnemyToWriteList[i].GetComponentsInChildren<Rigidbody>(), 
-					                                   npcEnemy[j].defaultPositionObject.GetComponent<Transform>(), npcEnemy[j].PartSys, 
+													   npcEnemy[j].defaultPositionObject.GetComponent<Transform>(), npcEnemy[j].enemyObject.GetComponent<Transform>(), npcEnemy[j].PartSys, 
 					                                   npcEnemy[j].enemyObject.GetComponent<AudioSource>()
 					                                 	));
 				}
@@ -69,8 +73,15 @@ public class AttendanceEnemy : MonoBehaviour {
 				ecs.rigbodyList[i].useGravity = true;
 				ecs.rigbodyList[i].isKinematic = true;
 			}
-			ecs.agent.stoppingDistance = ecs.minDistance;
+			ecs.agent.stoppingDistance = distanceToStop;
 			ecs.audiosorce.maxDistance = ecs.minDistance;
+		}
+		if (brumBrum.GetComponent<MissionCityScript> () != null) {
+			tankAndShooter [0] = GameObject.Find ("BattleTank Green").GetComponent<Transform> ();
+			tankAndShooter [1] = GameObject.Find ("CameraOfMinigun").GetComponent<Transform> ();
+		} else {
+			tankAndShooter [0] = target;
+			tankAndShooter [1] = driverTr;
 		}
 	}
 	void Update ()
@@ -79,12 +90,20 @@ public class AttendanceEnemy : MonoBehaviour {
 			//Debug.Log("Dzialam");
 			AttendanceCollision();
 			}
-	
-		GetUp ();
-		CheckGetUp ();
-		AttendanceEvent ();
+
+		if (isShooterNow == true) {
+			/*if (changedTarget == false) {
+				//target = tankAndShooter [0];
+				//driverTr = tankAndShooter [1];
+				changedTarget = true;
+			}*/
+			AttendanceEvent (tankAndShooter[0], tankAndShooter[1]);
+		} else {
+			AttendanceEvent (target, driverTr);
+			GetUp ();
+			CheckGetUp ();
+		}
 		AnimationDoIt ();
-		//EnemyIsShooted (Vector3 pos, Vector3 normal, String targetOfMinigun);
 	}
 	public int EnemyIsShooted (string targetOfMinigun, string nameOfRb, Vector3 normal, float multPow, int maxToKill)
 	{
@@ -100,7 +119,7 @@ public class AttendanceEnemy : MonoBehaviour {
                         if (mainEnemy[i].rigbodyList[j].gameObject.name == nameOfRb)
                         {
                             mainEnemy[i].rigbodyList[j].AddForce(-normal.x* multPow, normal.y, -normal.z* multPow, ForceMode.Impulse);
-                            Debug.Log("zadzialalem na: "+ nameOfRb);
+                           // Debug.Log("zadzialalem na: "+ nameOfRb);
                         }
                     }
                     mainEnemy[i].isLife = false;
@@ -146,7 +165,7 @@ public class AttendanceEnemy : MonoBehaviour {
 				mainEnemy[i].timerToShoot +=Time.deltaTime*multiForFarquencyHp;
 				if(mainEnemy[i].timerToShoot > 5)
 				{
-					ph.currentHealth -=mainEnemy[i].dmgFromShoot;
+					ph.currentHealth -= mainEnemy[i].dmgFromShoot;
 					mainEnemy[i].timerToShoot = 0;
 				}
 				else if(mainEnemy[i].timerToShoot>6)
@@ -177,7 +196,7 @@ public class AttendanceEnemy : MonoBehaviour {
 					mainEnemy[i].timerToGetUp = 0;
 					//Debug.Log(mainEnemy[i].enemyObject.name + " wstaje");
 					SimpleDisableRagdoll(i);
-					AttendanceEvent();
+					AttendanceEvent(target, driverTr);
 				}
 			}
 		}
@@ -198,20 +217,20 @@ public class AttendanceEnemy : MonoBehaviour {
 	}
 	public void CheckEnemyOne ()
 	{
-			for (int i = 0; i < mainEnemy.Count; i++) {
-			if(mainEnemy[i].agent.SetDestination(brumBrum.transform.position) == true)
+		for (int i = 0; i < mainEnemy.Count; i++) {
+			if (mainEnemy [i].agent.SetDestination (target.position) == true)
 				break;
 			else
 				boolsDest = false;
 		}
 	}
 
-	private void AttendanceEvent ()
+	private void AttendanceEvent (Transform target1, Transform driverTr1)
 	{
 		for (int i = 0; i < mainEnemy.Count; i++)
 		{
 			if(mainEnemy[i].isLife == true){
-				CountDistanceFromPlayer (i);
+				CountDistanceFromPlayer (i, target1);
 				//Debug.Log("Przeliczam wartosci dla obiektu: "+mainEnemy[i].enemyObject.name);
 					if(mainEnemy[i].enemyIsStatic == false){
 					switch (mainEnemy [i].actualInt)
@@ -220,16 +239,17 @@ public class AttendanceEnemy : MonoBehaviour {
 						mainEnemy[i].agent.speed = 0;
 						mainEnemy[i].actualSpeed = 0;
 						DisEnbpPartSystem(i, false);
-						//Debug.Log(mainEnemy[i].enemyObject.name + " wlaczaIdle");
+						//Debug.Log(mainEnemy[i].enemyObject.name + " koniec zabawy");
 						break;
 					case 1:			//Wrog jest w odleglosci umozliwiajacej rozpoczecie ostrzalu
-						mainEnemy[i].agent.speed = 0;
-						mainEnemy[i].actualSpeed = 0;
-						if(mainEnemy[i].isShooting == true){
-							mainEnemy[i].enemyObject.transform.LookAt(driverTr.position);
-							DisEnbpPartSystem(i, true);
+						mainEnemy [i].agent.speed = 0;
+						mainEnemy [i].actualSpeed = 0;
+						if (mainEnemy [i].isShooting == true) {
+							mainEnemy [i].enemyObject.transform.LookAt (driverTr1.position);
+							DisEnbpPartSystem (i, true);
 							ShootSound (i);
 						}
+						//Debug.Log (mainEnemy [i].enemyObject.name + " strzela.");
 					
 						//Debug.Log(mainEnemy[i].enemyObject.name + " strzela");
 						break;
@@ -240,10 +260,10 @@ public class AttendanceEnemy : MonoBehaviour {
 							mainEnemy[i].agent.speed = runSpeed;
 
 						mainEnemy[i].agent.speed = mainEnemy[i].actualSpeed;
-						mainEnemy[i].agent.SetDestination(targetBrum.position);
+						mainEnemy[i].agent.SetDestination(target1.position);
 						DisEnbpPartSystem(i, false);
 						boolsDest = true;
-						//Debug.Log(mainEnemy[i].enemyObject.name + " biegnie. Predkosc biegu wynosi: "+ mainEnemy[i].agent.speed);
+						Debug.Log(mainEnemy[i].enemyObject.name + " biegnie.");
 						break;
 					case 3:			//Wrog jest poza widokiem bruma staje i wlacza iddle
 						mainEnemy[i].agent.speed = 0;
@@ -268,13 +288,13 @@ public class AttendanceEnemy : MonoBehaviour {
 						DisEnbpPartSystem(i, false);
 						//Debug.Log(mainEnemy[i].enemyObject.name + " odpoczywa");
 						break;
-					};
+					}
 				}else{
 					mainEnemy[i].agent.speed = 0;
 					switch (mainEnemy [i].actualInt){
 					case 1:			//Strzal
 						if(mainEnemy[i].isShooting == true){
-							mainEnemy[i].enemyObject.transform.LookAt(targetBrum.position);
+							mainEnemy[i].enemyObject.transform.LookAt(target1.position);
 							DisEnbpPartSystem(i, true);
 							ShootSound (i);
 						}
@@ -291,63 +311,76 @@ public class AttendanceEnemy : MonoBehaviour {
 			}
 		}
 	}
-	private void CountDistanceFromPlayer (int i)
+	private void CountDistanceFromPlayer (int i, Transform target11)
 	{
 		//for (int i = 0; i < mainEnemy.Count; i++) {
-			if (mainEnemy [i].isLife == true) {
-			mainEnemy [i].distFromPlayer = Vector3.Distance (brumBrum.transform.position, mainEnemy [i].enemyObject.transform.position);
-				if (mainEnemy [i].enemyIsStatic == false)
-					mainEnemy [i].distFromDefPos = Vector3.Distance (brumBrum.transform.position, mainEnemy [i].transDefPos.position);
+				mainEnemy [i].distFromPlayer = ContDistance (target11.position, mainEnemy [i].enemyTr.position);
+			if (mainEnemy [i].enemyObject.name == "Army3-finalReady (3)")
+			Debug.Log ("Distans miedzy Army3-finalReady (3) a targetem "+ target11.gameObject.name +" wynosi: " + mainEnemy [i].distFromPlayer);
+			if (mainEnemy [i].enemyIsStatic == false){
+				mainEnemy [i].distFromDefPos = ContDistance (mainEnemy[i].enemyTr.position, mainEnemy [i].transDefPos.position);
+			}
 				if (mainEnemy [i].distFromPlayer <= mainEnemy [i].minDistance && mainEnemy [i].distFromDefPos < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy[i].onTheGround == false && ph.currentHealth > 0)
 				{
+				if (mainEnemy [i].actualInt != 1) {
 					mainEnemy [i].actualInt = 1;
-					mainEnemy[i].isRun = false;
-					mainEnemy[i].isShooting=true;
-					mainEnemy[i].isWait = false;
-					mainEnemy[i].isWalk = false;
+					mainEnemy [i].isRun = false;
+					mainEnemy [i].isShooting = true;
+					mainEnemy [i].isWait = false;
+					mainEnemy [i].isWalk = false;
+				}
 					//return 1; //Wrog jest w odleglosci umozliwiajacej rozpoczecie ostrzalu
 				}
-			else if (mainEnemy [i].distFromPlayer < mainEnemy [i].maxDistance && mainEnemy [i].distFromPlayer > mainEnemy [i].minDistance && mainEnemy [i].enemyIsStatic != true && mainEnemy [i].distFromDefPos < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer < mainEnemy [i].maxDistance && mainEnemy [i].distFromPlayer > mainEnemy [i].minDistance && mainEnemy [i].distFromDefPos < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy[i].onTheGround == false)
 				{
+				if (mainEnemy [i].actualInt != 2) {
 					mainEnemy [i].actualInt = 2;
-					mainEnemy[i].isRun = true;
-					mainEnemy[i].isShooting = false;
-					mainEnemy[i].isWait = false;
-					mainEnemy[i].isWalk = false;
+					mainEnemy [i].isRun = true;
+					mainEnemy [i].isShooting = false;
+					mainEnemy [i].isWait = false;
+					mainEnemy [i].isWalk = false;
+				}
 					//return 2; // Wrog jest miedzy predkoscia minimalna a maksymalna (rozpoczyna ruch)
 				}
-			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromDefPos < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy [i].enemyIsStatic == false && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromPlayer < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy [i].distFromDefPos < mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy[i].onTheGround == false)
 				{
+				if (mainEnemy [i].actualInt != 3) {
 					mainEnemy [i].actualInt = 3;
-					mainEnemy[i].isRun = false;
-					mainEnemy[i].isShooting = false;
-					mainEnemy[i].isWait = true;
-					mainEnemy[i].isWalk = false;
+					mainEnemy [i].isRun = false;
+					mainEnemy [i].isShooting = false;
+					mainEnemy [i].isWait = true;
+					mainEnemy [i].isWalk = false;
+				}
 					//return 3; //Wrog jest poza widokiem bruma staje i wlacza iddle
 				}
-			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromDefPos > mainEnemy [i].maxDistanceFromDefaultPosition && mainEnemy [i].enemyIsStatic == false && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && (int)mainEnemy [i].distFromDefPos >= distanceToStop  && mainEnemy [i].enemyIsStatic == false && mainEnemy[i].onTheGround == false)
 				{
+				if (mainEnemy [i].actualInt != 4) {
 					mainEnemy [i].actualInt = 4;
-					mainEnemy[i].isRun = false;
-					mainEnemy[i].isShooting = false;
-					mainEnemy[i].isWait = false;
-					mainEnemy[i].isWalk = true;
+					mainEnemy [i].isRun = false;
+					mainEnemy [i].isShooting = false;
+					mainEnemy [i].isWait = false;
+					mainEnemy [i].isWalk = true;
+				}
 					//return 4; // Wrog zaczyna isc w strone swojego punktu defaultowego
 				}
-			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromDefPos < 0.1f && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && (int)mainEnemy [i].distFromDefPos < distanceToStop && mainEnemy[i].onTheGround == false)
 				{
+				if (mainEnemy [i].actualInt != 5) {
 					mainEnemy [i].actualInt = 5;
-					mainEnemy[i].isRun = false;
-					mainEnemy[i].isShooting = false;
-					mainEnemy[i].isWait = true;
-					mainEnemy[i].isWalk = false;
+					mainEnemy [i].isRun = false;
+					mainEnemy [i].isShooting = false;
+					mainEnemy [i].isWait = true;
+					mainEnemy [i].isWalk = false;
+				}
 					//return 5; //Wrog wlacza iddle na miejscu "zbiorki"
 				}
-				else 
-					mainEnemy [i].actualInt = 0;		
-			}
 		//}
 		//return 0;
+	}
+	private float ContDistance (Vector3 a, Vector3 b)
+	{
+		return Vector3.Distance (a, b);
 	}
 	private void SimpleEnableRagdoll(int index)
 	{

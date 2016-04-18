@@ -9,6 +9,7 @@ public class AttendanceJointScript : MonoBehaviour {
 	void Start () 
 	{
 		affes = GetComponentInParent<AttendanceForestFirstEventScript>();
+		affes = (AttendanceForestFirstEventScript)FindObjectOfType (typeof(AttendanceForestFirstEventScript)) as AttendanceForestFirstEventScript;
 	}
 	void OnTriggerEnter (Collider other) {
 		

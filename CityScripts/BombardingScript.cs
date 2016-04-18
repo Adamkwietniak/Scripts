@@ -17,7 +17,7 @@ public class BombardingScript : MonoBehaviour {
 	public Vector2 maxMin = new Vector2(50,50);         //range of offset count random place to drop a bomb
     public bool bombInScene = true;   					//temporarity bool to blocks the program
     private float timerToMakeBomb = 0;                  //temporarity float to count time to next bomb
-    private int hzToNextBomb = 1;                      //max value for timerToMakeBomb
+    private int hzToNextBomb = 5;                      //max value for timerToMakeBomb
     private List<Bomber> bombs = new List<Bomber>();    //List of bombs
     public AudioClip dropTheBombClip;
     public AudioClip explodeClip;
@@ -52,17 +52,18 @@ public class BombardingScript : MonoBehaviour {
             {
                 timerToMakeBomb = 0;
                 bombs.Add(CreateBomb());
-                SetStartedParametrsBomb(bombs.Count - 1);
+                SetStartedParametrsBomb(bombs.Count-1);
             }
-			if (bombs.Count > 0) {
-				AttendanceBombing ();
-			}
 
         }
-        if(bombInScene == false && bombs.Count > 0)
+		if (bombs.Count > 0) {
+			AttendanceBombing ();
+		}
+
+        /*if(bombInScene == false && bombs.Count > 0)
         {
             ClearAll();
-        }
+        }*/
 	}
 	//Function to support of Bombarding
 	private void AttendanceBombing ()
@@ -86,14 +87,16 @@ public class BombardingScript : MonoBehaviour {
 				//if(bombs [i].bomb.activeInHierarchy == true)
 				//	bombs [i].bomb.SetActive (false);										//Deactivation clone of bomb
 				if (bombs [i].partSys [0].isPlaying == false) {
+					bombs [i].audioSorc.Stop ();
                     bombs[i].audioSorc.PlayOneShot(explodeClip);
 
-                    for (int z = 0; z < bombs [i].partSys.Length; z++) {
+                    /*for (int z = 0; z < bombs [i].partSys.Length; z++) {
 						bombs [i].partSys [z].Play ();										//Activate explosion
-					}
+					}*/
+					bombs [i].ps.SetActive (true);
 				}
 
-			} else if (bombs [i].timerek >= maxTimer && bombs [i].takeDamage == true) {
+			} else if (bombs [i].timerek >= maxTimer && bombs [i].takeDamage == true && bombs [i].partSys [0].isPlaying == false) {
 				bombs [i].takeDamage = false;
 				ClearIt (i);																//Delete and clean list
 			}
@@ -119,10 +122,11 @@ public class BombardingScript : MonoBehaviour {
     //Function to use set dynamic parametrs of bomb {
     private void SetStartedParametrsBomb(int i) //Function to Set Started parametrs for bomb
     {
-        for (int z = 0; z < bombs[i].partSys.Length; z++)
+		bombs [i].ps.SetActive (false);
+        /*for (int z = 0; z < bombs[i].partSys.Length; z++)
         {
             bombs[i].partSys[z].Stop();
-        }
+        }*/
         bombs[i].audioSorc.clip = dropTheBombClip;
         bombs[i].audioSorc.Play();
     }
@@ -191,7 +195,7 @@ public class Bomber {
 	public bool takeDamage;
 	public float timerek;
 	public Rigidbody rb;
-	public ParticleSystem [] partSys = new ParticleSystem[8];
+	public ParticleSystem [] partSys = new ParticleSystem[9];
     public AudioSource audioSorc;
     public GameObject project;
 

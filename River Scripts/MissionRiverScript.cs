@@ -145,7 +145,6 @@ public class MissionRiverScript : MonoBehaviour {
 				radioFrame.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
-				//Cursor.visible = true;
 				
 			}
 			else

@@ -33,10 +33,8 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 
 		if (other.tag == "Player"){
 			missionComplete.enabled = true;
-			if (ms.y == 7) {
 			Time.timeScale = 0;
 			}
-		}
 
 		if (missionComplete.enabled == true) {
 			
@@ -45,13 +43,13 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 		
 	}
 	
-	public void EnabledMissionComplete (){
+	/*public void EnabledMissionComplete (){
 		
 		missionComplete.enabled = true;
 		if (missionComplete.enabled == true) {
 			Time.timeScale = 0f;
 		}
-	} 
+	} */
 	
 	public void QuitGame (){
 		
