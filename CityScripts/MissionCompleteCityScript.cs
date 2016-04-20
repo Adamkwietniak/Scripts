@@ -71,7 +71,7 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		
+		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		
 		

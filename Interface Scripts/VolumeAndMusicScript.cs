@@ -10,8 +10,8 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	private List <AudioSource> music = new List<AudioSource>();
 	private List <AudioSource> sounds = new List<AudioSource>();
 	RCCCarControllerV2 rcc;
-	public static int valueOfVolumeMusic = 3;
-	public static int valueOfVolumeSound = 3;
+	public int valueOfVolumeMusic = 3;
+	public int valueOfVolumeSound = 3;
 	MenuScript ms;
 	private float oldValue;
 	private float oldValue2;
@@ -23,14 +23,19 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	[HideInInspector]public bool isMsg = false;
 	private int oldvalueOfVolumeSound = 0;
 	// Use this for initialization
-
-	void Start ()
-	{
-		ms = GameObject.Find("MENU").GetComponent<MenuScript>();
+	void Awake (){
 		Initiate ();
 	}
+	void Start ()
+	{
+		//Initiate ();
+		/*for (int i = 0; i < allAudios.Length; i++) {
+			Debug.Log (allAudios [i]);
+		}*/
+	}
 	public void Initiate () {
-		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
+		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
+		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		allAudios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
 		for (int i = 0; i < allAudios.Length; i++) {
 			//Debug.Log(allAudios[i].name);
@@ -55,9 +60,11 @@ public class VolumeAndMusicScript : MonoBehaviour {
 				oldvalueOfVolumeSound = valueOfVolumeMusic;
 				rcc.WriteNewValueOfCar(0);
 				played = true;
+				Debug.Log ("wlaczam menu");
 			}
 			else if(ms.menuUI.enabled == false && played == true)
 			{
+				Debug.Log ("wlaczam menu");
 				if(oldvalueOfVolumeSound == valueOfVolumeSound)
 					rcc.WriteNewValueOfCar(oldValue);
 				else
@@ -172,7 +179,7 @@ public class VolumeAndMusicScript : MonoBehaviour {
 				//rcc.WriteNewValueOfCar(volume);
 				//rcc.startEngineVolume = volume;
 			}
-			rcc.WriteNewValueOfCar(volume);
+			rcc.WriteNewValueOfCar (volume);
 			rcc.startEngineVolume = volume;
 		}
 	}

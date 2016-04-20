@@ -6,15 +6,15 @@ public class VolumeHelperScript : MonoBehaviour {
 	VolumeAndMusicScript vms;
 	// Use this for initialization
 	void Start () {
-		//vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		//vms.ResetTabs();
-		//vms.Initiate();
-		//AssignOldVolume ();
+		vms.Initiate();
+		AssignOldVolume ();
 
 	}
 	public void AssignOldVolume ()
 	{
-		switch(VolumeAndMusicScript.valueOfVolumeMusic)
+		switch(vms.valueOfVolumeMusic)
 		{
 		case 0:
 			vms.Button1(true);
@@ -34,7 +34,8 @@ public class VolumeHelperScript : MonoBehaviour {
 		default :
 			break;
 		}
-		switch(VolumeAndMusicScript.valueOfVolumeSound)
+		//Debug.Log (VolumeAndMusicScript.valueOfVolumeSound);
+		switch(vms.valueOfVolumeSound)
 		{
 		case 0:
 			vms.Button1(false);
@@ -54,5 +55,6 @@ public class VolumeHelperScript : MonoBehaviour {
 		default :
 			break;
 		}
+		//Debug.Log("zaladowalem dzwiek");
 	}
 }

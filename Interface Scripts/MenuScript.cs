@@ -11,6 +11,7 @@ public class MenuScript : MonoBehaviour {
 	public Canvas settings;
 	public Canvas credits;
 	public Canvas loadingTime;
+	public Canvas loadGame;
 	
 	public Button btnNewGame;
 	public Button btnLoadGame;
@@ -21,11 +22,11 @@ public class MenuScript : MonoBehaviour {
 	public Button btnQuit;
 	public Button btnCancel;
 	
-	private bool escUse;
-	private bool duringGame;
-	private bool newGameDisabled = false;
+	[HideInInspector]public bool escUse;
+	[HideInInspector]public bool duringGame;
+	[HideInInspector]public bool newGameDisabled = false;
 	
-	
+	public static int indexOfLang = 0;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	public AudioMixerSnapshot pause;
@@ -67,7 +68,7 @@ public class MenuScript : MonoBehaviour {
 		settings.enabled = false;
 		credits.enabled = false;
 		loadingTime.enabled = false;
-		
+		loadGame.enabled = false;
 		
 		Time.timeScale = 0;
 		
@@ -133,6 +134,7 @@ public class MenuScript : MonoBehaviour {
 	
 	public void ButtonLoadGame()
 	{
+		loadGame.enabled = true;
 		btnNewGame.enabled = false;
 		btnLoadGame.enabled = false;
 		btnSettings.enabled = false;
@@ -140,7 +142,6 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
-		
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
@@ -211,7 +212,6 @@ public class MenuScript : MonoBehaviour {
 			escUse = true;
 			duringGame = true;
 			newGameDisabled = true;
-		
 
 			//cms.tempBoolCredits = false;
 		
@@ -244,9 +244,10 @@ public class MenuScript : MonoBehaviour {
 			soundSource.PlayOneShot(clickSound);
 		}
 	}
-	
-	
-	
+	public void SetLang(int i)
+	{
+		MenuScript.indexOfLang = i;
+	}
 	public void ButtonConfirmExit()
 	{
 		Application.Quit();

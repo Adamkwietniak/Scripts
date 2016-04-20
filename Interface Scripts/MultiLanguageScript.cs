@@ -12,14 +12,16 @@ public class MultiLanguageScript : MonoBehaviour{
 	public TextInsideScripts[] listTextsInsideScript = new TextInsideScripts[1];
 	private List<TextsClass> attTexts = new List<TextsClass> ();
 	private List<TextInsideScripts> insiderText = new List<TextInsideScripts>();
-	public static int indexOfLang = 0;
 	private int actualIndex = 1;
 
-
+	void Awake ()
+	{
+		//actualIndex = MenuScript.indexOfLang;
+	}
 	void Start ()
 	{
-		actualIndex = indexOfLang;
-		indexOfLang++;
+		if (obiectWithScript == null)
+			obiectWithScript = this.gameObject;
 		for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
 			//for (int j = 0; j < listOfClass [i].languages.Length; j++) {
 			attTexts.Add (new TextsClass (listOfClassWithoutScripts [i].obiectWithText, listOfClassWithoutScripts [i].obiectWithText.GetComponent<Text>(),
@@ -30,33 +32,38 @@ public class MultiLanguageScript : MonoBehaviour{
 		{
 			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfSht));
 		}
+		ChangeLange ();
 	}
 	void Update ()
 	{
-		if (actualIndex != indexOfLang) {
-			for (int i = 0; i < attTexts.Count; i++) {
-				attTexts [i].textsInsideObiect.text = attTexts [i].languages [indexOfLang];
-			}
-			if (textsInScripts == true) {
-				for (int z = 0; z < listTextsInsideScript.Length; z++) {
-					for (int j = 0; j < listTextsInsideScript [z].nameOfSht.Length; j++) {
-						string[] str = new string[2];
-						str [0] = listTextsInsideScript [z].nameOfSht [j].languagesScript [indexOfLang];
-						str [1] = listTextsInsideScript [z].nameOfSht [j].nameOfVariable;
-						obiectWithScript.SendMessage ("SetNewString", str);
-						/*if (obiectWithScript.name == "BomberArea") {
-						obiectWithScript.SendMessage ("SetNewString", str);
-					}*/
-					}
-				}
-			}
-			actualIndex = indexOfLang;
+		if (actualIndex != MenuScript.indexOfLang) {
+			actualIndex = MenuScript.indexOfLang;
+			ChangeLange ();
 		}
 		if (Input.GetKeyDown (KeyCode.Home)) {
-			if (indexOfLang == 0)
-				indexOfLang = 1;
+			if (MenuScript.indexOfLang == 0)
+				MenuScript.indexOfLang = 1;
 			else
-				indexOfLang = 0;
+				MenuScript.indexOfLang = 0;
+		}
+	}
+	public void ChangeLange ()
+	{
+		for (int i = 0; i < attTexts.Count; i++) {
+			attTexts [i].textsInsideObiect.text = attTexts [i].languages [actualIndex];
+		}
+		if (textsInScripts == true) {
+			for (int z = 0; z < listTextsInsideScript.Length; z++) {
+				for (int j = 0; j < listTextsInsideScript [z].nameOfSht.Length; j++) {
+					string[] str = new string[2];
+					str [0] = listTextsInsideScript [z].nameOfSht [j].languagesScript [actualIndex];
+					str [1] = listTextsInsideScript [z].nameOfSht [j].nameOfVariable;
+					obiectWithScript.SendMessage ("SetNewString", str);
+					/*if (obiectWithScript.name == "BomberArea") {
+						obiectWithScript.SendMessage ("SetNewString", str);
+					}*/
+				}
+			}
 		}
 	}
 

@@ -67,7 +67,7 @@ public class MissionComplete : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-
+		LoadGameScript.unlockIndex++;
 		//Time.timeScale = 1;
 		
 		Cursor.visible = false;
