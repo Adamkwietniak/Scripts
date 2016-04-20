@@ -28,7 +28,6 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 
 		if (other.tag == "Player"){
 			missionComplete.enabled = true;
-
 			}
 
 

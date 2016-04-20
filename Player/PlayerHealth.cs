@@ -26,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
 	private int maximusSpeedus = 0;
 	public AudioClip hornSound;
 
+
 	public Canvas gameOver;
 	public Button quitBtn;
 	public Button tryAgainBtn;
@@ -96,7 +97,9 @@ public class PlayerHealth : MonoBehaviour
 			timer+=Time.deltaTime;
 			if(timer>=1f){
 
+		
 				gameOver.enabled = true;
+
 
 			}
 			if(gameOver.enabled==true){

@@ -85,7 +85,7 @@ public class AllianceSoldierDesertEvent : MonoBehaviour {
 			if(npc[i].missionNPC == true)
 			{																										//Blok zmiany
 				npc[i].discanceFromPlayer = Distance (i, npc[i].selfTransform.position, brumTrans.position);
-				if(npc[i].discanceFromPlayer>distanceToPlayer && npc[i].discanceFromPlayer<distanceToPlayer+50)
+				if(npc[i].discanceFromPlayer>distanceToPlayer && npc[i].discanceFromPlayer<distanceToPlayer+10)
 				{
 					npc[i].agent.SetDestination(brumTrans.position);
 					npc[i].anim.SetBool("isWalk",true);

@@ -22,7 +22,6 @@ public class MissionDesertScript : MonoBehaviour {
 	private bool tempCzyDalej = false;
 	RCCCarControllerV2 rcc;
 	VolumeAndMusicScript vms;
-	MissionCompleteDesertScript mcds;
 	// Use this for initialization
 	void Start () {
 
@@ -36,7 +35,6 @@ public class MissionDesertScript : MonoBehaviour {
 		}
 		Messengery (y);
 		Podmianka(i); // wywolanie metody podmianka
-		mcds = trigger [trigger.Length - 1].GetComponent<MissionCompleteDesertScript> ();
 	}
 
 	void Update()
@@ -119,26 +117,19 @@ public class MissionDesertScript : MonoBehaviour {
 		switch (i) //case 0: - pierwszy prefab
 		{
 
-		case 0: // dojeżdża do bramy
+		case 0: // przed jebnięciem w 1-szą bramę
 			Messengery (y);
 			return true;
 			break;
-		case 1: 
-			rcc.speed = 0;
+		case 1: // zabiera negocjatora
 			if(tempCzyDalej == true)
+				Messengery (y);
 				return true;
 			break;
-		case 2:
+		case 2: // druga brama
 			Messengery (y);
 			return true;
 			break;
-		case 3:
-			Messengery (y);
-			return true;
-			break;
-
-
-
 
 		default:
 			return true;
