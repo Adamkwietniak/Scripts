@@ -60,11 +60,11 @@ public class VolumeAndMusicScript : MonoBehaviour {
 				oldvalueOfVolumeSound = valueOfVolumeMusic;
 				rcc.WriteNewValueOfCar(0);
 				played = true;
-				Debug.Log ("wlaczam menu");
+				//Debug.Log ("wlaczam menu");
 			}
 			else if(ms.menuUI.enabled == false && played == true)
 			{
-				Debug.Log ("wlaczam menu");
+				//Debug.Log ("wlaczam menu");
 				if(oldvalueOfVolumeSound == valueOfVolumeSound)
 					rcc.WriteNewValueOfCar(oldValue);
 				else

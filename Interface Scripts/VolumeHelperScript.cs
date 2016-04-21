@@ -5,6 +5,10 @@ public class VolumeHelperScript : MonoBehaviour {
 
 	VolumeAndMusicScript vms;
 	// Use this for initialization
+	void Awake () 
+	{
+		GameObject.Find ("LOADING").SetActive (false);
+	}
 	void Start () {
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		//vms.ResetTabs();

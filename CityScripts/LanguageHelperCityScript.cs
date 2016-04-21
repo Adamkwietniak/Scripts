@@ -13,7 +13,7 @@ public class LanguageHelperCityScript : MonoBehaviour {
 	}
 	public void SetNewString (string [] temp)
 	{
-		Debug.Log ("Przeslalem: " + temp [1]); 
+		//Debug.Log ("Przeslalem: " + temp [1]); 
 		if(temp[1] == "keepTextFromMissionCity")
 			mcs.keepTextFromMissionCity = temp[0];
 		else if(temp[1] == "keepTextAllianceCityScript")

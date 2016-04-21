@@ -4,7 +4,6 @@ using System.Collections;
 public class AwakeWorldScript : MonoBehaviour {
 
 	public Canvas missionComplete; 
-	public Canvas loadingTime;
 	public Canvas gameOver;
 
 
@@ -12,7 +11,6 @@ public class AwakeWorldScript : MonoBehaviour {
 	void Start (){
 
 		missionComplete = missionComplete.GetComponent<Canvas>();
-		loadingTime = loadingTime.GetComponent<Canvas> ();
 		gameOver = gameOver.GetComponent<Canvas> ();
 
 
@@ -21,7 +19,6 @@ public class AwakeWorldScript : MonoBehaviour {
 	void Awake (){
 
 		missionComplete.enabled = false;
-		loadingTime.enabled = false;
 		gameOver.enabled = false;
 
 

@@ -8,7 +8,6 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 	public Canvas missionComplete; 
 	public Button quitBtn;
 	public Button nextMissionBtn;
-	public Canvas loadingTime;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	public string nextLevel;
@@ -22,7 +21,6 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		quitBtn = quitBtn.GetComponent<Button>();
-		loadingTime = loadingTime.GetComponent<Canvas> ();
 		ms = obj.GetComponent<MissionRiverScript> ();
 		
 		
@@ -67,10 +65,10 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 	public void NextMission (){
 		
 		missionComplete.enabled = false;
-		loadingTime.enabled = true;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
+		if (LoadGameScript.unlockIndex == 2)
 		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		

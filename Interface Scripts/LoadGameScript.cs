@@ -13,7 +13,7 @@ public class LoadGameScript : MonoBehaviour {
 	MenuScript ms;
 	MenuProfileSaveAndReadScript mps;
 	private bool [] itCanOpen = new bool[5];
-	public static int unlockIndex = 1;
+	public static int unlockIndex = 2;
 	// Use this for initialization
 	public Canvas canvasLoadImage;
 	public ImagesToLoadGame[] imagesToLoadGames = new ImagesToLoadGame[5];
@@ -35,7 +35,7 @@ public class LoadGameScript : MonoBehaviour {
 		for (int i = 0; i < imagesToLoadGames.Length; i++) {
 			activ.Add(new ImagesToLoadGame (nameLvls [i], imagesToLoadGames [i].picturesInColor,
 				imagesToLoadGames [i].picturesWithoutColor, imagesToLoadGames [i].okButton,
-				imagesToLoadGames [i].loadImage, i, imagesToLoadGames[i].okButton.GetComponentInChildren<Text>()));
+				i, imagesToLoadGames[i].okButton.GetComponentInChildren<Text>()));
 		}
 		for (int i = 0; i < activ.Count; i++) { //wyłączanie obrazków z LoadGame
 			activ[i].picturesInColor.enabled = false;
@@ -83,56 +83,56 @@ public class LoadGameScript : MonoBehaviour {
 			if(itCanOpen[0] == true)
 			{
 				EnabledAndDisabledButtonGame (0);
-				Debug.Log("ładuje scene forest");
+				//Debug.Log("ładuje scene forest");
 			}
 			else
 			{
-				Debug.Log("Scena Forest zablokowana");
+				//Debug.Log("Scena Forest zablokowana");
 			}
 			break;
 		case 1:
 			if(itCanOpen[1] == true)
 			{
 				EnabledAndDisabledButtonGame (1);
-				Debug.Log("ładuje scene river");
+				//Debug.Log("ładuje scene river");
 			}
 			else
 			{
-				EnabledAndDisabledButtonGame (2);
-				Debug.Log("Scena River zablokowana");
+				//EnabledAndDisabledButtonGame (2);
+				//Debug.Log("Scena River zablokowana");
 			}
 			break;
 		case 2:
 			if(itCanOpen[2] == true)
 			{
-				EnabledAndDisabledButtonGame (3);
-				Debug.Log("ładuje scene City");
+				EnabledAndDisabledButtonGame (2);
+				//Debug.Log("ładuje scene City");
 			}
 			else
 			{
-				Debug.Log("Scena City zablokowana");
+				//Debug.Log("Scena City zablokowana");
 			}
 			break;
 		case 3:
 			if(itCanOpen[3] == true)
 			{
-				EnabledAndDisabledButtonGame (4);
-				Debug.Log("ładuje scene Desert");
+				EnabledAndDisabledButtonGame (3);
+				//Debug.Log("ładuje scene Desert");
 			}
 			else
 			{
-				Debug.Log("Scena Desert zablokowana");
+				//Debug.Log("Scena Desert zablokowana");
 			}
 			break;
 		case 4:
 			if(itCanOpen[4] == true)
 			{
-				EnabledAndDisabledButtonGame (5);
-				Debug.Log("ładuje scene Snow");
+				EnabledAndDisabledButtonGame (4);
+				//Debug.Log("ładuje scene Snow");
 			}
 			else
 			{
-				Debug.Log("Scena Snow zablokowana");
+				//Debug.Log("Scena Snow zablokowana");
 			}
 			break;
 
@@ -148,14 +148,14 @@ public class LoadGameScript : MonoBehaviour {
 			for (int i = 0; i < activ.Count; i++) {
 				if (i == valu && activ[i].okButton.enabled == true) {
 					//AttendanceCanvas
+					canvasLoadImage.gameObject.SetActive(true);
 					canvasLoadImage.enabled = true;
-					loadFr = activ [i].loadImage;
 					ms.loadingTime.enabled = true;
 					ms.menuUI.enabled = false;
 					ms.loadGame.enabled = false;
+					ms.Disable (ms.loadGameComponents);
 					//Attendance buttons
 					activ [i].okButton.enabled = false;
-					activ [i].loadImage.enabled = true;
 					//Attendance menuScript
 					ms.escUse = true;
 					ms.duringGame = true;
@@ -244,17 +244,15 @@ public class ImagesToLoadGame{
 	public Image picturesInColor;
 	public Image picturesWithoutColor;
 	public Button okButton;
-	public Image loadImage;
 	[HideInInspector]public int indeks;
 	[HideInInspector]public Text tekstInside;
 
-	public ImagesToLoadGame(string name, Image color, Image nonColor, Button okImidz, Image loadImidz, int ind, Text insider)
+	public ImagesToLoadGame(string name, Image color, Image nonColor, Button okImidz, int ind, Text insider)
 	{
 		this.nameOfScene = name;
 		this.picturesInColor = color;
 		this.picturesWithoutColor = nonColor;
 		this.okButton = okImidz;
-		this.loadImage = loadImidz;
 		this.indeks = ind;
 		this.tekstInside = insider;
 	}

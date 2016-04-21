@@ -36,8 +36,8 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		BinaryFormatter binFormat = new BinaryFormatter ();
 		binFormat.Serialize(plik, menuP);
 		plik.Close();
-		Debug.Log ("Profile status was saved");
-		Debug.Log (Application.persistentDataPath + "/profile.data");
+		//Debug.Log ("Profile status was saved");
+		//Debug.Log (Application.persistentDataPath + "/profile.data");
 	}
 	public void LoadInfo()
 	{
@@ -54,12 +54,12 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 			GraphicsScript.qualityLevel = menuP.valueOfGraphic;
 			MenuScript.indexOfLang = menuP.language;
 			plik.Close();
-			Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
-				menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
+			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
+				//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
 		}
 		else
 		{
-			Debug.Log("Dont read game status becouse program dont find file with profiler");
+			//Debug.Log("Dont read game status becouse program dont find file with profiler");
 			SaveInfo ();
 			LoadInfo ();
 		}

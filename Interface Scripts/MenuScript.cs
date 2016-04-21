@@ -21,6 +21,8 @@ public class MenuScript : MonoBehaviour {
 	public Button btnBack;
 	public Button btnQuit;
 	public Button btnCancel;
+
+	public GameObject [] loadGameComponents = new GameObject[3]; //mapki z load game bo się kurwa zasłaniały
 	
 	[HideInInspector]public bool escUse;
 	[HideInInspector]public bool duringGame;
@@ -38,7 +40,20 @@ public class MenuScript : MonoBehaviour {
 	public GameObject creditMovingObj;
 	CreditsMovingScript cms;
 	RCCCarControllerV2 rcc;
-
+	MenuProfileSaveAndReadScript mps;
+	[HideInInspector]public Button []helpbUTTONtAB = new Button[5];
+	private void Enable (GameObject [] tab)
+	{
+		for (int i = 0; i < tab.Length; i++) {
+			tab [i].SetActive (true);
+		}
+	}
+	public void Disable (GameObject [] tab)
+	{
+		for (int i = 0; i < tab.Length; i++) {
+			tab [i].SetActive (false);
+		}
+	}
 	void Awake()
 	{
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
@@ -50,16 +65,18 @@ public class MenuScript : MonoBehaviour {
 		settings = settings.GetComponent<Canvas>();
 		credits = credits.GetComponent<Canvas>();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
+		//loadGame = loadGame.GetComponent<Canvas> ();
 		
 		btnNewGame = btnNewGame.GetComponent<Button>();
 		btnLoadGame = btnLoadGame.GetComponent<Button>();
 		btnSettings = btnSettings.GetComponent<Button>();
 		btnCredits = btnCredits.GetComponent<Button>();
-		btnExit = btnExit.GetComponent<Button>();
+		btnExit = btnExit.GetComponent<Button>(); // ten button ksiaze jest od pokazania canvasa, czy chcesz wyjsc z gry
 		btnBack = btnBack.GetComponent<Button>();
 		btnQuit = btnQuit.GetComponent<Button>();
 		btnCancel = btnCancel.GetComponent<Button>();
-		
+
+		mps = GetComponent<MenuProfileSaveAndReadScript> ();
 		escUse = false;
 		duringGame = false;
 		//cms = creditMovingObj.GetComponent<CreditsMovingScript>();
@@ -71,13 +88,26 @@ public class MenuScript : MonoBehaviour {
 		loadGame.enabled = false;
 		
 		Time.timeScale = 0;
+		Disable (loadGameComponents);
 		
 		if(gameMusic == null)
 			gameMusic = GameObject.FindWithTag ("music");
 		if (gameMusic == null)
 			Debug.Log ("GameMusic zostal niezaladowany");
+
+		helpbUTTONtAB [0] = btnNewGame;
+		helpbUTTONtAB [1] = btnLoadGame;
+		helpbUTTONtAB [2] = btnSettings;
+		helpbUTTONtAB [3] = btnCredits;
+		helpbUTTONtAB [4] = btnLoadGame;
 	}
-	
+	public void EnabledDisableButtonsMenu (bool chan)
+	{
+		for(int i = 0; i < helpbUTTONtAB.Length; i++)
+		{
+			helpbUTTONtAB[i].enabled = chan;
+		}
+	}
 	//Update is called once per frame
 	void Update () {
 		//if (cms.tempBoolCredits == true)
@@ -87,7 +117,8 @@ public class MenuScript : MonoBehaviour {
 			if(escUse == true && duringGame == true)
 				menuUI.enabled = !menuUI.enabled;
 			
-			
+			EnabledDisableButtonsMenu (true);
+				
 			if (menuUI.enabled == true)
 			{
 
@@ -114,6 +145,7 @@ public class MenuScript : MonoBehaviour {
 			}
 			
 		}
+
 		//setSounds ();
 		
 	}
@@ -146,6 +178,7 @@ public class MenuScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+		Enable (loadGameComponents);
 	}
 	public void ButtonSettings()
 	{
@@ -157,6 +190,7 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
+		loadGame.enabled = false;
 		
 		
 		if (soundSource != null)
@@ -176,6 +210,7 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
+		loadGame.enabled = false;
 		
 		if (soundSource != null)
 		{
@@ -199,6 +234,9 @@ public class MenuScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+
+		mps.SaveInfo ();
+
 		
 	}
 	
@@ -232,6 +270,7 @@ public class MenuScript : MonoBehaviour {
 		settings.enabled = false;
 		quitMenu.enabled = false;
 		credits.enabled = false;
+		loadGame.enabled = false;
 		btnNewGame.enabled = true;
 		btnExit.enabled = true;
 		btnCredits.enabled = true;
@@ -243,6 +282,7 @@ public class MenuScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+		Disable (loadGameComponents);
 	}
 	public void SetLang(int i)
 	{

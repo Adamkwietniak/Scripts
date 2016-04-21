@@ -6,7 +6,6 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 
 	public Canvas missionComplete; 
 	public Button nextMissionBtn;
-	public Canvas loadingTime;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	public string nextLevel;
@@ -19,7 +18,6 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
 	
 	}
@@ -52,11 +50,11 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	public void NextMission (){
 
 		missionComplete.enabled = false;
-		loadingTime.enabled = true;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-
+		if (LoadGameScript.unlockIndex == 4)
+		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 
 		if (soundSource != null)

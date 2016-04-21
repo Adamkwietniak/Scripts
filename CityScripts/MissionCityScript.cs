@@ -35,6 +35,7 @@ public class MissionCityScript : MonoBehaviour {
 	private AnimationClip animClip;
 	private bool isTimeToAnimationTank = false;
 	private AudioClip tankClip;
+	public Canvas radioFrame;
 
 
 
@@ -49,6 +50,7 @@ public class MissionCityScript : MonoBehaviour {
 
 	void Awake ()
 	{
+		radioFrame = radioFrame.GetComponent<Canvas> ();
 		ph = GetComponentInChildren<PlayerHealth>();
 		blackScreen.enabled = false;
 		rcc = GetComponent<RCCCarControllerV2> ();
@@ -244,6 +246,7 @@ public class MissionCityScript : MonoBehaviour {
 			
 			if (z == y)
 			{
+				radioFrame.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
 				//Cursor.visible = true;
@@ -261,6 +264,7 @@ public class MissionCityScript : MonoBehaviour {
 			foreach (GameObject mess in texts) {
 				if (mess.activeInHierarchy == true) {
 				
+					radioFrame.enabled = false;
 					mess.SetActive (false);
 					Time.timeScale = 1;
 					y++;

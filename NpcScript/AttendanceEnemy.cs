@@ -76,7 +76,7 @@ public class AttendanceEnemy : MonoBehaviour {
 			ecs.agent.stoppingDistance = distanceToStop;
 			ecs.audiosorce.maxDistance = ecs.minDistance;
 		}
-		if (brumBrum.GetComponent<MissionCityScript> ().enabled == true) {
+		if (brumBrum.GetComponent<HeheScript> ().enabled == true) {
 			tankAndShooter [0] = GameObject.Find ("BattleTank Green").GetComponent<Transform> ();
 			tankAndShooter [1] = GameObject.Find ("CameraOfMinigun").GetComponent<Transform> ();
 		} else {
