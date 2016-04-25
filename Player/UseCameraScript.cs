@@ -142,7 +142,7 @@ public class UseCameraScript : MonoBehaviour {
 			if(isTimer == true)
 			{
 				camersTr[indeksik].RotateAround(new Vector3(brumTr.position.x, brumTr.position.y+3.0f, brumTr.position.z), -transform.forward, Time.deltaTime*40);
-				Debug.Log("Dzialam indeks to: "+indeksik);
+				//Debug.Log("Dzialam indeks to: "+indeksik);
 			}
 			else
 			{

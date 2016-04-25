@@ -31,7 +31,6 @@ public class PlayerHealth : MonoBehaviour
 	public Button quitBtn;
 	public Button tryAgainBtn;
 	public string sameLevel;
-	public Canvas loadingTime;
 
 	public AudioSource soundSource;
 	public AudioClip clickSound;
@@ -42,6 +41,7 @@ public class PlayerHealth : MonoBehaviour
 	private float [] speedMaxTab = new float[5]; 
 	private int indexOfObstacleTag = 1000;
 	int [] tabUszk = new int[14];
+
 
 	int obrazenia = 0;
     int predkosc = 0;
@@ -95,7 +95,7 @@ public class PlayerHealth : MonoBehaviour
 			currentHealth = 0;
 			brum.engineRunning = false;
 			timer+=Time.deltaTime;
-			if(timer>=1f){
+			if(timer>=0.8f){
 
 		
 				gameOver.enabled = true;
@@ -258,6 +258,7 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.Quit ();
+
 		
 		if (soundSource != null)
 		{
@@ -268,7 +269,6 @@ public class PlayerHealth : MonoBehaviour
 	public void TryAgain (){
 		
 		gameOver.enabled = false;
-		loadingTime.enabled = true;
 		Application.LoadLevel(sameLevel);
 
 

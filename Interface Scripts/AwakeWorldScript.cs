@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class AwakeWorldScript : MonoBehaviour {
 
@@ -12,7 +13,6 @@ public class AwakeWorldScript : MonoBehaviour {
 
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		gameOver = gameOver.GetComponent<Canvas> ();
-
 
 	}
 

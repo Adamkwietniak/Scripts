@@ -99,7 +99,7 @@ public class MenuScript : MonoBehaviour {
 		helpbUTTONtAB [1] = btnLoadGame;
 		helpbUTTONtAB [2] = btnSettings;
 		helpbUTTONtAB [3] = btnCredits;
-		helpbUTTONtAB [4] = btnLoadGame;
+		helpbUTTONtAB [4] = btnExit;
 	}
 	public void EnabledDisableButtonsMenu (bool chan)
 	{
