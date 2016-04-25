@@ -54,7 +54,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
 		if (LoadGameScript.unlockIndex == 4)
-		LoadGameScript.unlockIndex++;
+			LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 
 		if (soundSource != null)

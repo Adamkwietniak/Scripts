@@ -46,10 +46,15 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	UseCameraScript ucs;
 	RCCCarControllerV2 rcc;
 
+	void Awake ()
+	{
+		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
+	}
 	void Start ()
 	{
 		ucs = GameObject.Find("BrumBrume").GetComponentInChildren<UseCameraScript>();
 		cameraTransform = ucs.camers[0].GetComponent<Transform>();
+		//rcc = GameObject.Find ("BrumBrume").GetComponent<Rigidbody> ();
 		for(int i = 0; i < ucs.camers.Length; i++)
 		{
 			camList.Add(ucs.camers[i]);
@@ -81,7 +86,14 @@ public class UnderwaterWorldScript : MonoBehaviour {
 				setValue = true;
 
 			}
+			//rcc.engineRunning = false;
+			//rcc.canControl = false;
+
+			rcc.maxspeed = 2;
+			rcc.gameObject.GetComponent<Rigidbody> ().drag = 100;
+			//rcc.gameObject.GetComponent<Rigidbody> ().mass = 0.01f;
 			RenderSettings.fogColor = underWaterColorOfFogStart;
+			//Przydałoby się jakieś gameover
 		}
 	}
 	private void AssignActiveCamera ()
