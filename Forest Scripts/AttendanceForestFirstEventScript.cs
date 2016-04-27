@@ -286,7 +286,7 @@ public class AttendanceForestFirstEventScript : MonoBehaviour {
 			}
 		}
 	}
-	private void DisableOfMssg ()
+	public void DisableOfMssg ()
 	{
 		for (int j = 0; j < attendance.Length; j++){
 			if(attendance[j].canvasView == true && (j == 15 || j == 16 || j == 17))

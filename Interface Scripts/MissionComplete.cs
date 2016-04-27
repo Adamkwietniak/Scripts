@@ -49,7 +49,7 @@ public class MissionComplete : MonoBehaviour {
 
 	public void QuitGame (){
 
-		Application.Quit ();
+		Application.LoadLevel ("SceneCanvas");
 
 		if (soundSource != null)
 		{
@@ -64,8 +64,9 @@ public class MissionComplete : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		LoadGameScript.unlockIndex++;
-		//Time.timeScale = 1;
+		if (LoadGameScript.unlockIndex == 0)
+			LoadGameScript.unlockIndex++;
+		Time.timeScale = 1;
 		
 		Cursor.visible = false;
 		

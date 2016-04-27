@@ -60,7 +60,9 @@ public class MissionForestScript : MonoBehaviour {
 			mcfs.EnabledMissionComplete();
 		}
 
-		DisEnbl();
+		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
+			DisableEnableMsg ();
+		}
 
 
 	}
@@ -107,11 +109,11 @@ public class MissionForestScript : MonoBehaviour {
 			}
 		}
 	}
-	void DisEnbl ()
+	/*void DisEnbl ()
 	{
 		foreach (GameObject mess in texts) {
-			if (mess.activeInHierarchy == true)
-			{
+			//if (mess.activeInHierarchy == true)
+			//{
 				if(Input.GetKeyUp (KeyCode.C))
 				{
 					radioFrame.enabled = false;
@@ -120,10 +122,22 @@ public class MissionForestScript : MonoBehaviour {
 					Time.timeScale = 1;
 					y++;
 				}
+			//}
+		}
+	}*/
+	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
+	{
+		foreach (GameObject mess in texts) {
+			if (mess.activeInHierarchy == true) {
+				radioFrame.enabled = false;
+				mess.SetActive (false);
+				vms.isMsg = false;
+				Time.timeScale = 1;
+				y++;
 			}
 		}
 	}
-	
+
 	bool Zadania (int i) // funkcja odpowiedzialna za zapętlenie zadan w grze
 	{
 		switch (i) //case 0: - pierwszy prefab

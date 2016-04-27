@@ -13,7 +13,7 @@ public class LoadGameScript : MonoBehaviour {
 	MenuScript ms;
 	MenuProfileSaveAndReadScript mps;
 	private bool [] itCanOpen = new bool[5];
-	public static int unlockIndex = 2;
+	public static int unlockIndex = 4;
 	// Use this for initialization
 	public Canvas canvasLoadImage;
 	public ImagesToLoadGame[] imagesToLoadGames = new ImagesToLoadGame[5];
@@ -46,6 +46,13 @@ public class LoadGameScript : MonoBehaviour {
 		}
 		AssignDefaultValues ();
 		PreparationOfImages (unlockIndex);
+	}
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.O)) {
+			LoadGameScript.unlockIndex = 4;
+			Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
+		}
 	}
 	public void PreparationOfImages (int unlockValiu)	//Przesylamy wartosc, która wskazuje na ilosc odblokowanych scen liczoną od 0
 	{

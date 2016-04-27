@@ -21,6 +21,7 @@ public class CloseButtonCityScript : MonoBehaviour {
 		//btnClose = btnClose.GetComponent<Button> ();
 		message = message.GetComponent<Image> ();
 		soundSource = soundSource.GetComponent<AudioSource>();
+		m2fs = (MissionCityScript)FindObjectOfType (typeof(MissionCityScript)) as MissionCityScript;
 	}
 	
 	public void CloseButton (){
@@ -56,6 +57,7 @@ public class CloseButtonCityScript : MonoBehaviour {
 		//MissionRiverScript m2fs = obj.GetComponent<MissionRiverScript> ();
 		if (message.enabled == true) {
 			message.enabled = false;
+			m2fs.DisableEnableMsg ();
 			m2fs.y++;
 			//Time.timeScale = 1;
 		}

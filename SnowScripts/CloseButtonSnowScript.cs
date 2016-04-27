@@ -3,37 +3,36 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class CloseButtonForestScript : MonoBehaviour {
-	
-	public Button btnClose;
+public class CloseButtonSnowScript : MonoBehaviour {
+
+	private Button btnClose;
 	public Image message;
 	public AudioClip clickSound;
 	public AudioSource soundSource;
-	public GameObject obj;
+	private GameObject obj;
 	VolumeAndMusicScript vms;
-	MissionForestScript mfs;		//dodajemy msiifion forest script NOWE
 	// Use this for initialization
+	MissionsSnowScript m2fs;
 	void Start () {
+		obj = GameObject.Find ("BrumBrume");
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
-		btnClose = btnClose.GetComponent<Button> ();
+		m2fs = obj.GetComponent<MissionsSnowScript> ();
+		btnClose = GetComponent<Button> ();
 		message = message.GetComponent<Image> ();
-		mfs = (MissionForestScript)FindObjectOfType (typeof(MissionForestScript)) as MissionForestScript;	//całkowicie dodajemy NOWE
 	}
-	
+
 	public void CloseButton (){
-		MissionForestScript ms = obj.GetComponent<MissionForestScript> ();
+
 		if (message.enabled == true) {
 			message.enabled = false;
-			mfs.DisableEnableMsg ();		//dodajemy wywolanie funkcji
+			m2fs.DisableEnableMsg ();
 			if (soundSource != null) {
 				soundSource.PlayOneShot (clickSound);
 			}
-			if(vms.isMsg == true)
+			if (vms.isMsg == true)
 				vms.isMsg = false;
-			Time.timeScale = 1;
 		}
 	}
-		
 }
 /* Działanie skryptu
  * Skrypt ma za zadanie obsługiwać zdarzenie kliknięcia na Close podczas wyświetlania informacji w poszczególnych

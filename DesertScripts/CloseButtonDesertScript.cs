@@ -11,6 +11,7 @@ public class CloseButtonDesertScript : MonoBehaviour {
 	public AudioSource soundSource;
 	public GameObject obj;
 	VolumeAndMusicScript vms;
+	MissionDesertScript mds;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +19,7 @@ public class CloseButtonDesertScript : MonoBehaviour {
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		btnClose = btnClose.GetComponent<Button> ();
 		message = message.GetComponent<Image> ();
+		mds = (MissionDesertScript)FindObjectOfType (typeof(MissionDesertScript)) as MissionDesertScript;
 	
 	}
 	
@@ -25,7 +27,7 @@ public class CloseButtonDesertScript : MonoBehaviour {
 		MissionDesertScript mds = obj.GetComponent<MissionDesertScript> ();
 		if (message.enabled == true) {
 			message.enabled = false;
-			mds.y++;
+			mds.DisableEnableMsg ();
 			if (soundSource != null) {
 				soundSource.PlayOneShot (clickSound);
 			}

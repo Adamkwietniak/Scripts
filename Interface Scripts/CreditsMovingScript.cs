@@ -6,6 +6,7 @@ public class CreditsMovingScript : MonoBehaviour {
 	//public GameObject allMoving;
 	private Transform tr;
 	private float y0 = 60;
+	public string backToMenu;
 	//public string backToMenu;
 	//[HideInInspector]public bool tempBoolCredits = false;
 	// Use this for initialization
@@ -24,7 +25,7 @@ public class CreditsMovingScript : MonoBehaviour {
 		
 		if (Input.GetKeyUp (KeyCode.Escape)) {
 			
-			Application.Quit();
+			Application.LoadLevel (backToMenu);
 			//tempBoolCredits = true;
 		}
 		

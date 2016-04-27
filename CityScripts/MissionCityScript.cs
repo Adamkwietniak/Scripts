@@ -36,6 +36,8 @@ public class MissionCityScript : MonoBehaviour {
 	private bool isTimeToAnimationTank = false;
 	private AudioClip tankClip;
 	public Canvas radioFrame;
+	VolumeAndMusicScript vms;
+
 
 
 
@@ -68,6 +70,7 @@ public class MissionCityScript : MonoBehaviour {
 		}
 		GameObject.Find ("EngineHelp").SetActive (false);
 		//goalMC.SetActive (false);
+		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 	}
 
 	private void BlackScreen (bool white, bool black, float timer)
@@ -137,7 +140,7 @@ public class MissionCityScript : MonoBehaviour {
 			if(timeToWhite == false && timeToBlack == false)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
             //Wyczekuje na wcisniecie klawisza F
-            if (Input.GetKeyDown(KeyCode.F) && acs.playerInBase == true)
+            if (acs.playerInBase == true)
 			{
                 rcc.engineRunning = false;
                 rcc.canControl = false;
@@ -213,8 +216,9 @@ public class MissionCityScript : MonoBehaviour {
 			if(timerToEnd > 3)
 				mccs.EnabledMissionComplete ();
 		}
-		DisEnbl ();
-
+		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
+			DisableEnableMsg ();
+		}
 	}
 	
 	// Update is called once per frame
@@ -258,7 +262,7 @@ public class MissionCityScript : MonoBehaviour {
 			}
 		}
 	}
-	void DisEnbl ()
+	/*void DisEnbl ()
 	{
 		if (Input.GetKeyUp (KeyCode.C)) {
 			foreach (GameObject mess in texts) {
@@ -269,6 +273,18 @@ public class MissionCityScript : MonoBehaviour {
 					Time.timeScale = 1;
 					y++;
 				}
+			}
+		}
+	}*/
+	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
+	{
+		foreach (GameObject mess in texts) {
+			if (mess.activeInHierarchy == true) {
+				radioFrame.enabled = false;
+				mess.SetActive (false);
+				vms.isMsg = false;
+				Time.timeScale = 1;
+				y++;
 			}
 		}
 	}

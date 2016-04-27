@@ -35,6 +35,7 @@ public class MenuScript : MonoBehaviour {
 	public AudioMixerSnapshot withoutPause;
 	
 	public string nextLevel;
+	public string creditsScene;
 	
 	public GameObject gameMusic;
 	public GameObject creditMovingObj;
@@ -86,6 +87,7 @@ public class MenuScript : MonoBehaviour {
 		credits.enabled = false;
 		loadingTime.enabled = false;
 		loadGame.enabled = false;
+
 		
 		Time.timeScale = 0;
 		Disable (loadGameComponents);
@@ -201,8 +203,12 @@ public class MenuScript : MonoBehaviour {
 	
 	public void ButtonCredits()
 	{
+
+		Application.LoadLevel (creditsScene);
+
+		Time.timeScale = 1;
 		
-		credits.enabled = true;
+		/*credits.enabled = true;
 		btnNewGame.enabled = false;
 		btnLoadGame.enabled = false;
 		btnSettings.enabled = false;
@@ -210,7 +216,7 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
-		loadGame.enabled = false;
+		loadGame.enabled = false;*/
 		
 		if (soundSource != null)
 		{

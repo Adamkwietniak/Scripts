@@ -259,7 +259,7 @@ public class AttendanceSnowEventScript : MonoBehaviour {
 				SetOldCameras ();
 		}
 	}
-	private void DisableMsg ()
+	public void DisableMsg ()
 	{
 		for(int i = 0; i < attendance.Length; i++)
 		{

@@ -257,7 +257,7 @@ public class PlayerHealth : MonoBehaviour
 
 	public void QuitGame (){
 		
-		Application.Quit ();
+		Application.LoadLevel ("SceneCanvas");
 
 		
 		if (soundSource != null)

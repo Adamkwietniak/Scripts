@@ -1,40 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.Audio;
 
-public class MissionCompleteCityScript : MonoBehaviour {
+public class MissionCompleteSnowScript : MonoBehaviour {
 
 	public Canvas missionComplete; 
-	public Button quitBtn;
 	public Button nextMissionBtn;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	public string nextLevel;
 	public string respawnPlace;
 	public GameObject obj;
-	MissionCityScript ms;
-	
-	
-	void Start (){
-		
+	MissionsSnowScript mds;
+
+	// Use this for initialization
+	void Start () {
+
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		quitBtn = quitBtn.GetComponent<Button>();
-		ms = obj.GetComponent<MissionCityScript> ();
-		
-		
+		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
+	
 	}
-	
-	
-	/*void OnTriggerEnter(Collider other){ 
+
+	void OnTriggerEnter(Collider other){ 
 
 		if (other.tag == "Player"){
 			missionComplete.enabled = true;
-			if (ms.y == 7) { // wpisujemy wartosc messega po ktorym ma sie pojawic mission complete
-			Time.timeScale = 0;
 			}
-		}
+
 
 		if (missionComplete.enabled == true) {
 			
@@ -42,41 +35,33 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		}
 		
 	}
-	*/
-	public void EnabledMissionComplete (){
-		
-		missionComplete.enabled = true;
-		if (missionComplete.enabled == true) {
-			Time.timeScale = 0f;
-		}
-	} 
 	
 	public void QuitGame (){
-		
-		Application.LoadLevel ("SceneCanvas");
-		
+
+		Application.Quit ();
+
+		if (soundSource != null)
+		{
+			soundSource.PlayOneShot(clickSound);
+		}
+	}
+	
+
+	public void NextMission (){
+
+		missionComplete.enabled = false;
+		MenuInstanceScript.respawnPlace = respawnPlace;
+		MenuInstanceScript.respawn = true;
+		Application.LoadLevel(nextLevel);
+		if (LoadGameScript.unlockIndex == 4)
+			LoadGameScript.unlockIndex++;
+		Time.timeScale = 1;
+
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
 	}
 
-	
-	public void NextMission (){
-		
-		missionComplete.enabled = false;
-		MenuInstanceScript.respawnPlace = respawnPlace;
-		MenuInstanceScript.respawn = true;
-		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 3)
-		LoadGameScript.unlockIndex++;
-		Time.timeScale = 1;
-		
-		
-		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
-		}
-	}
+
 }

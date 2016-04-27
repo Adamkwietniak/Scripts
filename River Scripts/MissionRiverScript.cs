@@ -23,6 +23,7 @@ public class MissionRiverScript : MonoBehaviour {
 	public Text instructionsForBumper;
 	public GameObject[] wounded = new GameObject[3];
 	public Image engineWarning;
+	VolumeAndMusicScript vms;
 
 	//public GameObject goalMC;
 
@@ -51,6 +52,7 @@ public class MissionRiverScript : MonoBehaviour {
 		}
 		Messengery (y);
 		Podmianka(i); // wywolanie metody podmianka
+		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 	}
 
 	
@@ -105,7 +107,9 @@ public class MissionRiverScript : MonoBehaviour {
 
 				}
 			}
-			DisEnbl();
+			if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
+				DisableEnableMsg ();
+			}
 		}
 		if (gafw.isComplete == true && i == wpiszIloscTriggerow-2) {
 			i++;
@@ -154,7 +158,7 @@ public class MissionRiverScript : MonoBehaviour {
 			}
 		}
 	}
-	void DisEnbl ()
+	/*void DisEnbl ()
 	{
 		if(Input.GetKeyUp (KeyCode.C))
 		{
@@ -166,6 +170,19 @@ public class MissionRiverScript : MonoBehaviour {
 				Time.timeScale = 1;
 				y++;
 				}
+			}
+		}
+	}*/
+
+	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
+	{
+		foreach (GameObject mess in texts) {
+			if (mess.activeInHierarchy == true) {
+				radioFrame.enabled = false;
+				mess.SetActive (false);
+				vms.isMsg = false;
+				Time.timeScale = 1;
+				y++;
 			}
 		}
 	}

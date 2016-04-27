@@ -2,33 +2,36 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MissionDesertScript : MonoBehaviour {
-
+public class MissionsSnowScript : MonoBehaviour {
+	
 	//public Button lostClose;
 	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
 	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
 	public Canvas message;
 	public Canvas radioFrame;
 	public GameObject [] texts = new GameObject[1];
-	private SkinnedMeshRenderer smr1;
-	private SkinnedMeshRenderer smr2;
-	private SkinnedMeshRenderer smr3;
-
-
-	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
-	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
+	private GameObject brumBrume;
+	
+	//RCCCarControllerV2 carScript = gameObject.GetComponent<RCCCarControllerV2>();
+	public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
+	public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
 	bool predkosc = false;
-	[HideInInspector]public bool czyDalej = false;
-	private bool tempCzyDalej = false;
+	bool checkPos = false;
+	private Vector3 triggerTr;
+	private Transform brumtr;
 	RCCCarControllerV2 rcc;
+	private bool engineHelpActive = false;
 	VolumeAndMusicScript vms;
 	// Use this for initialization
 	void Start () {
-
-		message = message.GetComponent<Canvas> ();
+		brumBrume = GameObject.Find ("BrumBrume");
 		radioFrame = radioFrame.GetComponent<Canvas> ();
-		rcc = GetComponent<RCCCarControllerV2> ();
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		rcc = brumBrume.GetComponent<RCCCarControllerV2> ();
+		message = message.GetComponent<Canvas> ();
+		triggerTr = trigger [2].GetComponent<Transform> ().position;
+		brumtr = brumBrume.GetComponent<Transform> ();
+		//lostClose = lostClose.GetComponent<Button> ();
 		for(int z = 0; z==wpiszIloscTriggerow; z++) //petla for po tablicy
 		{
 			trigger[z] = GameObject.FindGameObjectWithTag("Trigger"); //wpisywanie do tablicy obiektow z gry
@@ -36,32 +39,22 @@ public class MissionDesertScript : MonoBehaviour {
 		Messengery (y);
 		Podmianka(i); // wywolanie metody podmianka
 	}
-
+	
 	void Update()
 	{
 
-		if (y == 0) {					//Ify tu zostały przypisane ze względu na to, że pojawiają się one na samym
-			Messengery (y);				//poczatku gry i sa niezależne od triggerów.
-		}
-		if(i == 1 && czyDalej == true && tempCzyDalej == false){
-			Messengery (y);
-			tempCzyDalej = true;
-		}
-
-
-		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
+		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {
 			DisableEnableMsg ();
 		}
-
-
+			
 	}
-
+	
 	// Update is called once per frame
 	void OnTriggerEnter(Collider other) //wykrywanie kolizji
 	{
 		if (other.tag == "Trigger") //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
 		{
-			if (Zadania(i) == true)
+			if (Zadania(i) == true && i != 2)
 			{
 				i++; //zwieksz wartosc pomocnicza za kazdym razem gdy obiekt bedzie mial kontakt z triggerem
 				Podmianka(i);//wywolanie metody podmianka i przeslanie wartosci i do metody
@@ -85,8 +78,8 @@ public class MissionDesertScript : MonoBehaviour {
 
 			if (z == y)
 			{
-				//vms.isMsg = true;
 				radioFrame.enabled = true;
+				vms.isMsg = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
 				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
 
@@ -97,6 +90,22 @@ public class MissionDesertScript : MonoBehaviour {
 			}
 		}
 	}
+	/*void DisEnbl ()
+	{
+		foreach (GameObject mess in texts) {
+			if (mess.activeInHierarchy == true)
+			{
+				if(Input.GetKeyUp (KeyCode.C))
+				{
+					radioFrame.enabled = false;
+					mess.SetActive(false);
+					Time.timeScale = 1;
+					vms.isMsg = false;
+					y++;
+				}
+			}
+		}
+	}*/
 	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
 	{
 		foreach (GameObject mess in texts) {
@@ -109,31 +118,37 @@ public class MissionDesertScript : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	bool Zadania (int i) // funkcja odpowiedzialna za zapętlenie zadan w grze
 	{
-		switch (i) //case 0: - pierwszy prefab
+	switch (i) //case 0: - pierwszy prefab
 		{
-
-		case 0: // przed jebnięciem w 1-szą bramę
+		case 0:
 			Messengery (y);
 			return true;
 			break;
-		case 1: // zabiera negocjatora
-			if(tempCzyDalej == true)
-				Messengery (y);
-				return true;
+		case 1:
+			Messengery (y);
+			return true; 
 			break;
-		case 2: // druga brama
+		case 2:
 			Messengery (y);
 			return true;
 			break;
-
+		case 3:
+			Messengery (y);
+			return true;
+			break;
+		case 4:
+			Messengery (y);
+			return true;
+			break;
+		
 		default:
 			return true;
 			break;
 		}
-		return false;
+	return false;
 	}
 }
 
