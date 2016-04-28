@@ -5,84 +5,50 @@ using UnityEngine.UI;
 public class SnowSplashOnScreenScript : MonoBehaviour {
 
 	public Canvas canvasSnowSplash;
-	public Image [] images = new Image[3]; 	//first for cleanSnow, second for full screen on the snow left side, three right side
-	public Image [] helpImages = new Image[2]; //first left second right
-	public GameObject[] wipers = new GameObject[2];	//first left wirpe, second right wiper
-	private float actualTimeClean = 1;
+	public Image snowSplash;
+	public float multiple = 1f;
+	private float timer = 0;
+	private float actualAlpha = 0;
+	[HideInInspector]public bool inTheSnowdrivt = false;
+	private bool splashOnScreen = false;
+	[HideInInspector]public bool outZaspa = false;
 
-	[HideInInspector]public bool inSnowM = false;
-	[HideInInspector]public bool needToEscape = true;
-	private bool snwOnScreen = false;
-	private bool cleaningScreen = false;
-	public Vector2 minMaxRotation;
-	private bool upOrDown = true;
-	public float mnoznik = 1;
-	private float actualRotationZ = 0;
-	// Use this for initialization
-	void Start () {
-		actualRotationZ = minMaxRotation.x;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (inSnowM == true) {
-			if(snwOnScreen == false)
-				snwOnScreen = true;
-			if (snwOnScreen == true && needToEscape == true) {
-				needToEscape = false;
-				images [1].enabled = true;
-				images [2].enabled = true;
-				if (helpImages [0].enabled == false) {
-					for (int i = 0; i < helpImages.Length; i++) {
-						helpImages [i].enabled = true;
-					}
-				}
-				//images [1].color = new Color (images [1].color.r, images [1].color.g, images [1].color.b, 255);
-			}
-		}
-		if (Input.GetKeyDown (KeyCode.Keypad0) /*&& snwOnScreen == true && cleaningScreen == false*/) {
-			cleaningScreen = true;
-		}
-		if (cleaningScreen == true) {
-			/*if (actualTimeClean <= 1 && actualTimeClean > 0 && upOrDown == false) {
-				actualTimeClean -= Time.deltaTime / 2;
-			} else if (actualTimeClean <= 1 && actualTimeClean > 0 && upOrDown == true) {
-				actualTimeClean += Time.deltaTime / 2;
-			}
-			else {
-				snwOnScreen = false;
-				actualTimeClean = 1;
-				cleaningScreen = false;
-			}*/
-			CleaningScreen ();
-		}
-	}
-	private void CleaningScreen ()
+
+	RCCCarControllerV2 rcc;
+
+	void Awake ()
 	{
-		//images [1].color = new Color (images [1].color.r, images [1].color.g, images [1].color.b, actT);
-		if (actualRotationZ > minMaxRotation.y && upOrDown == true) {		//gdy jest za duza wartosc
-			upOrDown = false;
-			images [1].enabled = false;
-			images [2].enabled = false;
-			actualRotationZ = minMaxRotation.y;
-		} else if (actualRotationZ < minMaxRotation.x && upOrDown == false) {	//gdy jest za mala wartosc
-			upOrDown = true;
-			actualRotationZ = minMaxRotation.x;
-			cleaningScreen = false;
-			if (helpImages [0].enabled == true) {
-				for (int i = 0; i < helpImages.Length; i++) {
-					helpImages [i].enabled = false;
-				}
+		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
+		canvasSnowSplash.enabled = false;
+	}
+	void Update ()
+	{
+		if (inTheSnowdrivt == true && canvasSnowSplash.enabled == false && splashOnScreen == false && outZaspa == false) {
+			Debug.Log ("do skurwysyna jasnego");
+			float tempSpeec = rcc.speed;
+			canvasSnowSplash.enabled = true;
+			splashOnScreen = true;
+			outZaspa = true;
+			timer = tempSpeec / 50;
+			if (tempSpeec < 1) {
+				Mathf.Clamp (0, 255, tempSpeec);
+			} else {
+				actualAlpha = 255;
 			}
-		} else {											//gdy wartosc jest odpowiednia
-			if (upOrDown == true) {							//gdy wycieraczki zwiekszaja kąt
-				actualRotationZ += Time.deltaTime * mnoznik;
-			} else {										//gdy wycieraczki zmniejszają
-				actualRotationZ -= Time.deltaTime * mnoznik;
+			snowSplash.color = new Color (snowSplash.color.r, snowSplash.color.g,
+				snowSplash.color.b, actualAlpha);
+		} else if (inTheSnowdrivt == false && splashOnScreen == true) {
+			if (actualAlpha > 0) {
+				timer -= Time.deltaTime * multiple;
+				actualAlpha = Mathf.Clamp (timer, 0, 255);
+				snowSplash.color = new Color (snowSplash.color.r, snowSplash.color.g,
+					snowSplash.color.b, actualAlpha);
+			} else {
+				splashOnScreen = false;
+				canvasSnowSplash.enabled = false;
 			}
-		}
-		for (int i = 0; i < wipers.Length; i++) {
-			wipers [i].transform.localRotation =  Quaternion.Euler(new Vector3 (wipers [i].transform.localRotation.x, wipers [i].transform.localRotation.y, actualRotationZ));
+			Debug.Log ("Żydzi do gazu");
 		}
 	}
+
 }

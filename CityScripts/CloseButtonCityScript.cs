@@ -58,7 +58,7 @@ public class CloseButtonCityScript : MonoBehaviour {
 		if (message.enabled == true) {
 			message.enabled = false;
 			m2fs.DisableEnableMsg ();
-			m2fs.y++;
+
 			//Time.timeScale = 1;
 		}
 		//}

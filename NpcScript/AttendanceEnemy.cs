@@ -69,7 +69,7 @@ public class AttendanceEnemy : MonoBehaviour {
 		foreach (EnemyClassScript ecs in mainEnemy) {
 			for (int i = 0; i < ecs.rigbodyList.Length; i++)
 			{
-				//Debug.Log("Zaladowany zostal obiekt: "+ecs.enemyObject.name+" posiadajacy agenta "+ecs.agent.autoBraking+" i Animator: "+ ecs.anim.name+" isLife: "+ecs.isLife+" isWait: "+ecs.isWait+" isRun: "+ecs.isRun);
+				
 				ecs.rigbodyList[i].useGravity = true;
 				ecs.rigbodyList[i].isKinematic = true;
 			}
@@ -87,7 +87,7 @@ public class AttendanceEnemy : MonoBehaviour {
 	void Update ()
 	{
 		if (collDetect == true) {
-			//Debug.Log("Dzialam");
+			
 			AttendanceCollision();
 			}
 
@@ -115,11 +115,11 @@ public class AttendanceEnemy : MonoBehaviour {
 					SimpleEnableRagdoll (i);
                     for (int j = 0; j < mainEnemy[i].rigbodyList.Length; j++)
                     {
-                        //Debug.Log("zadzialalem na: " + nameOfRb);
+                        
                         if (mainEnemy[i].rigbodyList[j].gameObject.name == nameOfRb)
                         {
                             mainEnemy[i].rigbodyList[j].AddForce(-normal.x* multPow, normal.y, -normal.z* multPow, ForceMode.Impulse);
-                           // Debug.Log("zadzialalem na: "+ nameOfRb);
+                           
                         }
                     }
                     mainEnemy[i].isLife = false;
@@ -141,7 +141,7 @@ public class AttendanceEnemy : MonoBehaviour {
 			mainEnemy[i].audiosorce.clip = soundShoot;
 			if(mainEnemy[i].audiosorce.isPlaying != true)
 				mainEnemy[i].audiosorce.Play();
-			//Debug.Log("dzwiek strzalu on");
+			
 		}
 	}
 	private void MuteSoundShoot (int i)
@@ -149,7 +149,7 @@ public class AttendanceEnemy : MonoBehaviour {
 		if (mainEnemy [i].isShooting == false && mainEnemy[i].audiosorce.isPlaying == true) {
 			mainEnemy[i].audiosorce.clip = soundShoot;
 			mainEnemy[i].audiosorce.Stop();
-			//Debug.Log("dzwiek strzalu off");
+
 		}
 	}
 	private void AnimationDoIt ()
@@ -194,7 +194,6 @@ public class AttendanceEnemy : MonoBehaviour {
 					mainEnemy[i].anim.enabled = true;
 					mainEnemy[i].onTheGround = false;
 					mainEnemy[i].timerToGetUp = 0;
-					//Debug.Log(mainEnemy[i].enemyObject.name + " wstaje");
 					SimpleDisableRagdoll(i);
 					AttendanceEvent(target, driverTr);
 				}
@@ -231,7 +230,7 @@ public class AttendanceEnemy : MonoBehaviour {
 		{
 			if(mainEnemy[i].isLife == true){
 				CountDistanceFromPlayer (i, target1);
-				//Debug.Log("Przeliczam wartosci dla obiektu: "+mainEnemy[i].enemyObject.name);
+
 					if(mainEnemy[i].enemyIsStatic == false){
 					switch (mainEnemy [i].actualInt)
 					{
@@ -239,7 +238,7 @@ public class AttendanceEnemy : MonoBehaviour {
 						mainEnemy[i].agent.speed = 0;
 						mainEnemy[i].actualSpeed = 0;
 						DisEnbpPartSystem(i, false);
-						//Debug.Log(mainEnemy[i].enemyObject.name + " koniec zabawy");
+
 						break;
 					case 1:			//Wrog jest w odleglosci umozliwiajacej rozpoczecie ostrzalu
 						mainEnemy [i].agent.speed = 0;
@@ -249,9 +248,6 @@ public class AttendanceEnemy : MonoBehaviour {
 							DisEnbpPartSystem (i, true);
 							ShootSound (i);
 						}
-						//Debug.Log (mainEnemy [i].enemyObject.name + " strzela.");
-					
-						//Debug.Log(mainEnemy[i].enemyObject.name + " strzela");
 						break;
 					case 2:			// Wrog jest miedzy predkoscia minimalna a maksymalna (rozpoczyna ruch)
 						if(runSpeed>mainEnemy[i].agent.speed)
@@ -263,13 +259,13 @@ public class AttendanceEnemy : MonoBehaviour {
 						mainEnemy[i].agent.SetDestination(target1.position);
 						DisEnbpPartSystem(i, false);
 						boolsDest = true;
-						Debug.Log(mainEnemy[i].enemyObject.name + " biegnie.");
+
 						break;
 					case 3:			//Wrog jest poza widokiem bruma staje i wlacza iddle
 						mainEnemy[i].agent.speed = 0;
 						mainEnemy[i].actualSpeed = 0;
 						DisEnbpPartSystem(i, false);
-						//Debug.Log(mainEnemy[i].enemyObject.name + " czeka");
+
 						break;
 					case 4:			// Wrog zaczyna isc w strone swojego punktu defaultowego (trzeba dodac timer do przejscia do 5)
 						if(walkSpeed>mainEnemy[i].agent.speed)
@@ -280,13 +276,13 @@ public class AttendanceEnemy : MonoBehaviour {
 						mainEnemy[i].agent.SetDestination(mainEnemy[i].transDefPos.position);
 						DisEnbpPartSystem(i, false);
 						boolsDest = true;
-						//Debug.Log(mainEnemy[i].enemyObject.name + " wraca na miejsce");
+
 						break;
 					case 5:			//Wrog wlacza iddle na miejscu "zbiorki"
 						mainEnemy[i].agent.speed = 0;
 						mainEnemy[i].actualSpeed = 0;
 						DisEnbpPartSystem(i, false);
-						//Debug.Log(mainEnemy[i].enemyObject.name + " odpoczywa");
+
 						break;
 					}
 				}else{
@@ -298,12 +294,12 @@ public class AttendanceEnemy : MonoBehaviour {
 							DisEnbpPartSystem(i, true);
 							ShootSound (i);
 						}
-						//Debug.Log(mainEnemy[i].enemyObject.name + " strzela");
+
 						break;
 					
 					default:		//Iddle
 						DisEnbpPartSystem(i, false);
-						//Debug.Log(mainEnemy[i].enemyObject.name + " odpoczywa");
+
 						break;
 
 					}
@@ -316,7 +312,7 @@ public class AttendanceEnemy : MonoBehaviour {
 		//for (int i = 0; i < mainEnemy.Count; i++) {
 				mainEnemy [i].distFromPlayer = ContDistance (target11.position, mainEnemy [i].enemyTr.position);
 			//if (mainEnemy [i].enemyObject.name == "Army3-finalReady (3)")
-			//Debug.Log ("Distans miedzy Army3-finalReady (3) a targetem "+ target11.gameObject.name +" wynosi: " + mainEnemy [i].distFromPlayer);
+			
 			if (mainEnemy [i].enemyIsStatic == false){
 				mainEnemy [i].distFromDefPos = ContDistance (mainEnemy[i].enemyTr.position, mainEnemy [i].transDefPos.position);
 			}
@@ -390,7 +386,7 @@ public class AttendanceEnemy : MonoBehaviour {
 				mainEnemy [index].rigbodyList[i].isKinematic = false;
 			}
 		}
-		//Debug.Log ("Wlaczam RigBody w " + mainEnemy [index].enemyObject.name );
+
 	}
 	private void DisEnbpPartSystem (int i, bool pass)
 	{
@@ -407,7 +403,7 @@ public class AttendanceEnemy : MonoBehaviour {
 				mainEnemy [index].rigbodyList[i].isKinematic = true;
 			}
 		}
-		//Debug.Log ("Wylaczam RigBody w " + mainEnemy [index].enemyObject.name );
+
 	}
 	private void AllEnableRagdoll ()
 	{
@@ -438,13 +434,13 @@ public class AttendanceEnemy : MonoBehaviour {
 	private void AttendanceCollision()
 	{
 		
-		//Debug.Log ("Kolizja Wykryta. Trigger Detection ma nazwe: "+trigerDetection );
+
 		for (int i = 0; i < mainEnemy.Count; i++) {
 			if(mainEnemy[i].enemyObject.name == trigerDetection)
 			{
-				//Debug.Log("Pierwszy if w AttendanceCollision");
+				
 				if(rcv2.speed > maxSpeedToNotDead)
-				{//Debug.Log("Drugi if w AttendanceCollision");
+				{
 					mainEnemy[i].anim.enabled = false;
 					SimpleEnableRagdoll(i);
 					mainEnemy[i].isShooting = false;
@@ -458,7 +454,7 @@ public class AttendanceEnemy : MonoBehaviour {
 				}
 				else
 				{
-					//Debug.Log("Drugi if ver 2 w AttendanceCollision");
+					
 					mainEnemy[i].anim.enabled = false;
 					SimpleEnableRagdoll(i);
 					mainEnemy[i].timerToGetUp = 0;
