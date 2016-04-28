@@ -61,7 +61,10 @@ public class MissionsScript : MonoBehaviour {
 		if (y == 2) {
 			Messengery (y);
 		}
-		DisEnbl();
+		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) 
+		{		//wywołujemy zamykanie canvasa
+			DisableEnableMsg ();
+		}
 
 		if (rcc.engineRunning == false && engineHelpActive == false) {
 			engineHelp.enabled = true;
@@ -120,19 +123,15 @@ public class MissionsScript : MonoBehaviour {
 			}
 		}
 	}
-	void DisEnbl ()
+	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
 	{
 		foreach (GameObject mess in texts) {
-			if (mess.activeInHierarchy == true)
-			{
-				if(Input.GetKeyUp (KeyCode.C))
-				{
-					radioFrame.enabled = false;
-					mess.SetActive(false);
-					Time.timeScale = 1;
-					vms.isMsg = false;
-					y++;
-				}
+			if (mess.activeInHierarchy == true) {
+				radioFrame.enabled = false;
+				mess.SetActive (false);
+				vms.isMsg = false;
+				Time.timeScale = 1;
+				y++;
 			}
 		}
 	}

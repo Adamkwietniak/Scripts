@@ -107,7 +107,8 @@ public class MissionRiverScript : MonoBehaviour {
 
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
+			if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) 
+			{		//wywołujemy zamykanie canvasa
 				DisableEnableMsg ();
 			}
 		}

@@ -18,6 +18,7 @@ public class CloseButtonScript : MonoBehaviour {
 		m2fs = obj.GetComponent<MissionsScript> ();
 		btnClose = btnClose.GetComponent<Button> ();
 		message = message.GetComponent<Image> ();
+		m2fs = (MissionsScript)FindObjectOfType (typeof(MissionsScript)) as MissionsScript;
 	}
 
 	public void CloseButton (){
@@ -34,6 +35,7 @@ public class CloseButtonScript : MonoBehaviour {
 	{
 		if (message.enabled == true) {
 			message.enabled = false;
+			m2fs.DisableEnableMsg ();
 			m2fs.y++;
 		}
 	}
