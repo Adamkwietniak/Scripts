@@ -244,8 +244,8 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
-		if(mns.menuUI.enabled == false)
-		{ mns.menuUI.enabled = true;}
+		/*if(mns.menuUI.enabled == false)
+		{ mns.menuUI.enabled = true;}*/
 
 		
 		if (soundSource != null)
@@ -272,7 +272,7 @@ public class PlayerHealth : MonoBehaviour
 		//currentHealth = 0;
 		brum.engineRunning = false;
 		timer+=Time.deltaTime;
-		if(timer>=0.8f){
+		if(timer>=0.2f){
 
 
 			gameOver.enabled = true;

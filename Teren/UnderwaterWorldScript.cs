@@ -37,6 +37,9 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	//private float wG = 0;
 	//private float wB = 0;
 	//private Color actualColor;
+	public GameObject hudrantPref;
+	private bool isHydrantOnScene = false;
+	private Transform camZderzakTr;
 
 	private List <Camera> camList = new List<Camera>();
 	private List <Transform> camListTr = new List<Transform>();
@@ -50,11 +53,13 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	{
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
 		ph = (PlayerHealth)FindObjectOfType (typeof(PlayerHealth)) as PlayerHealth;
+		hudrantPref.SetActive (false);
 	}
 	void Start ()
 	{
 		ucs = GameObject.Find("BrumBrume").GetComponentInChildren<UseCameraScript>();
 		cameraTransform = ucs.camers[0].GetComponent<Transform>();
+		camZderzakTr = ucs.camers [3].GetComponent<Transform> ();
 		//rcc = GameObject.Find ("BrumBrume").GetComponent<Rigidbody> ();
 		for(int i = 0; i < ucs.camers.Length; i++)
 		{
@@ -70,9 +75,17 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	{
 		if(Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.N))
 			AssignActiveCamera ();
+
+		if (camZderzakTr.position.y < heightOfWater && isHydrantOnScene == false) {
+			hudrantPref.SetActive (true);
+			Instantiate(hudrantPref, camZderzakTr.position, Quaternion.Euler(0,1,0));
+			isHydrantOnScene = true;
+			Time.timeScale = 0.3f;
+		}
 		if(cameraTransform.position.y - offsetOfPlayer < heightOfWater && underWater == false)
 		{
 			underWater = true;
+
 		}
 		else if(cameraTransform.position.y - offsetOfPlayer > heightOfWater && underWater == true){
 			LoadDefaultSettings(true);
@@ -87,7 +100,7 @@ public class UnderwaterWorldScript : MonoBehaviour {
 				setValue = true;
 
 			}
-				ph.GameOver ();
+			ph.GameOver ();
 			//rcc.engineRunning = false;
 			//rcc.canControl = false;
 
