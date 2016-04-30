@@ -45,10 +45,11 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	private float heightOfWater = 0; // wysokosc tafli wody
 	UseCameraScript ucs;
 	RCCCarControllerV2 rcc;
-
+	PlayerHealth ph;
 	void Awake ()
 	{
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
+		ph = (PlayerHealth)FindObjectOfType (typeof(PlayerHealth)) as PlayerHealth;
 	}
 	void Start ()
 	{
@@ -86,6 +87,7 @@ public class UnderwaterWorldScript : MonoBehaviour {
 				setValue = true;
 
 			}
+				ph.GameOver ();
 			//rcc.engineRunning = false;
 			//rcc.canControl = false;
 

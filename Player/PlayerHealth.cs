@@ -31,6 +31,7 @@ public class PlayerHealth : MonoBehaviour
 	public Button quitBtn;
 	public Button tryAgainBtn;
 	public string sameLevel;
+	MenuScript mns;
 
 	public AudioSource soundSource;
 	public AudioClip clickSound;
@@ -68,6 +69,7 @@ public class PlayerHealth : MonoBehaviour
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		blendShapeCount = srodek.blendShapeCount;
+		mns = GetComponent<MenuScript> ();
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
         {
@@ -91,23 +93,7 @@ public class PlayerHealth : MonoBehaviour
 		}
 		if(currentHealth <=0)	//Co się stanie jak samochód ma 0 życia?
 		{						//nie będzie działać xD
-			brum.maxspeed = 0;
-			currentHealth = 0;
-			brum.engineRunning = false;
-			timer+=Time.deltaTime;
-			if(timer>=0.8f){
-
-		
-				gameOver.enabled = true;
-
-
-			}
-			if(gameOver.enabled==true){
-				timer=0f;
-				Time.timeScale = 0;
-			}
-
-
+			GameOver ();
 		} 
 	
 		if (ifdamage == true) {					//Jeśli nastąpiły uszkodzenia, sprawd jakie a następnie odpowiednio się
@@ -258,6 +244,8 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
+		if(mns.menuUI.enabled == false)
+		{ mns.menuUI.enabled = true;}
 
 		
 		if (soundSource != null)
@@ -277,6 +265,25 @@ public class PlayerHealth : MonoBehaviour
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+	}
+	public void GameOver ()
+	{
+		brum.maxspeed = 0;
+		//currentHealth = 0;
+		brum.engineRunning = false;
+		timer+=Time.deltaTime;
+		if(timer>=0.8f){
+
+
+			gameOver.enabled = true;
+
+
+		}
+		if(gameOver.enabled==true){
+			timer=0f;
+			Time.timeScale = 0;
+		}
+
 	}
 }	
 /*

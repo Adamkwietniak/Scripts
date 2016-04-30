@@ -59,13 +59,21 @@ public class AttendanceEnemy : MonoBehaviour {
 					mainEnemy.Add(new EnemyClassScript(npcEnemy[j].enemyObject.GetComponent<Animator>(), npcEnemy[j].enemyObject.GetComponent<NavMeshAgent>(), 
 					                                   npcEnemy[j].enemyObject, npcEnemy[j].defaultPositionObject,npcEnemy[j].maxDistance, npcEnemy[j].minDistance, 
 					                                   npcEnemy[j].maxDistanceFromDefaultPosition, npcEnemy[j].dmgFromShoot, npcEnemy[j].enemyIsStatic, false, false, 
-					                                   false, true, true, false, false, 0, 0, 2000, 0, 0, 0, tempEnemyToWriteList[i].GetComponentsInChildren<Rigidbody>(), 
+						false, true, true, false, false, 0, 0, 2000, 0, 0, 0, tempEnemyToWriteList[i].GetComponentsInChildren<Rigidbody>(), FunToMakeTags (npcEnemy[j].enemyObject), 
 													   npcEnemy[j].defaultPositionObject.GetComponent<Transform>(), npcEnemy[j].enemyObject.GetComponent<Transform>(), npcEnemy[j].PartSys, 
 					                                   npcEnemy[j].enemyObject.GetComponent<AudioSource>()
 					                                 	));
 				}
 			}
 		}
+		/*for (int i = 0; i < mainEnemy.Count; i++) {
+			for (int j = 0; j < mainEnemy [i].obiectToChangeTag.Length; j++) {
+				//if (npcEnemy [i].obiectToChangeTag [j] != null) {
+				//	npcEnemy [i].obiectToChangeTag [j] = npcEnemy [i].rigbodyList [j].gameObject;
+				Debug.Log (mainEnemy [i].obiectToChangeTag [j].name);
+				//}
+			}
+		}*/
 		foreach (EnemyClassScript ecs in mainEnemy) {
 			for (int i = 0; i < ecs.rigbodyList.Length; i++)
 			{
@@ -83,6 +91,16 @@ public class AttendanceEnemy : MonoBehaviour {
 			tankAndShooter [0] = target;
 			tankAndShooter [1] = driverTr;
 		}
+	}
+	private GameObject [] FunToMakeTags (GameObject obj)
+	{
+		Rigidbody[] helpRb = new Rigidbody[13];
+		GameObject[] tabObj = new GameObject[11];
+		helpRb = obj.GetComponentsInChildren<Rigidbody> ();
+		for (int i = 0; i < helpRb.Length; i++) {
+			tabObj [i] = helpRb [i].gameObject;
+		}
+		return tabObj;
 	}
 	void Update ()
 	{
@@ -451,6 +469,9 @@ public class AttendanceEnemy : MonoBehaviour {
 					mainEnemy[i].isWait = false;
 					mainEnemy[i].onTheGround = true;
 					DisEnbpPartSystem (i, false);
+					for (int j = 0; j < mainEnemy [i].obiectToChangeTag.Length; j++) {
+						mainEnemy [i].obiectToChangeTag [j].tag = "NonCollider";
+					}
 				}
 				else
 				{

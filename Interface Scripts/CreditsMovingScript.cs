@@ -19,7 +19,7 @@ public class CreditsMovingScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		y0 += Time.deltaTime*40.0f;
+		y0 += Time.deltaTime*50.0f;
 		tr.position = new Vector3(699, y0, -10);
 		//Debug.Log (tr.position.y);
 		

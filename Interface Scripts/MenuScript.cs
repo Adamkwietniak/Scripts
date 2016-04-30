@@ -9,7 +9,6 @@ public class MenuScript : MonoBehaviour {
 	
 	public Canvas quitMenu;
 	public Canvas settings;
-	public Canvas credits;
 	public Canvas loadingTime;
 	public Canvas loadGame;
 	
@@ -64,7 +63,6 @@ public class MenuScript : MonoBehaviour {
 		menuUI = (Canvas)GetComponent<Canvas>();
 		quitMenu = quitMenu.GetComponent<Canvas>();
 		settings = settings.GetComponent<Canvas>();
-		credits = credits.GetComponent<Canvas>();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//loadGame = loadGame.GetComponent<Canvas> ();
 		
@@ -84,7 +82,6 @@ public class MenuScript : MonoBehaviour {
 		
 		quitMenu.enabled = false;
 		settings.enabled = false;
-		credits.enabled = false;
 		loadingTime.enabled = false;
 		loadGame.enabled = false;
 
@@ -275,7 +272,6 @@ public class MenuScript : MonoBehaviour {
 	{
 		settings.enabled = false;
 		quitMenu.enabled = false;
-		credits.enabled = false;
 		loadGame.enabled = false;
 		btnNewGame.enabled = true;
 		btnExit.enabled = true;

@@ -17,7 +17,7 @@ public class BombardingScript : MonoBehaviour {
 	public Vector2 maxMin = new Vector2(50,50);         //range of offset count random place to drop a bomb
     public bool bombInScene = true;   					//temporarity bool to blocks the program
     private float timerToMakeBomb = 0;                  //temporarity float to count time to next bomb
-    private int hzToNextBomb = 5;                      //max value for timerToMakeBomb
+    private int hzToNextBomb = 3;                      //max value for timerToMakeBomb
     private List<Bomber> bombs = new List<Bomber>();    //List of bombs
     public AudioClip dropTheBombClip;
     public AudioClip explodeClip;
@@ -25,7 +25,7 @@ public class BombardingScript : MonoBehaviour {
 	//To Draw Circle
 	private float thetaScale = 0.01f;
 	private int size = 14;
-	private float radius = 8.0f;
+	private float radius = 12.0f;
 
 	PlayerHealth ph;
 
@@ -36,10 +36,7 @@ public class BombardingScript : MonoBehaviour {
         //terrainData = terrain.terrainData;
 	}
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
+
 	// Update is called once per frame
 	void Update () {
         if(bombInScene == true)
@@ -79,8 +76,10 @@ public class BombardingScript : MonoBehaviour {
 			}
 			if (bombs [i].takeDamage == true && bombs [i].timerek < maxTimer && bombs[i] != null) {	//Operation explosion and taking damage
 				bombs [i].distanceToCar = DistBtwBAC (bombs [i].psTr.position);
-				if (bombs [i].distanceToCar <= radius)
+				if (bombs [i].distanceToCar <= radius) {
 					ph.CarDMG ((int)ReturnDmg (bombs [i].distanceToCar));
+					//Debug.Log ("zadano obrazenia: " + (int)ReturnDmg (bombs [i].distanceToCar));
+				}
 				
 				bombs [i].timerek += Time.deltaTime;
 
@@ -145,7 +144,7 @@ public class BombardingScript : MonoBehaviour {
 	{
         GameObject[] xx = new GameObject[3]; // temp tab to create Bomb from CreateBombs ()
         xx = CreateBombs();
-        WypiszLog(xx);
+        //WypiszLog(xx);
         return new Bomber(xx[0], xx[1], xx[0].GetComponent<Transform>(), xx[1].GetComponent<Transform>(), xx[1].GetComponent<Transform>().position.y, maxMin.x, false, 0, 
                          xx[0].GetComponent<Rigidbody>(), RetPartSys(xx[1]), xx[0].GetComponent<AudioSource>(), xx[2]);
     }
@@ -173,13 +172,13 @@ public class BombardingScript : MonoBehaviour {
         Destroy(bombs[i].project);
         bombs.RemoveAt(i);
 	}
-    private void WypiszLog(GameObject [] xx)
+    /*private void WypiszLog(GameObject [] xx)
     {
         for (int i = 0; i < xx.Length; i++)
         {
             Debug.Log(xx[i].name);
         }
-    }
+    }*/
 	private float DistBtwBAC(Vector3 bombTr)
 	{
 		return Vector3.Distance (bombTr, brumTr.position);
