@@ -16,14 +16,21 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	public string demoEnd;
 	public Button demoBtn;
 	MissionForestScript ms;
-	
-	
+	private GameObject loadingObj;
+
+	void Awake ()
+	{
+		if (loadingObj == null) {
+			loadingObj = GameObject.Find ("LOADING");
+			Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
+		}
+	}
 	void Start (){
 		
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		quitBtn = quitBtn.GetComponent<Button>();
-		ms = obj.GetComponent<MissionForestScript> ();
+		ms = (MissionForestScript)FindObjectOfType (typeof(MissionForestScript)) as MissionForestScript;
 
 		
 	}
@@ -81,7 +88,15 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	}
 	
 	public void NextMission (){
-		
+
+		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
+		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
+			cLoad.enabled = true;
+
+			GameObject go = GameObject.Find ("DashboardOnScreen");
+			if (go.activeInHierarchy == true)
+				go.SetActive (false);
+		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;

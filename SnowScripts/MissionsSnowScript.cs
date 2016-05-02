@@ -54,7 +54,7 @@ public class MissionsSnowScript : MonoBehaviour {
 	{
 		if (other.tag == "Trigger") //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
 		{
-			if (Zadania(i) == true && i != 2)
+			if (Zadania(i) == true)
 			{
 				i++; //zwieksz wartosc pomocnicza za kazdym razem gdy obiekt bedzie mial kontakt z triggerem
 				Podmianka(i);//wywolanie metody podmianka i przeslanie wartosci i do metody

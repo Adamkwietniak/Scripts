@@ -4,12 +4,22 @@ using System.Collections;
 public class VolumeHelperScript : MonoBehaviour {
 
 	VolumeAndMusicScript vms;
+	MenuScript ms;
+	[HideInInspector]public GameObject loading;
 	// Use this for initialization
 	void Awake () 
 	{
-		GameObject.Find ("LOADING").SetActive (false);
+		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
+		if (loading == null) {
+			loading = GameObject.Find ("LOADING");
+			//Debug.Log ("Załadwałem GameObiect: " + loading.name);
+		}
 	}
 	void Start () {
+		
+		if (loading != null)
+			loading.GetComponent<Canvas> ().enabled = false;
+		ms.ReloadDash ();
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		//vms.ResetTabs();
 		vms.Initiate();

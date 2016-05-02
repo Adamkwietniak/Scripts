@@ -10,8 +10,8 @@ public class SprawdzTerenScript : MonoBehaviour
 	private Collider gejmObjectCollider;
 	private GameObject tempGO;
 
-	[HideInInspector]public bool kolizjaZObjektem = false;
-	[HideInInspector]public bool kolizjaZCzymkolwiek = false;
+	public bool kolizjaZObjektem = false;
+	public bool kolizjaZCzymkolwiek = false;
     public KurzDlaTekstury[] czyKurz;
 
     private KurzDlaTekstury aktualnyKurz;
@@ -20,6 +20,8 @@ public class SprawdzTerenScript : MonoBehaviour
 	public GameObject terrainObj;
 	public GameObject skidMarkAspalt;
 	private TerrainCollider terrainCollider;
+	[HideInInspector]public Terrain terrain;
+	[HideInInspector]public TerrainData terrainData;
 
     bool temp = false;
 	bool pobrane = false;
@@ -40,8 +42,15 @@ public class SprawdzTerenScript : MonoBehaviour
 	private PhysicMaterialCombine fAsfalt;
 	private PhysicMaterialCombine cAsfalt = 0;
 
+	void Awake ()
+	{
+		terrain = terrainObj.GetComponent<Terrain> ();
+		terrainData = terrain.terrainData;
+		//Debug.Log (terrainData);
+	}
     void Start()
     {
+
 		skidMarkAspalt.SetActive(false);
 		dss = GetComponentInChildren<DustScript>();
 		ms = GetComponent<MudScript> ();
@@ -60,8 +69,12 @@ public class SprawdzTerenScript : MonoBehaviour
     }
 
 	void Update ()
-    {
-		//Obsluguje tekstury terenu
+	{
+		StartCoroutine (AttendanceScriptUpdate ());		
+    }
+	private IEnumerator AttendanceScriptUpdate ()
+	{
+		yield return new WaitForSeconds (1);
 		if(kolizjaZObjektem == false && kolizjaZCzymkolwiek == true){
 			AttendanceAllTextures ();
 			if(tempGO != null)
@@ -85,45 +98,40 @@ public class SprawdzTerenScript : MonoBehaviour
 					skidMarkAspalt.SetActive(true);
 				}
 			}
-			
+
 		}
-			
-    }
+	}
 	private Collider GetColliderFromObj(GameObject go)
 	{
 		return go.GetComponent<Collider>();
 	}
 	private bool TexInPosition (int i, Vector3 pos)
 	{
-		if(czyKurz[i] != null && czyKurz[i].tekstura.name.Equals(PowierzchniaTerenu.NazwaTeksturyWPozycji(pos)))
+		if(czyKurz[i] != null && czyKurz[i].tekstura.name.Equals(PowierzchniaTerenu.NazwaTeksturyWPozycji(pos, terrain, terrainData)))
 			return true;
 		else
 			return false;
 	}
 	private void AttendanceAllTextures ()
 	{
-		for(int i = 0; i < czyKurz.Length; i++)
-		{
-			if(TexInPosition (i, trans.position) == true){
-				if(activeTexture != czyKurz[i].tekstura)
-				{
+		for (int i = 0; i < czyKurz.Length; i++) {
+			if (TexInPosition (i, trans.position) == true) {
+				if (activeTexture != czyKurz [i].tekstura) {
 					SetMaterialTerrain (i);
-					if(czyKurz[i].czyKurz == true)
-					{
-						Wykonaj(i);
+					if (czyKurz [i].czyKurz == true) {
+						Wykonaj (i);
 					}
-					if(czyKurz[i].czyBagno == true || czyKurz[i].changeTex == true)
-					{
+					if (czyKurz [i].czyBagno == true || czyKurz [i].changeTex == true) {
 						AssignDeform (i);
 					}
-					if(czyKurz[i].wspolczynnikOporu != 0.1f)
-					{
+					if (czyKurz [i].wspolczynnikOporu != 0.1f) {
 						SetOfDrag (i);
+					}
+					if (czyKurz [i].czyBloto == true) {
+						AttendanceMudSrc (i);
 					}
 				}
 			}
-			if(kolizjaZObjektem == false)
-				AttendanceMudSrc (i);
 		}
 	}
 	private void SetMaterialTerrain (int i)

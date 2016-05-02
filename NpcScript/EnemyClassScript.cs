@@ -30,6 +30,7 @@ public class EnemyClassScript {
 	[HideInInspector]public float actualSpeed;
 	[HideInInspector]public int actualInt;
 	[HideInInspector]public Rigidbody [] rigbodyList = new Rigidbody[13];
+	[HideInInspector]public GameObject[] obiectToChangeTag = new GameObject[13];
 	[HideInInspector]public Transform transDefPos;
 	[HideInInspector]public Transform enemyTr;
 	public GameObject PartSys;
@@ -40,7 +41,7 @@ public class EnemyClassScript {
 	public EnemyClassScript (Animator anima, NavMeshAgent nma, GameObject enemyOb, GameObject go, 
 	                         int maxDis, int minDis, int maxDisFDP, int dmgfs, bool eis, bool iS, 
 	                         bool iR, bool iWalk, bool iW, bool iL, bool wGU, bool oTG, float ttgu, float ttS, 
-	                         float distFrPl, float disFrDP, float actSp , int aktIn, Rigidbody[] rbb, 
+		float distFrPl, float disFrDP, float actSp , int aktIn, Rigidbody[] rbb, GameObject[] tchangeTag,
 							 Transform tr, Transform trEnemy, GameObject partSystem, AudioSource audiosorc
 	                         ){
 		this.anim = anima;
@@ -66,6 +67,7 @@ public class EnemyClassScript {
 		this.actualSpeed = actSp;
 		this.actualInt = aktIn;
 		this.rigbodyList = rbb;
+		this.obiectToChangeTag = tchangeTag;
 		this.transDefPos = tr;
 		this.enemyTr = trEnemy;
 		this.PartSys = partSystem;

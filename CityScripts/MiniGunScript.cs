@@ -60,7 +60,7 @@ public class MiniGunScript : MonoBehaviour {
 
 	AttendanceEnemy ae;
     [HideInInspector]public bool isTimeToShoot = false;
-    public float powerOfShoot = 100;
+    public float powerOfShoot = 250;
 	void Awake ()
 	{
 		//BrumBrume

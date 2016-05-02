@@ -91,23 +91,7 @@ public class PlayerHealth : MonoBehaviour
 		}
 		if(currentHealth <=0)	//Co się stanie jak samochód ma 0 życia?
 		{						//nie będzie działać xD
-			brum.maxspeed = 0;
-			currentHealth = 0;
-			brum.engineRunning = false;
-			timer+=Time.deltaTime;
-			if(timer>=0.8f){
-
-		
-				gameOver.enabled = true;
-
-
-			}
-			if(gameOver.enabled==true){
-				timer=0f;
-				Time.timeScale = 0;
-			}
-
-
+			GameOver ();
 		} 
 	
 		if (ifdamage == true) {					//Jeśli nastąpiły uszkodzenia, sprawd jakie a następnie odpowiednio się
@@ -277,6 +261,25 @@ public class PlayerHealth : MonoBehaviour
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+	}
+	public void GameOver ()
+	{
+		brum.maxspeed = 0;
+		//currentHealth = 0;
+		brum.engineRunning = false;
+		timer+=Time.deltaTime;
+		if(timer>=0.8f){
+
+
+			gameOver.enabled = true;
+
+
+		}
+		if(gameOver.enabled==true){
+			timer=0f;
+			Time.timeScale = 0;
+		}
+
 	}
 }	
 /*

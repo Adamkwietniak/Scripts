@@ -37,8 +37,7 @@ public class MissionCityScript : MonoBehaviour {
 	private AudioClip tankClip;
 	public Canvas radioFrame;
 	VolumeAndMusicScript vms;
-
-
+	MenuScript ms;
 
 
 	//Black screen
@@ -62,6 +61,7 @@ public class MissionCityScript : MonoBehaviour {
 		ae = (AttendanceEnemy)FindObjectOfType (typeof(AttendanceEnemy)) as AttendanceEnemy;
 		mccs = (MissionCompleteCityScript)FindObjectOfType(typeof(MissionCompleteCityScript)) as MissionCompleteCityScript;
 		tankClip = Resources.Load ("Prefabs/MiniGun/tankSound", typeof(AudioClip)) as AudioClip;
+		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		engineWarning.enabled = false;
 		obiectWithMiniGun.playAutomatically = false;
 		enemyToKills.enabled = false;
@@ -137,10 +137,10 @@ public class MissionCityScript : MonoBehaviour {
         }
         if(canDoIt == true && changeMC == false)
 		{
-			if(timeToWhite == false && timeToBlack == false)
+			if(timeToWhite == false || timeToBlack == false)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
             //Wyczekuje na wcisniecie klawisza F
-            if (acs.playerInBase == true)
+			if (acs.playerInBase == true && timeToWhite == false && timeToBlack == true)
 			{
                 rcc.engineRunning = false;
                 rcc.canControl = false;
@@ -183,15 +183,15 @@ public class MissionCityScript : MonoBehaviour {
 			int suma = killToMC - nowKill;
 			if(enemyToKills.enabled == false && suma > 0){
 				enemyToKills.enabled = true;
-				if (Cursor.visible == true) {
-					Cursor.visible = false;
-					Cursor.lockState = CursorLockMode.Confined;
-				}
+			}
+			if (Cursor.visible == true && ms.menuUI.enabled == false) {
+				Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Confined;
 			}
 			else if(suma == 0 && enemyToKills.enabled == true && isOver == false){
 				if (Cursor.visible == false) {
 					Cursor.visible = true;
-					Cursor.lockState = CursorLockMode.Confined;
+					Cursor.lockState = CursorLockMode.None;
 				}
 				isOver = true;
 				enemyToKills.enabled = false;
@@ -204,7 +204,7 @@ public class MissionCityScript : MonoBehaviour {
 					Cursor.visible = true;
 					Cursor.lockState = CursorLockMode.None;
 				}
-				Debug.Log ("GameOver");
+				//Debug.Log ("GameOver");
 			}
 
 		}
@@ -262,20 +262,7 @@ public class MissionCityScript : MonoBehaviour {
 			}
 		}
 	}
-	/*void DisEnbl ()
-	{
-		if (Input.GetKeyUp (KeyCode.C)) {
-			foreach (GameObject mess in texts) {
-				if (mess.activeInHierarchy == true) {
-				
-					radioFrame.enabled = false;
-					mess.SetActive (false);
-					Time.timeScale = 1;
-					y++;
-				}
-			}
-		}
-	}*/
+
 	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
 	{
 		foreach (GameObject mess in texts) {
@@ -318,6 +305,7 @@ public class MissionCityScript : MonoBehaviour {
 		GameObject.Find ("Group2").SetActive (false);
 		GameObject.Find ("Group3").SetActive (false);
 		GameObject.Find ("CarSpace").SetActive (false);
+		GameObject.Find ("DashboardOnScreen").SetActive (false);
 	}
 }
 

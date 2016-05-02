@@ -4,6 +4,7 @@ using System.Collections;
 public class ChangeGearScript : MonoBehaviour {
 	private bool isAutomatic = false;
 	RCCCarControllerV2 rcc;
+	private float tempMax;
 	// Use this for initialization
 	void Start () {
 		rcc = GetComponent<RCCCarControllerV2> ();
@@ -15,10 +16,13 @@ public class ChangeGearScript : MonoBehaviour {
 		if (isAutomatic == false) {
 			NumericChange();
 		}
-		if (Input.GetKeyUp (KeyCode.F9)) {
+		if (Input.GetKeyUp (KeyCode.F9)) {		//Do wyłączenia po testach
 			rcc.automaticGear = !rcc.automaticGear;
 			isAutomatic = rcc.automaticGear;
 			rcc.autoReverse = true;
+		}
+		if (rcc.reversing == true && rcc.currentGear != 0) {
+			rcc.currentGear = 0;
 		}
 	}
 	private void NumericChange()
@@ -71,13 +75,8 @@ public class ChangeGearScript : MonoBehaviour {
 		/*if (Input.GetKeyUp (KeyCode.Keypad0)) { 					//wsteczny bieg
 			rcc.reversing = true;
 			rcc.autoReverse = true;
-			rcc.currentGear = -1;
+			rcc.currentGear = 0;
 			rcc.StartCoroutine("ChangingGear", rcc.currentGear);
 		}*/
-		if (rcc.currentGear > 1 && rcc.autoReverse == true) {
-			rcc.autoReverse = false;
-		} else if (rcc.currentGear < 2 && rcc.autoReverse == false) {
-			rcc.autoReverse = true;
-		}
 	}
 }

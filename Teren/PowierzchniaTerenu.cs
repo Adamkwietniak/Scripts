@@ -4,20 +4,9 @@ using System.Collections;
 public class PowierzchniaTerenu : MonoBehaviour {
     
 
-	private static float[] PobierzMixTextur (Vector3 pozycjaGracza)
+	private static float[] PobierzMixTextur (Vector3 pozycjaGracza, Terrain terrain, TerrainData terrainData)
 	{
-		int ind = 0;
-		Terrain [] terraining = Terrain.activeTerrains;
-		for (int i = 0; i < terraining.Length; i++) {
-			if(terraining[i].tag == "Teren")
-			{
-				ind = i;
-				break;
-			}
-		}
-		Terrain terrain = terraining [ind];
-		TerrainData terrainData = terrain.terrainData;
-
+		
 		Vector3 terrainPos = terrain.transform.position;
 
 		int mapX = (int)(((pozycjaGracza.x - terrainPos.x) / terrainData.size.x) * terrainData.alphamapWidth);
@@ -32,18 +21,10 @@ public class PowierzchniaTerenu : MonoBehaviour {
 
 		return cellMix;
 	}
-	public static string NazwaTeksturyWPozycji (Vector3 pozycjaGracza)
+	public static string NazwaTeksturyWPozycji (Vector3 pozycjaGracza, Terrain terrain, TerrainData terrainData)
 	{
-		float [] mix = PobierzMixTextur (pozycjaGracza);
-		int ind = 0;
-		Terrain [] terraining = Terrain.activeTerrains;
-		for (int i = 0; i < terraining.Length; i++) {
-			if(terraining[i].tag == "Teren")
-			{
-				ind = i;
-				break;
-			}
-		}
+		//Debug.Log (terrain + " " + terrainData);
+		float [] mix = PobierzMixTextur (pozycjaGracza, terrain, terrainData);
 		float maxMix = 0;
 		int maxIndex = 0;
 
@@ -54,7 +35,7 @@ public class PowierzchniaTerenu : MonoBehaviour {
 				maxMix = mix[i];
 			}
 		}
-		SplatPrototype [] sp = terraining[ind].terrainData.splatPrototypes;
+		SplatPrototype [] sp = terrainData.splatPrototypes;
 		return sp [maxIndex].texture.name;
 	}
 }

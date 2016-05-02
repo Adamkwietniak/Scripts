@@ -12,19 +12,19 @@ public class SnowSplashOnScreenHelperScript : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Player") {
-			if (ssoss.inSnowM == false) {
-				ssoss.inSnowM = true;
+			if (ssoss.inTheSnowdrivt == false) {
+				ssoss.inTheSnowdrivt = true;
 			}
 		}
 	}
 	void OnTriggerExit(Collider other)
 	{
 		if (other.tag == "Player") {
-			if (ssoss.needToEscape == true) {
-				ssoss.needToEscape = false;
+			if (ssoss.outZaspa == true) {
+				ssoss.outZaspa = false;
 			}
-			if (ssoss.inSnowM == true) {
-				ssoss.inSnowM = false;
+			if (ssoss.inTheSnowdrivt == true) {
+				ssoss.inTheSnowdrivt = false;
 			}
 		}
 	}

@@ -12,6 +12,7 @@ public class LoadGameScript : MonoBehaviour {
 	VolumeAndMusicScript vms;
 	MenuScript ms;
 	MenuProfileSaveAndReadScript mps;
+	ChangeResolutionScript crs;
 	private bool [] itCanOpen = new bool[5];
 	public static int unlockIndex = 4;
 	// Use this for initialization
@@ -28,6 +29,7 @@ public class LoadGameScript : MonoBehaviour {
 		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript)) as VolumeAndMusicScript;
 		ms = (MenuScript)FindObjectOfType(typeof(MenuScript)) as MenuScript;
 		mps = (MenuProfileSaveAndReadScript)FindObjectOfType (typeof(MenuProfileSaveAndReadScript)) as MenuProfileSaveAndReadScript;
+		crs = (ChangeResolutionScript)FindObjectOfType (typeof(ChangeResolutionScript)) as ChangeResolutionScript;
 	}
 	void Start () {
 		loadFr = GameObject.Find ("LoadingFrame").GetComponent<Image> ();
@@ -51,7 +53,7 @@ public class LoadGameScript : MonoBehaviour {
 	{
 		if (Input.GetKeyDown (KeyCode.O)) {
 			LoadGameScript.unlockIndex = 4;
-			Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
+			//Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
 		}
 	}
 	public void PreparationOfImages (int unlockValiu)	//Przesylamy wartosc, która wskazuje na ilosc odblokowanych scen liczoną od 0
@@ -160,6 +162,9 @@ public class LoadGameScript : MonoBehaviour {
 					ms.loadingTime.enabled = true;
 					ms.menuUI.enabled = false;
 					ms.loadGame.enabled = false;
+					/*if (GameObject.Find ("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
+						GameObject.Find ("DashboardOnScreen").gameObject.SetActive (false);
+					}*/
 					ms.Disable (ms.loadGameComponents);
 					//Attendance buttons
 					activ [i].okButton.enabled = false;
@@ -171,7 +176,7 @@ public class LoadGameScript : MonoBehaviour {
 					MenuInstanceScript.respawnPlace = "respawnPlace"; //narazie nie wiem zapytac adama
 					MenuInstanceScript.respawn = true;
 					Application.LoadLevel(activ[i].nameOfScene);
-
+					ms.IsResume (true);
 				} 
 			}
 		}
@@ -241,6 +246,7 @@ public class LoadGameScript : MonoBehaviour {
 		default:
 			break;
 		}
+		crs.ChangeRes (ChangeResolutionScript.resolution);
 		//Unlocked Scenes
 		Intate ();
 	}

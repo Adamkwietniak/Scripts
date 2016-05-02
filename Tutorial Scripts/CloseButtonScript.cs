@@ -36,7 +36,7 @@ public class CloseButtonScript : MonoBehaviour {
 		if (message.enabled == true) {
 			message.enabled = false;
 			m2fs.DisableEnableMsg ();
-			m2fs.y++;
+
 		}
 	}
 }

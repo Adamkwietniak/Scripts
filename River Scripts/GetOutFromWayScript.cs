@@ -21,7 +21,6 @@ public class GetOutFromWayScript : MonoBehaviour {
 	private bool boolMissionComplete = false;
 	MissionRiverScript mrs;
 	[HideInInspector] public bool isComplete = false;
-
 	[HideInInspector]public string keepTextLanguageGetOutFromWay;
 	void Awake ()
 	{
@@ -90,8 +89,8 @@ public class GetOutFromWayScript : MonoBehaviour {
 	{
 		for (int i = 0; i < indexesOfTexturesToMS.Length; i++) {
 			//Debug.Log ("Wszedlem w sprawdzanie tekstury o intexie: "+indexesOfTexturesToMS[i]+" i nazwie: "+ sts.czyKurz [indexesOfTexturesToMS[i]].tekstura.name);
-			if (!sts.czyKurz [indexesOfTexturesToMS[i]].tekstura.name.Equals (PowierzchniaTerenu.NazwaTeksturyWPozycji (obsTr[ind].obstaclesTr.position)) &&
-				!sts.czyKurz [indexesOfTexturesToMS[i]].tekstura.name.Equals (PowierzchniaTerenu.NazwaTeksturyWPozycji (obsTr[ind].dustTr.position))
+			if (!sts.czyKurz [indexesOfTexturesToMS[i]].tekstura.name.Equals (PowierzchniaTerenu.NazwaTeksturyWPozycji (obsTr[ind].obstaclesTr.position, sts.terrain, sts.terrainData)) &&
+				!sts.czyKurz [indexesOfTexturesToMS[i]].tekstura.name.Equals (PowierzchniaTerenu.NazwaTeksturyWPozycji (obsTr[ind].dustTr.position, sts.terrain, sts.terrainData))
 				&& obsTr[ind].isMc == false) {
 				DisableArrows (ind);
 			} 

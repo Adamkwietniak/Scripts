@@ -21,7 +21,12 @@ public class CheckAboutPositionScript : MonoBehaviour {
 		}
 		if((other.tag == "Teren" || other.tag == "Untagged" || other.tag == "ObstacleTag") && sts.kolizjaZCzymkolwiek == false)
 			sts.kolizjaZCzymkolwiek = true;
-		else if (other.tag != "Teren" && other.tag != "Untagged" && other.tag != "ObstacleTag" && sts.kolizjaZCzymkolwiek == true)
+		
+	}
+	void OnTriggerExit(Collider other)
+	{
+		if (sts.kolizjaZCzymkolwiek == true) {
 			sts.kolizjaZCzymkolwiek = false;
+		}
 	}
 }

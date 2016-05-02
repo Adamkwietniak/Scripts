@@ -12,7 +12,14 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	public string respawnPlace;
 	public GameObject obj;
 	MissionDesertScript mds;
-
+	private GameObject loadingObj;
+	void Awake ()
+	{
+		if (loadingObj == null) {
+			loadingObj = GameObject.Find ("LOADING");
+			//Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
+		}
+	}
 	// Use this for initialization
 	void Start () {
 
@@ -48,7 +55,14 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	
 
 	public void NextMission (){
+		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
+		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
+			cLoad.enabled = true;
 
+			GameObject go = GameObject.Find ("DashboardOnScreen");
+			if (go.activeInHierarchy == true)
+				go.SetActive (false);
+		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;

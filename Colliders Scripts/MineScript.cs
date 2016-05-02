@@ -138,6 +138,11 @@ public class MineScript : MonoBehaviour {
 			ForcesRbs (ReturnPosition ());
 		MakeLight ();
 	}
+	private IEnumerator AttendanceDistance ()
+	{
+		yield return new WaitForSeconds (1);
+
+	}
 	private void ForcesRbs (int helpingQuarter)
 	{
 		if (helpingQuarter == 1){

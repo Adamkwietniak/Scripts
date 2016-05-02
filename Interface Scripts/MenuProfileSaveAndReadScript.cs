@@ -26,12 +26,13 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		FileStream plik = File.Create(Application.persistentDataPath + "/profile.data");
 		
 		MenuProff menuP = new MenuProff (vms.valueOfVolumeMusic, vms.valueOfVolumeSound,
-			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang);
+			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution);
 		menuP.musicValue = vms.valueOfVolumeMusic;
 		menuP.soundValue = vms.valueOfVolumeSound;
 		menuP.numberOfUnlockedScene = LoadGameScript.unlockIndex;
 		menuP.valueOfGraphic = GraphicsScript.qualityLevel;
 		menuP.language = MenuScript.indexOfLang;
+		menuP.res = ChangeResolutionScript.resolution;
 
 		BinaryFormatter binFormat = new BinaryFormatter ();
 		binFormat.Serialize(plik, menuP);
@@ -53,6 +54,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 			LoadGameScript.unlockIndex = menuP.numberOfUnlockedScene;
 			GraphicsScript.qualityLevel = menuP.valueOfGraphic;
 			MenuScript.indexOfLang = menuP.language;
+			ChangeResolutionScript.resolution = menuP.res;
 			plik.Close();
 			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
 				//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
@@ -73,13 +75,15 @@ public class MenuProff{
 	public int numberOfUnlockedScene;
 	public int valueOfGraphic;
 	public int language;
+	public int res;
 
-	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang)
+	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol)
 	{
 		this.musicValue = musikValu;
 		this.soundValue = soundValu;
 		this.numberOfUnlockedScene = valuOfScene;
 		this.valueOfGraphic = valuOfGraph;
 		this.language = lang;
+		this.res = resol;
 	}
 }

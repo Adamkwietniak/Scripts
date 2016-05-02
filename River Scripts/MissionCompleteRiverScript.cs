@@ -14,7 +14,14 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 	public string respawnPlace;
 	public GameObject obj;
 	MissionRiverScript ms;
-	
+	private GameObject loadingObj;
+	void Awake ()
+	{
+		if (loadingObj == null) {
+			loadingObj = GameObject.Find ("LOADING");
+			//Debug.Log ("Załadwałem GameObiect w MissionRiver: " + loadingObj.name);
+		}
+	}
 	
 	void Start (){
 		
@@ -63,7 +70,15 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 
 	
 	public void NextMission (){
-		
+
+		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
+		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
+			cLoad.enabled = true;
+
+			GameObject go = GameObject.Find ("DashboardOnScreen");
+			if (go.activeInHierarchy == true)
+				go.SetActive (false);
+		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;

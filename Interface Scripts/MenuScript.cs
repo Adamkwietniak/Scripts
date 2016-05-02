@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour {
 	
@@ -9,11 +10,11 @@ public class MenuScript : MonoBehaviour {
 	
 	public Canvas quitMenu;
 	public Canvas settings;
-	public Canvas credits;
 	public Canvas loadingTime;
 	public Canvas loadGame;
 	
 	public Button btnNewGame;
+	public Button resumeGame;
 	public Button btnLoadGame;
 	public Button btnSettings;
 	public Button btnCredits;
@@ -42,49 +43,39 @@ public class MenuScript : MonoBehaviour {
 	CreditsMovingScript cms;
 	RCCCarControllerV2 rcc;
 	MenuProfileSaveAndReadScript mps;
-	[HideInInspector]public Button []helpbUTTONtAB = new Button[5];
-	private void Enable (GameObject [] tab)
-	{
-		for (int i = 0; i < tab.Length; i++) {
-			tab [i].SetActive (true);
-		}
-	}
-	public void Disable (GameObject [] tab)
-	{
-		for (int i = 0; i < tab.Length; i++) {
-			tab [i].SetActive (false);
-		}
-	}
+	private Button []helpbUTTONtAB = new Button[5];
+	private GameObject resumeButtonObj;
+
+	private GameObject dashBoard;
+	private bool dashboardWasLoaded = false;
+
+	public bool isFullScreen = true;
 	void Awake()
 	{
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
+		ReloadDash ();
+		helpbUTTONtAB [0] = btnNewGame;
+		helpbUTTONtAB [1] = btnLoadGame;
+		helpbUTTONtAB [2] = btnSettings;
+		helpbUTTONtAB [3] = btnCredits;
+		helpbUTTONtAB [4] = btnExit;
+		mps = GetComponent<MenuProfileSaveAndReadScript> ();
 	}
 	// Use this for initialization
 	void Start () {
 		menuUI = (Canvas)GetComponent<Canvas>();
 		quitMenu = quitMenu.GetComponent<Canvas>();
 		settings = settings.GetComponent<Canvas>();
-		credits = credits.GetComponent<Canvas>();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//loadGame = loadGame.GetComponent<Canvas> ();
-		
-		btnNewGame = btnNewGame.GetComponent<Button>();
-		btnLoadGame = btnLoadGame.GetComponent<Button>();
-		btnSettings = btnSettings.GetComponent<Button>();
-		btnCredits = btnCredits.GetComponent<Button>();
-		btnExit = btnExit.GetComponent<Button>(); // ten button ksiaze jest od pokazania canvasa, czy chcesz wyjsc z gry
-		btnBack = btnBack.GetComponent<Button>();
-		btnQuit = btnQuit.GetComponent<Button>();
-		btnCancel = btnCancel.GetComponent<Button>();
-
-		mps = GetComponent<MenuProfileSaveAndReadScript> ();
+		resumeButtonObj = resumeGame.gameObject;
 		escUse = false;
 		duringGame = false;
 		//cms = creditMovingObj.GetComponent<CreditsMovingScript>();
 		
 		quitMenu.enabled = false;
+		resumeGame.enabled = false;
 		settings.enabled = false;
-		credits.enabled = false;
 		loadingTime.enabled = false;
 		loadGame.enabled = false;
 
@@ -97,15 +88,13 @@ public class MenuScript : MonoBehaviour {
 		if (gameMusic == null)
 			Debug.Log ("GameMusic zostal niezaladowany");
 
-		helpbUTTONtAB [0] = btnNewGame;
-		helpbUTTONtAB [1] = btnLoadGame;
-		helpbUTTONtAB [2] = btnSettings;
-		helpbUTTONtAB [3] = btnCredits;
-		helpbUTTONtAB [4] = btnExit;
+		IsResume (false);
+		//helpbUTTONtAB [5] = ;
+		//Debug.Log (helpbUTTONtAB [5]);
 	}
 	public void EnabledDisableButtonsMenu (bool chan)
 	{
-		for(int i = 0; i < helpbUTTONtAB.Length; i++)
+		for(int i = 1; i < helpbUTTONtAB.Length; i++)
 		{
 			helpbUTTONtAB[i].enabled = chan;
 		}
@@ -120,12 +109,22 @@ public class MenuScript : MonoBehaviour {
 				menuUI.enabled = !menuUI.enabled;
 			
 			EnabledDisableButtonsMenu (true);
-				
+			if (SceneManager.GetActiveScene().name == "SceneCanvas" || SceneManager.GetActiveScene ().name =="SceneCredits") {
+				IsResume (false);
+				//Debug.Log ("zzz Wylaczam resume");
+			} else {
+				IsResume (true);
+				//Debug.Log ("wlaczam resume");
+			}
 			if (menuUI.enabled == true)
 			{
-
-				//oldValue = rcc.actualValue;
-				//rcc.WriteNewValueOfCar (0);
+				if (dashboardWasLoaded == true) {
+					dashBoard.SetActive (false);
+				}
+				if (Cursor.visible == false) {
+					Cursor.visible = true;
+					Cursor.lockState = CursorLockMode.None;
+				}
 				Time.timeScale = 0;
 
 				/*quitMenu.enabled = false;
@@ -138,9 +137,9 @@ public class MenuScript : MonoBehaviour {
 			{
 				//rcc.WriteNewValueOfCar (oldValue);
 				Time.timeScale = 1;
-				/*quitMenu.enabled = false;
-				settings.enabled = false;
-				credits.enabled = false;*/
+				if (dashboardWasLoaded == true) {
+					dashBoard.SetActive (true);
+				}
 				
 				
 				
@@ -152,20 +151,22 @@ public class MenuScript : MonoBehaviour {
 		
 	}
 	
-	
-	/*public void setSounds (){
-		if (pause != null && withoutPause != null) {
-			if (Time.timeScale == 0) {
-				pause.TransitionTo (0.01f);
-			} else {
-				withoutPause.TransitionTo (0.01f);
-			}
-		}
-	}*/
-	
-	
-	
-	
+	public void IsResume (bool zmienna)
+	{
+		helpbUTTONtAB [0].enabled = !zmienna;
+		helpbUTTONtAB [3].enabled = !zmienna;
+		resumeGame.enabled = zmienna;
+		resumeButtonObj.SetActive (zmienna);
+	}
+
+	public void ResumeGame ()
+	{
+		EnabledDisableButtonsMenu (false);
+		resumeGame.enabled = false;
+		menuUI.enabled = false;
+		if (Time.timeScale == 0)
+			Time.timeScale = 1;
+	}
 	public void ButtonLoadGame()
 	{
 		loadGame.enabled = true;
@@ -206,24 +207,21 @@ public class MenuScript : MonoBehaviour {
 
 		Application.LoadLevel (creditsScene);
 
-		Time.timeScale = 1;
-		
-		/*credits.enabled = true;
+		quitMenu.enabled = false;
 		btnNewGame.enabled = false;
 		btnLoadGame.enabled = false;
 		btnSettings.enabled = false;
 		btnCredits.enabled = false;
-		btnExit.enabled = false;
-		quitMenu.enabled = false;
 		duringGame = false;
-		loadGame.enabled = false;*/
-		
+		btnExit.enabled = false;
+		Time.timeScale = 1;
+
+		IsResume (false);
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
 	}
-	
 	public void ButtonExit()
 	{
 		
@@ -268,6 +266,7 @@ public class MenuScript : MonoBehaviour {
 				soundSource.PlayOneShot (clickSound);
 			}
 		}
+		IsResume (true);
 	}
 	
 	
@@ -275,7 +274,6 @@ public class MenuScript : MonoBehaviour {
 	{
 		settings.enabled = false;
 		quitMenu.enabled = false;
-		credits.enabled = false;
 		loadGame.enabled = false;
 		btnNewGame.enabled = true;
 		btnExit.enabled = true;
@@ -289,6 +287,11 @@ public class MenuScript : MonoBehaviour {
 			soundSource.PlayOneShot(clickSound);
 		}
 		Disable (loadGameComponents);
+
+		/*if((SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 6) && helpbUTTONtAB[1].enabled == true) 
+		{
+			IsResume (false);
+		}*/
 	}
 	public void SetLang(int i)
 	{
@@ -301,6 +304,25 @@ public class MenuScript : MonoBehaviour {
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
+		}
+	}
+	private void Enable (GameObject [] tab)
+	{
+		for (int i = 0; i < tab.Length; i++) {
+			tab [i].SetActive (true);
+		}
+	}
+	public void Disable (GameObject [] tab)
+	{
+		for (int i = 0; i < tab.Length; i++) {
+			tab [i].SetActive (false);
+		}
+	}
+	public void ReloadDash ()
+	{
+		if (GameObject.Find("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
+			dashBoard = GameObject.Find ("DashboardOnScreen");
+			dashboardWasLoaded = true;
 		}
 	}
 }

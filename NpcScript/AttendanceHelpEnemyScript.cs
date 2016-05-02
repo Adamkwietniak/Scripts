@@ -14,14 +14,14 @@ public class AttendanceHelpEnemyScript : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag == "Player") {
+		if (other.tag == "Player" && ae.collDetect == false) {
 			ae.collDetect = true;
 			ae.trigerDetection = this.gameObject.name;
 		}
 	}
 	void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Player") {
+		if (ae.collDetect == true) {
 			ae.collDetect = false;
 			ae.trigerDetection = "none";
 		}
