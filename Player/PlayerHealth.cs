@@ -272,11 +272,9 @@ public class PlayerHealth : MonoBehaviour
 		//currentHealth = 0;
 		brum.engineRunning = false;
 		timer+=Time.deltaTime;
-<<<<<<< HEAD
+
 		if(timer>=0.8f){
-=======
-		if(timer>=0.2f){
->>>>>>> origin/master
+
 
 
 			gameOver.enabled = true;

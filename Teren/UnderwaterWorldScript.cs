@@ -80,11 +80,11 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			hudrantPref.SetActive (true);
 			Instantiate(hudrantPref, camZderzakTr.position, Quaternion.Euler(0,1,0));
 			isHydrantOnScene = true;
-<<<<<<< HEAD
+
 			Time.timeScale = 0.8f;
-=======
+
 			Time.timeScale = 0.3f;
->>>>>>> origin/master
+
 		}
 		if(cameraTransform.position.y - offsetOfPlayer < heightOfWater && underWater == false)
 		{

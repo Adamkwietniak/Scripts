@@ -479,10 +479,9 @@ public class AttendanceEnemy : MonoBehaviour {
 					for (int j = 0; j < mainEnemy [i].obiectToChangeTag.Length; j++) {
 						mainEnemy [i].obiectToChangeTag [j].tag = "NonCollider";
 					}
-<<<<<<< HEAD
+
 					mainEnemy [i].audiosorce.Stop ();
-=======
->>>>>>> origin/master
+
 				}
 				else
 				{
