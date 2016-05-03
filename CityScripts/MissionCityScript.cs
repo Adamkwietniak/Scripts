@@ -38,13 +38,18 @@ public class MissionCityScript : MonoBehaviour {
 	public Canvas radioFrame;
 	VolumeAndMusicScript vms;
 	MenuScript ms;
+	private AudioSource tankAudioS;
+	private Rigidbody tankRb;
+	public Text engineHelp;
+	private bool engineHelpActive = false;
 
-
+	private Canvas GameOver;
 	//Black screen
 	private bool timeToBlack = false;
 	private bool timeToWhite = false;
 	private float timerScreenBlack = 0;
 	public Image blackScreen;
+	private GameObject dash;
 
 	CursorLockMode cursorMode;
 	[HideInInspector]public string keepTextFromMissionCity;
@@ -64,13 +69,19 @@ public class MissionCityScript : MonoBehaviour {
 		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		engineWarning.enabled = false;
 		obiectWithMiniGun.playAutomatically = false;
+		tankAudioS = obiectWithMiniGun.gameObject.GetComponent<AudioSource> ();
+		tankRb = obiectWithMiniGun.gameObject.GetComponent<Rigidbody> ();
 		enemyToKills.enabled = false;
 		for (int i = 0; i < dustOfTank.Length; i++) {
 			dustOfTank [i].SetActive (false);
 		}
-		GameObject.Find ("EngineHelp").SetActive (false);
+		GameObject.Find ("EngineHelp").SetActive (true);
 		//goalMC.SetActive (false);
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		dash = GameObject.Find ("DashboardOnScreen");
+		GameOver = GameObject.Find ("GAMEOVER").GetComponent<Canvas> ();
+		if(GameOver.enabled == true)
+			GameOver.enabled = false;
 	}
 
 	private void BlackScreen (bool white, bool black, float timer)
@@ -162,10 +173,10 @@ public class MissionCityScript : MonoBehaviour {
 				changeMC = true;
 				isTimeToAnimationTank = true;
 				obiectWithMiniGun.Play ();
-				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().enabled = true;
-				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().clip = tankClip;
-				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().loop = true;
-				obiectWithMiniGun.gameObject.GetComponent<AudioSource> ().Play ();
+				tankAudioS.enabled = true;
+				tankAudioS.clip = tankClip;
+				tankAudioS.loop = true;
+				tankAudioS.Play ();
 				mgs.camGun.gameObject.GetComponent<AudioListener> ().enabled = true;
 				DisableAllCanvass ();
 
@@ -181,6 +192,8 @@ public class MissionCityScript : MonoBehaviour {
 			if(timeToWhite == false)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
 			int suma = killToMC - nowKill;
+			if (dash.activeInHierarchy == true)
+				dash.SetActive (false);
 			if(enemyToKills.enabled == false && suma > 0){
 				enemyToKills.enabled = true;
 			}
@@ -204,8 +217,11 @@ public class MissionCityScript : MonoBehaviour {
 					Cursor.visible = true;
 					Cursor.lockState = CursorLockMode.None;
 				}
-				//Debug.Log ("GameOver");
+				if (GameOver.enabled == false) {
+					GameOver.enabled = true;
+				}
 			}
+			tankAudioS.pitch = Mathf.Lerp (0.9f, 1.1f, tankRb.velocity.magnitude);
 
 		}
 		if (y == 0) {
@@ -218,6 +234,14 @@ public class MissionCityScript : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
 			DisableEnableMsg ();
+		}
+
+		if (rcc.engineRunning == false && engineHelpActive == false) {
+			engineHelp.enabled = true;
+			engineHelpActive = true;
+		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+			engineHelp.enabled = false;
+			engineHelpActive = false;
 		}
 	}
 	
@@ -305,7 +329,9 @@ public class MissionCityScript : MonoBehaviour {
 		GameObject.Find ("Group2").SetActive (false);
 		GameObject.Find ("Group3").SetActive (false);
 		GameObject.Find ("CarSpace").SetActive (false);
-		GameObject.Find ("DashboardOnScreen").SetActive (false);
+		GameObject.Find ("EngineHelp").SetActive (false);
+		dash.SetActive (false);
+		GameObject.Find ("ShootingMission").SetActive (true);
 	}
 }
 

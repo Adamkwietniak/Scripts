@@ -47,18 +47,18 @@ public class DustFromDynamicObiect : MonoBehaviour {
 	{
 		if(collList[i].isStone == true)
 		{
-			if(collList[i].rb.IsSleeping() == false && collList[i].transCol.hasChanged == true && collList[i].ps.isPlaying == false)
+			if(collList[i].rb.velocity.magnitude >= 5 && collList[i].transCol.hasChanged == true && collList[i].ps.isPlaying == false && collList[i].colider.enabled == true)
 			{
 				collList[i].prefTrans.position = collList[i].transCol.position;
 				collList[i].ps.Play();
 			}
-			else if(collList[i].rb.IsSleeping() == false && collList[i].transCol.hasChanged == true && collList[i].ps.isPlaying == true)
+			else if(collList[i].rb.velocity.magnitude >= 5 && collList[i].transCol.hasChanged == true && collList[i].ps.isPlaying == true && collList[i].colider.enabled == true)
 			{
 				collList[i].prefTrans.position = collList[i].transCol.position;
 			}
-			if (collList[i].rb.IsSleeping() == true && collList[i].ps.isPlaying == true)
+			if (collList[i].rb.velocity.magnitude < 5 && collList[i].ps.isPlaying == true && collList[i].colider.enabled == true)
 			{
-				if(CountTime(i)>=5)
+				if(CountTime(i)>=0.5f)
 				{
 					collList[i].ps.Stop();
 					collList[i].colider.enabled = false;
@@ -68,7 +68,7 @@ public class DustFromDynamicObiect : MonoBehaviour {
 		}
 		else
 		{
-			if(CountTime(i)<5)
+			if(CountTime(i)<3.5f)
 			{
 				collList[i].prefTrans.position = collList[i].transCol.position;
 				collList[i].ps.Play();

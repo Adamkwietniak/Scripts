@@ -293,7 +293,7 @@ public class AllianceCityScript : MonoBehaviour {
                     npc[i].agent.enabled = false;
                     npc[i].selfTransform.position = new Vector3(brumTrans.position.x+rand1, brumTrans.position.y+1f, brumTrans.position.z+rand2);
                     npc[i].agent.enabled = true;
-                    Debug.Log("Wlaczylem obiekt "+ npc[i].allianceNpc.name+" w pozycji: "+ npc[i].selfTransform.position);
+                    //Debug.Log("Wlaczylem obiekt "+ npc[i].allianceNpc.name+" w pozycji: "+ npc[i].selfTransform.position);
                     npc[i].done = true;
                     for(int k = 0; k < npc[i].SkinnedMeshR.Length; k++)
                     {

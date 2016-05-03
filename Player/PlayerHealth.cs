@@ -31,7 +31,6 @@ public class PlayerHealth : MonoBehaviour
 	public Button quitBtn;
 	public Button tryAgainBtn;
 	public string sameLevel;
-	MenuScript mns;
 
 	public AudioSource soundSource;
 	public AudioClip clickSound;
@@ -69,7 +68,6 @@ public class PlayerHealth : MonoBehaviour
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		blendShapeCount = srodek.blendShapeCount;
-		mns = GetComponent<MenuScript> ();
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
         {
@@ -110,11 +108,11 @@ public class PlayerHealth : MonoBehaviour
 			if(obrazenia < 0)
 				obrazenia = obrazenia  * (-1);
 			if(brum.maxspeed>90)
-				brum.maxspeed = (brum.maxspeed * (int)currentHealth) / (int)startingHealth;
+				brum.maxspeed = ((brum.maxspeed * (int)currentHealth) / (int)startingHealth)/2;
 			else if(brum.maxspeed <= 89 && brum.maxspeed > 60)
-				brum.maxspeed -= obrazenia;
+				brum.maxspeed -= obrazenia/3;
 			else
-				brum.maxspeed -=obrazenia/2;
+				brum.maxspeed -=obrazenia/4;
         
 			CarDMG (obrazenia); 
 			ResetTempTab ();
@@ -244,8 +242,6 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
-		/*if(mns.menuUI.enabled == false)
-		{ mns.menuUI.enabled = true;}*/
 
 		
 		if (soundSource != null)
@@ -272,9 +268,7 @@ public class PlayerHealth : MonoBehaviour
 		//currentHealth = 0;
 		brum.engineRunning = false;
 		timer+=Time.deltaTime;
-
 		if(timer>=0.8f){
-
 
 
 			gameOver.enabled = true;

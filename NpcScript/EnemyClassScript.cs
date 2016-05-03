@@ -33,7 +33,7 @@ public class EnemyClassScript {
 	[HideInInspector]public GameObject[] obiectToChangeTag = new GameObject[13];
 	[HideInInspector]public Transform transDefPos;
 	[HideInInspector]public Transform enemyTr;
-	public GameObject PartSys;
+	[HideInInspector]public GameObject PartSys;
 	[HideInInspector]public AudioSource audiosorce;
 
 

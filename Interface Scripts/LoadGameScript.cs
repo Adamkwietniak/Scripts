@@ -14,13 +14,14 @@ public class LoadGameScript : MonoBehaviour {
 	MenuProfileSaveAndReadScript mps;
 	ChangeResolutionScript crs;
 	private bool [] itCanOpen = new bool[5];
-	public static int unlockIndex = 4;
+	public static int unlockIndex = 0;
 	// Use this for initialization
 	public Canvas canvasLoadImage;
 	public ImagesToLoadGame[] imagesToLoadGames = new ImagesToLoadGame[5];
 	//private ImagesToLoadGame[] activ = new ImagesToLoadGame[5];
 	private List<ImagesToLoadGame> activ = new List<ImagesToLoadGame>();
 	private Image loadFr;
+	private int actualIndex;
 
 	private string[] nameLvls = {"Scene02Forest", "Scene03River", "Scene04City", "Scene05Desert", "Scene06Snow"};
 
@@ -32,6 +33,8 @@ public class LoadGameScript : MonoBehaviour {
 		crs = (ChangeResolutionScript)FindObjectOfType (typeof(ChangeResolutionScript)) as ChangeResolutionScript;
 	}
 	void Start () {
+		unlockIndex = 0;
+		actualIndex = unlockIndex;
 		loadFr = GameObject.Find ("LoadingFrame").GetComponent<Image> ();
 		//canvasLoadImage.enabled = false;
 		for (int i = 0; i < imagesToLoadGames.Length; i++) {
@@ -51,8 +54,16 @@ public class LoadGameScript : MonoBehaviour {
 	}
 	void Update ()
 	{
+		if (actualIndex != unlockIndex) {
+			actualIndex = unlockIndex;
+			Intate ();
+			PreparationOfImages (actualIndex);
+		}
+		if (Input.GetKeyDown (KeyCode.P)) {
+			unlockIndex = 0;
+		}
 		if (Input.GetKeyDown (KeyCode.O)) {
-			LoadGameScript.unlockIndex = 4;
+			LoadGameScript.unlockIndex ++;
 			//Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
 		}
 	}

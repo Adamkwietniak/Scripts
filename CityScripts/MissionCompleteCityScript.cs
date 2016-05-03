@@ -55,6 +55,10 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		missionComplete.enabled = true;
 		if (missionComplete.enabled == true) {
 			Time.timeScale = 0f;
+			if (Cursor.visible == false) {
+				Cursor.visible = true;
+				Cursor.lockState = CursorLockMode.None;
+			}
 		}
 	} 
 	

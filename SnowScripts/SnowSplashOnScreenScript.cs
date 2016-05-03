@@ -24,7 +24,7 @@ public class SnowSplashOnScreenScript : MonoBehaviour {
 	void Update ()
 	{
 		if (inTheSnowdrivt == true && canvasSnowSplash.enabled == false && splashOnScreen == false && outZaspa == false) {
-			Debug.Log ("do skurwysyna jasnego");
+			//Debug.Log ("do skurwysyna jasnego");
 			float tempSpeec = rcc.speed;
 			canvasSnowSplash.enabled = true;
 			splashOnScreen = true;
@@ -47,7 +47,7 @@ public class SnowSplashOnScreenScript : MonoBehaviour {
 				splashOnScreen = false;
 				canvasSnowSplash.enabled = false;
 			}
-			Debug.Log ("Żydzi do gazu");
+			//Debug.Log ("Żydzi do gazu");
 		}
 	}
 

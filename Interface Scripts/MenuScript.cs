@@ -43,7 +43,6 @@ public class MenuScript : MonoBehaviour {
 	CreditsMovingScript cms;
 	RCCCarControllerV2 rcc;
 	MenuProfileSaveAndReadScript mps;
-
 	private Button []helpbUTTONtAB = new Button[5];
 	private GameObject resumeButtonObj;
 
@@ -51,10 +50,6 @@ public class MenuScript : MonoBehaviour {
 	private bool dashboardWasLoaded = false;
 
 	public bool isFullScreen = true;
-
-	//[HideInInspector]public Button []helpbUTTONtAB = new Button[5];
-
-
 	void Awake()
 	{
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
@@ -73,12 +68,7 @@ public class MenuScript : MonoBehaviour {
 		settings = settings.GetComponent<Canvas>();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//loadGame = loadGame.GetComponent<Canvas> ();
-
 		resumeButtonObj = resumeGame.gameObject;
-
-
-		mps = GetComponent<MenuProfileSaveAndReadScript> ();
-
 		escUse = false;
 		duringGame = false;
 		//cms = creditMovingObj.GetComponent<CreditsMovingScript>();
@@ -97,12 +87,6 @@ public class MenuScript : MonoBehaviour {
 			gameMusic = GameObject.FindWithTag ("music");
 		if (gameMusic == null)
 			Debug.Log ("GameMusic zostal niezaladowany");
-
-		helpbUTTONtAB [0] = btnNewGame;
-		helpbUTTONtAB [1] = btnLoadGame;
-		helpbUTTONtAB [2] = btnSettings;
-		helpbUTTONtAB [3] = btnCredits;
-		helpbUTTONtAB [4] = btnExit;
 
 		IsResume (false);
 		//helpbUTTONtAB [5] = ;
@@ -172,9 +156,7 @@ public class MenuScript : MonoBehaviour {
 		helpbUTTONtAB [0].enabled = !zmienna;
 		helpbUTTONtAB [3].enabled = !zmienna;
 		resumeGame.enabled = zmienna;
-
 		resumeButtonObj.SetActive (zmienna);
-
 	}
 
 	public void ResumeGame ()
@@ -182,6 +164,9 @@ public class MenuScript : MonoBehaviour {
 		EnabledDisableButtonsMenu (false);
 		resumeGame.enabled = false;
 		menuUI.enabled = false;
+		if (dashboardWasLoaded == true && dashBoard.activeInHierarchy == false) {
+			dashBoard.SetActive (true);
+		}
 		if (Time.timeScale == 0)
 			Time.timeScale = 1;
 	}
@@ -225,7 +210,6 @@ public class MenuScript : MonoBehaviour {
 
 		Application.LoadLevel (creditsScene);
 
-
 		quitMenu.enabled = false;
 		btnNewGame.enabled = false;
 		btnLoadGame.enabled = false;
@@ -233,7 +217,6 @@ public class MenuScript : MonoBehaviour {
 		btnCredits.enabled = false;
 		duringGame = false;
 		btnExit.enabled = false;
-
 		Time.timeScale = 1;
 
 		IsResume (false);
@@ -338,7 +321,6 @@ public class MenuScript : MonoBehaviour {
 			tab [i].SetActive (false);
 		}
 	}
-
 	public void ReloadDash ()
 	{
 		if (GameObject.Find("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
@@ -346,5 +328,4 @@ public class MenuScript : MonoBehaviour {
 			dashboardWasLoaded = true;
 		}
 	}
-
 }

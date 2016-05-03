@@ -24,6 +24,8 @@ public class MissionRiverScript : MonoBehaviour {
 	public GameObject[] wounded = new GameObject[3];
 	public Image engineWarning;
 	VolumeAndMusicScript vms;
+	public Text engineHelp;
+	private bool engineHelpActive = false;
 
 	//public GameObject goalMC;
 
@@ -115,6 +117,13 @@ public class MissionRiverScript : MonoBehaviour {
 		if (gafw.isComplete == true && i == wpiszIloscTriggerow-2) {
 			i++;
 			Podmianka (i);
+		}
+		if (rcc.engineRunning == false && engineHelpActive == false) {
+			engineHelp.enabled = true;
+			engineHelpActive = true;
+		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+			engineHelp.enabled = false;
+			engineHelpActive = false;
 		}
 	}
 	

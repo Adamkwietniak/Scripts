@@ -13,6 +13,8 @@ public class MissionForestScript : MonoBehaviour {
 	public GameObject villageIsThere;
 	private SkinnedMeshRenderer smr1;
 	private SkinnedMeshRenderer smr2;
+	public Text engineHelp;
+	private bool engineHelpActive = false;
 	
 	//RCCCarControllerV2 carScript = gameObject.GetComponent<RCCCarControllerV2>();
 	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
@@ -64,6 +66,13 @@ public class MissionForestScript : MonoBehaviour {
 			DisableEnableMsg ();
 		}
 
+		if (rcc.engineRunning == false && engineHelpActive == false) {
+			engineHelp.enabled = true;
+			engineHelpActive = true;
+		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+			engineHelp.enabled = false;
+			engineHelpActive = false;
+		}
 
 	}
 	

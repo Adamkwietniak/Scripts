@@ -26,7 +26,7 @@ public class AttendanceEnemy : MonoBehaviour {
 	public int maxSpeedToNotDead = 30;
 	public int endTimeToGetUp = 45;
 	public int multiForFarquencyHp = 1;//mnoznik Timera zwiekszajacego czestotliwosc ubytku hp
-	public int distanceToStop = 5;
+	public float distanceToStop = 2;
 	[HideInInspector]public bool isShooterNow = false;
 
 	private GameObject brumBrum;
@@ -60,7 +60,8 @@ public class AttendanceEnemy : MonoBehaviour {
 					                                   npcEnemy[j].enemyObject, npcEnemy[j].defaultPositionObject,npcEnemy[j].maxDistance, npcEnemy[j].minDistance, 
 					                                   npcEnemy[j].maxDistanceFromDefaultPosition, npcEnemy[j].dmgFromShoot, npcEnemy[j].enemyIsStatic, false, false, 
 						false, true, true, false, false, 0, 0, 2000, 0, 0, 0, tempEnemyToWriteList[i].GetComponentsInChildren<Rigidbody>(), FunToMakeTags (npcEnemy[j].enemyObject), 
-													   npcEnemy[j].defaultPositionObject.GetComponent<Transform>(), npcEnemy[j].enemyObject.GetComponent<Transform>(), npcEnemy[j].PartSys, 
+						npcEnemy[j].defaultPositionObject.GetComponent<Transform>(), npcEnemy[j].enemyObject.GetComponent<Transform>(), 
+						npcEnemy[j].enemyObject.transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(6).GetChild(1).GetChild(1).gameObject,
 					                                   npcEnemy[j].enemyObject.GetComponent<AudioSource>()
 					                                 	));
 				}
@@ -91,7 +92,17 @@ public class AttendanceEnemy : MonoBehaviour {
 			tankAndShooter [0] = target;
 			tankAndShooter [1] = driverTr;
 		}
+		for (int i = 0; i < mainEnemy.Count; i++) { 
+			mainEnemy [i].PartSys.SetActive (false);
+			//Debug.Log ("Wylaczylem part sys dla " + mainEnemy [i].enemyObject);
+		}
 	}
+	/*private GameObject FindPartSys (GameObject ojciec)
+	{
+		//Transform tr = ojciec.transform.Find ("Particle System");
+		//GameObject go = tr.gameObject;
+		return ojciec.transform.FindChild ("Particle System").gameObject;
+	}*/
 	private GameObject [] FunToMakeTags (GameObject obj)
 	{
 		Rigidbody[] helpRb = new Rigidbody[13];
@@ -135,13 +146,13 @@ public class AttendanceEnemy : MonoBehaviour {
 
 					mainEnemy [i].anim.enabled = false;
 					SimpleEnableRagdoll (i);
+					mainEnemy [i].PartSys.SetActive (false);
                     for (int j = 0; j < mainEnemy[i].rigbodyList.Length; j++)
                     {
                         
                         if (mainEnemy[i].rigbodyList[j].gameObject.name == nameOfRb)
                         {
                             mainEnemy[i].rigbodyList[j].AddForce(-normal.x* multPow, normal.y, -normal.z* multPow, ForceMode.Impulse);
-                           
                         }
                     }
                     mainEnemy[i].isLife = false;
@@ -150,12 +161,22 @@ public class AttendanceEnemy : MonoBehaviour {
 					mainEnemy [i].wantGetUp = false;
 					mainEnemy [i].isWalk = false;
 					mainEnemy [i].isRun = false;
-
+					StartCoroutine (DisableColliders (i));
 					maxToKill++;
 				}
 			}
 		}
 		return maxToKill;
+	}
+	private IEnumerator DisableColliders (int i)
+	{
+		yield return new WaitForSeconds (5);
+		if (mainEnemy [i].isLife == false) {
+			for (int j = 0; j < mainEnemy [i].obiectToChangeTag.Length; j++) {
+				mainEnemy [i].obiectToChangeTag [j].GetComponent<Collider> ().enabled = false;
+				mainEnemy [i].rigbodyList [j].isKinematic = true;
+			}
+		}
 	}
 	private void ShootSound (int i)
 	{
@@ -177,7 +198,7 @@ public class AttendanceEnemy : MonoBehaviour {
 	private void AnimationDoIt ()
 	{
 		for (int i = 0; i < mainEnemy.Count; i++) {
-			if(mainEnemy[i].isLife == true && (mainEnemy[i].isRun == true || mainEnemy[i].isWalk == true) && mainEnemy[i].isShooting == false)
+			if(mainEnemy[i].isLife == true && mainEnemy[i].anim.GetFloat("Speedy") != mainEnemy[i].actualSpeed && mainEnemy[i].isShooting == false)
 			{
 				mainEnemy[i].anim.SetFloat("Speedy", mainEnemy[i].actualSpeed);
 			}
@@ -303,10 +324,9 @@ public class AttendanceEnemy : MonoBehaviour {
 
 						break;
 					case 5:			//Wrog wlacza iddle na miejscu "zbiorki"
-						mainEnemy[i].agent.speed = 0;
-						mainEnemy[i].actualSpeed = 0;
-						DisEnbpPartSystem(i, false);
-
+						mainEnemy [i].agent.speed = 0;
+						mainEnemy [i].actualSpeed = 0;
+						DisEnbpPartSystem (i, false);
 						break;
 					}
 				}else{
@@ -373,7 +393,7 @@ public class AttendanceEnemy : MonoBehaviour {
 				}
 					//return 3; //Wrog jest poza widokiem bruma staje i wlacza iddle
 				}
-			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && (int)mainEnemy [i].distFromDefPos >= distanceToStop  && mainEnemy [i].enemyIsStatic == false && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromDefPos >= distanceToStop  && mainEnemy [i].enemyIsStatic == false && mainEnemy[i].onTheGround == false)
 				{
 				if (mainEnemy [i].actualInt != 4) {
 					mainEnemy [i].actualInt = 4;
@@ -384,15 +404,15 @@ public class AttendanceEnemy : MonoBehaviour {
 				}
 					//return 4; // Wrog zaczyna isc w strone swojego punktu defaultowego
 				}
-			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && (int)mainEnemy [i].distFromDefPos < distanceToStop && mainEnemy[i].onTheGround == false)
+			else if (mainEnemy [i].distFromPlayer > mainEnemy [i].maxDistance && mainEnemy [i].distFromDefPos < distanceToStop && mainEnemy[i].onTheGround == false)
 				{
-				if (mainEnemy [i].actualInt != 5) {
-					mainEnemy [i].actualInt = 5;
-					mainEnemy [i].isRun = false;
-					mainEnemy [i].isShooting = false;
-					mainEnemy [i].isWait = true;
-					mainEnemy [i].isWalk = false;
-				}
+					if (mainEnemy [i].actualInt != 5) {
+						mainEnemy [i].actualInt = 5;
+						mainEnemy [i].isRun = false;
+						mainEnemy [i].isShooting = false;
+						mainEnemy [i].isWait = true;
+						mainEnemy [i].isWalk = false;
+					}
 					//return 5; //Wrog wlacza iddle na miejscu "zbiorki"
 				}
 		//}
@@ -479,9 +499,7 @@ public class AttendanceEnemy : MonoBehaviour {
 					for (int j = 0; j < mainEnemy [i].obiectToChangeTag.Length; j++) {
 						mainEnemy [i].obiectToChangeTag [j].tag = "NonCollider";
 					}
-
 					mainEnemy [i].audiosorce.Stop ();
-
 				}
 				else
 				{

@@ -14,6 +14,7 @@ public class MissionDesertScript : MonoBehaviour {
 	private SkinnedMeshRenderer smr2;
 	private SkinnedMeshRenderer smr3;
 
+	public Rigidbody[] rbs = new Rigidbody[2];
 
 	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
 	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
@@ -22,7 +23,15 @@ public class MissionDesertScript : MonoBehaviour {
 	private bool tempCzyDalej = false;
 	RCCCarControllerV2 rcc;
 	VolumeAndMusicScript vms;
+	public Text engineHelp;
+	private bool engineHelpActive = false;
 	// Use this for initialization
+	void Awake ()
+	{
+		for (int i = 0; i < rbs.Length; i++) {
+			rbs [i].isKinematic = true;
+		}
+	}
 	void Start () {
 
 		message = message.GetComponent<Canvas> ();
@@ -46,11 +55,22 @@ public class MissionDesertScript : MonoBehaviour {
 		if(i == 1 && czyDalej == true && tempCzyDalej == false){
 			Messengery (y);
 			tempCzyDalej = true;
+			for (int z = 0; z < rbs.Length; z++) {
+				rbs [z].isKinematic = false;
+			}
 		}
 
 
 		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
 			DisableEnableMsg ();
+		}
+
+		if (rcc.engineRunning == false && engineHelpActive == false) {
+			engineHelp.enabled = true;
+			engineHelpActive = true;
+		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+			engineHelp.enabled = false;
+			engineHelpActive = false;
 		}
 
 

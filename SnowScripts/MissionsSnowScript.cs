@@ -22,6 +22,9 @@ public class MissionsSnowScript : MonoBehaviour {
 	RCCCarControllerV2 rcc;
 	private bool engineHelpActive = false;
 	VolumeAndMusicScript vms;
+	public Text engineHelp;
+
+
 	// Use this for initialization
 	void Start () {
 		brumBrume = GameObject.Find ("BrumBrume");
@@ -45,6 +48,13 @@ public class MissionsSnowScript : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {
 			DisableEnableMsg ();
+		}
+		if (rcc.engineRunning == false && engineHelpActive == false) {
+			engineHelp.enabled = true;
+			engineHelpActive = true;
+		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+			engineHelp.enabled = false;
+			engineHelpActive = false;
 		}
 			
 	}

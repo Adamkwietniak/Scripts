@@ -15,13 +15,17 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	MenuScript ms;
 	private float oldValue;
 	private float oldValue2;
+	private float oldValue3;
 	private bool played = true;
 	private bool pleyed = false;
+	private bool greenLight = false;
 	private List<Image> missionImg = new List<Image>();
 	private GameObject [] tabOfMissions = new GameObject[25];
 	private bool c = false;
+	private bool g = false;
 	[HideInInspector]public bool isMsg = false;
 	private int oldvalueOfVolumeSound = 0;
+	private Canvas gzComplete;
 	// Use this for initialization
 	void Awake (){
 		Initiate ();
@@ -36,6 +40,10 @@ public class VolumeAndMusicScript : MonoBehaviour {
 	public void Initiate () {
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
 		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
+		if (rcc.gameObject.GetComponent<SprawdzTerenScript> ().enabled == true) {
+			gzComplete = GameObject.Find ("GZMissionComplete").GetComponent<Canvas> ();
+			greenLight = true;
+		}
 		allAudios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
 		for (int i = 0; i < allAudios.Length; i++) {
 			//Debug.Log(allAudios[i].name);
@@ -102,6 +110,16 @@ public class VolumeAndMusicScript : MonoBehaviour {
 		{
 			rcc.WriteNewValueOfCar(oldValue2);
 			c = false;
+		}
+		if (greenLight == true) {
+			if (gzComplete.enabled == true && ms.menuUI.enabled == false && g == false) {
+				oldValue3 = rcc.actualValue;
+				rcc.WriteNewValueOfCar (0);
+				g = true;
+			} else if (gzComplete.enabled == false && ms.menuUI.enabled == false && g == true) {
+				rcc.WriteNewValueOfCar (oldValue3);
+				g = false;
+			}
 		}
 	}
 	// Update is called once per frame
