@@ -35,7 +35,7 @@ public class MenuScript : MonoBehaviour {
 	public AudioMixerSnapshot pause;
 	public AudioMixerSnapshot withoutPause;
 	
-	public string nextLevel;
+	private string nextLevel = "Scene01Tutorial";
 	public string creditsScene;
 	
 	public GameObject gameMusic;
@@ -53,7 +53,7 @@ public class MenuScript : MonoBehaviour {
 	void Awake()
 	{
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
-		ReloadDash ();
+		//ReloadDash ();
 		helpbUTTONtAB [0] = btnNewGame;
 		helpbUTTONtAB [1] = btnLoadGame;
 		helpbUTTONtAB [2] = btnSettings;
@@ -103,49 +103,46 @@ public class MenuScript : MonoBehaviour {
 	void Update () {
 		//if (cms.tempBoolCredits == true)
 			//escUse = false;
-		if (Input.GetKeyUp(KeyCode.Escape))
-		{
-			if(escUse == true && duringGame == true)
-				menuUI.enabled = !menuUI.enabled;
+			if (Input.GetKeyUp (KeyCode.Escape)) {
+				if (escUse == true && duringGame == true)
+					menuUI.enabled = !menuUI.enabled;
 			
-			EnabledDisableButtonsMenu (true);
-			if (SceneManager.GetActiveScene().name == "SceneCanvas" || SceneManager.GetActiveScene ().name =="SceneCredits") {
-				IsResume (false);
-				//Debug.Log ("zzz Wylaczam resume");
-			} else {
-				IsResume (true);
-				//Debug.Log ("wlaczam resume");
-			}
-			if (menuUI.enabled == true)
-			{
-				if (dashboardWasLoaded == true) {
-					dashBoard.SetActive (false);
+				EnabledDisableButtonsMenu (true);
+			if (SceneManager.GetActiveScene ().name == "SceneCanvas" && SceneManager.GetActiveScene ().name == "SceneCredits") {
+					IsResume (false);
+					//Debug.Log ("zzz Wylaczam resume");
+				} else {
+					IsResume (true);
+					//Debug.Log ("wlaczam resume");
 				}
-				if (Cursor.visible == false) {
-					Cursor.visible = true;
-					Cursor.lockState = CursorLockMode.None;
-				}
-				Time.timeScale = 0;
+				if (menuUI.enabled == true) {
+				if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name == "SceneCredits") {
+						/*if (dashboardWasLoaded == true) {
+							dashBoard.SetActive (false);
+						}*/
+					}
+					if (Cursor.visible == false) {
+						Cursor.visible = true;
+						Cursor.lockState = CursorLockMode.None;
+					}
+					Time.timeScale = 0;
 
-				/*quitMenu.enabled = false;
+					/*quitMenu.enabled = false;
 				settings.enabled = false;
 				credits.enabled = false;*/
 				
 				
-			}
-			else
-			{
-				//rcc.WriteNewValueOfCar (oldValue);
-				Time.timeScale = 1;
-				if (dashboardWasLoaded == true) {
-					dashBoard.SetActive (true);
+				} else {
+					//rcc.WriteNewValueOfCar (oldValue);
+					Time.timeScale = 1;
+					if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name != "SceneCredits") {
+						/*if (dashboardWasLoaded == true) {
+							dashBoard.SetActive (true);
+						}*/
+					}
 				}
-				
-				
-				
 			}
-			
-		}
+		
 
 		//setSounds ();
 		
@@ -164,8 +161,10 @@ public class MenuScript : MonoBehaviour {
 		EnabledDisableButtonsMenu (false);
 		resumeGame.enabled = false;
 		menuUI.enabled = false;
-		if (dashboardWasLoaded == true && dashBoard.activeInHierarchy == false) {
-			dashBoard.SetActive (true);
+		if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name != "SceneCredits") {
+			/*if (dashboardWasLoaded == true && dashBoard.activeInHierarchy == false) {
+				dashBoard.SetActive (true);
+			}*/
 		}
 		if (Time.timeScale == 0)
 			Time.timeScale = 1;
@@ -260,7 +259,7 @@ public class MenuScript : MonoBehaviour {
 
 			//cms.tempBoolCredits = false;
 		
-			Application.LoadLevel (nextLevel);
+			Application.LoadLevel (2);
 		
 			Time.timeScale = 1;
 		
@@ -324,8 +323,8 @@ public class MenuScript : MonoBehaviour {
 	public void ReloadDash ()
 	{
 		if (GameObject.Find("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
-			dashBoard = GameObject.Find ("DashboardOnScreen");
-			dashboardWasLoaded = true;
+			//dashBoard = GameObject.Find ("DashboardOnScreen");
+			//dashboardWasLoaded = true;
 		}
 	}
 }

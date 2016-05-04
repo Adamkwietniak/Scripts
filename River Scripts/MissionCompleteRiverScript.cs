@@ -15,6 +15,7 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 	public GameObject obj;
 	MissionRiverScript ms;
 	private GameObject loadingObj;
+	MenuScript mns;
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -29,6 +30,7 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		quitBtn = quitBtn.GetComponent<Button>();
 		ms = obj.GetComponent<MissionRiverScript> ();
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		
 		
 	}
@@ -38,10 +40,7 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 
 		if (other.tag == "Player"){
 			missionComplete.enabled = true;
-			if (ms.y == 7) {
-			Time.timeScale = 0;
 			}
-		}
 
 		if (missionComplete.enabled == true) {
 			
@@ -61,7 +60,13 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
-		
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
+		mns.IsResume (false);
+		mns.escUse = false;
+
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
@@ -83,7 +88,7 @@ public class MissionCompleteRiverScript : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 2)
+		if (LoadGameScript.unlockIndex == 1)
 		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		

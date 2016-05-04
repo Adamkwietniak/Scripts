@@ -44,12 +44,14 @@ public class MissionCityScript : MonoBehaviour {
 	private bool engineHelpActive = false;
 
 	private Canvas GameOver;
+	private Canvas gzComplete;
 	//Black screen
 	private bool timeToBlack = false;
 	private bool timeToWhite = false;
 	private float timerScreenBlack = 0;
 	public Image blackScreen;
 	private GameObject dash;
+	public GameObject shootingMission;
 
 	CursorLockMode cursorMode;
 	[HideInInspector]public string keepTextFromMissionCity;
@@ -80,8 +82,15 @@ public class MissionCityScript : MonoBehaviour {
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		dash = GameObject.Find ("DashboardOnScreen");
 		GameOver = GameObject.Find ("GAMEOVER").GetComponent<Canvas> ();
+		gzComplete = GameObject.Find ("GZMissionComplete").GetComponent<Canvas> ();
+		Debug.Log (gzComplete);
 		if(GameOver.enabled == true)
 			GameOver.enabled = false;
+		if (gzComplete.enabled == true) {
+			gzComplete.enabled = false;
+			if (Time.timeScale == 1)
+				Time.timeScale = 0;
+		}
 	}
 
 	private void BlackScreen (bool white, bool black, float timer)
@@ -182,6 +191,8 @@ public class MissionCityScript : MonoBehaviour {
 
             }
 			ae.isShooterNow = true;
+			this.gameObject.isStatic = true;
+			this.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
             
         }
 
@@ -208,6 +219,8 @@ public class MissionCityScript : MonoBehaviour {
 				}
 				isOver = true;
 				enemyToKills.enabled = false;
+				if (gzComplete.enabled == false)
+					gzComplete.enabled = true;
 			}
 			if (suma > 0 && enemyToKills.enabled == true)
 				enemyToKills.text = (suma.ToString () + " " + keepTextFromMissionCity);
@@ -331,7 +344,7 @@ public class MissionCityScript : MonoBehaviour {
 		GameObject.Find ("CarSpace").SetActive (false);
 		GameObject.Find ("EngineHelp").SetActive (false);
 		dash.SetActive (false);
-		GameObject.Find ("ShootingMission").SetActive (true);
+		shootingMission.SetActive (true);
 	}
 }
 

@@ -16,11 +16,11 @@ public class ChangeGearScript : MonoBehaviour {
 		if (isAutomatic == false) {
 			NumericChange();
 		}
-		if (Input.GetKeyUp (KeyCode.F9)) {		//Do wyłączenia po testach
+		/*if (Input.GetKeyUp (KeyCode.F9)) {		//Do wyłączenia po testach
 			rcc.automaticGear = !rcc.automaticGear;
 			isAutomatic = rcc.automaticGear;
 			rcc.autoReverse = true;
-		}
+		}*/
 		if (rcc.reversing == true && rcc.currentGear != 0) {
 			rcc.currentGear = 0;
 		}

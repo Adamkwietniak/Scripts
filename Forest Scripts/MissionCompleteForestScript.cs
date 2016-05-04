@@ -17,6 +17,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	public Button demoBtn;
 	MissionForestScript ms;
 	private GameObject loadingObj;
+	MenuScript mns;
 
 	void Awake ()
 	{
@@ -31,6 +32,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		quitBtn = quitBtn.GetComponent<Button>();
 		ms = (MissionForestScript)FindObjectOfType (typeof(MissionForestScript)) as MissionForestScript;
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 
 		
 	}
@@ -66,6 +68,12 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
+		mns.IsResume (false);
+		mns.escUse = false;
 		
 		if (soundSource != null)
 		{
@@ -101,7 +109,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 1)
+		if (LoadGameScript.unlockIndex == 0)
 		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		

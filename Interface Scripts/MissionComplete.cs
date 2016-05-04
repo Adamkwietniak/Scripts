@@ -18,6 +18,7 @@ public class MissionComplete : MonoBehaviour {
 	MissionsScript ms;
 	VolumeHelperScript vhs;
 	private GameObject loadingObj;
+	MenuScript mns;
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -31,6 +32,7 @@ public class MissionComplete : MonoBehaviour {
 		quitBtn = quitBtn.GetComponent<Button>();
 		RCC = brumBrume.GetComponent<RCCCarControllerV2> ();
 		ms = brumBrume.GetComponent<MissionsScript> ();
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 	}
 
 
@@ -57,6 +59,13 @@ public class MissionComplete : MonoBehaviour {
 	public void QuitGame (){
 
 		Application.LoadLevel ("SceneCanvas");
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
+
+		mns.IsResume (false);
+		mns.escUse = false;
 
 		if (soundSource != null)
 		{
@@ -79,8 +88,7 @@ public class MissionComplete : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 0)
-			LoadGameScript.unlockIndex++;
+		//if (LoadGameScript.unlockIndex == 0)
 		Time.timeScale = 1;
 		
 		Cursor.visible = false;

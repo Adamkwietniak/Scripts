@@ -6,7 +6,8 @@ public class CreditsMovingScript : MonoBehaviour {
 	//public GameObject allMoving;
 	private Transform tr;
 	private float y0 = 60;
-	public string backToMenu;
+	public string backToMenu = "SceneCanvas";
+	public static bool fromSnow = false;
 	//public string backToMenu;
 	//[HideInInspector]public bool tempBoolCredits = false;
 	// Use this for initialization
@@ -24,9 +25,13 @@ public class CreditsMovingScript : MonoBehaviour {
 		//Debug.Log (tr.position.y);
 		
 		if (Input.GetKeyUp (KeyCode.Escape)) {
-			
-			Application.LoadLevel (backToMenu);
-			//tempBoolCredits = true;
+			if (fromSnow == false) {
+				Application.LoadLevel (backToMenu);
+				//tempBoolCredits = true;
+			} else {
+				fromSnow = false;
+				Application.Quit ();
+			}
 		}
 		
 		

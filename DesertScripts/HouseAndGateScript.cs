@@ -53,7 +53,7 @@ public class HouseAndGateScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (isCamAnim == true) {
-			Debug.Log ("dzialam petla update");
+			//Debug.Log ("dzialam petla update");
 			for (int i = 0; i < names.Length; i++) {
 				//Debug.Log ("Sprawdzam: "+nameObiect+" z "+names [i]);
 				if (nameObiect == names [i]) {
@@ -62,7 +62,7 @@ public class HouseAndGateScript : MonoBehaviour {
 						audioS [i].PlayOneShot (destroy);
 					actualOfAnimation [i] += Time.deltaTime;
 					if (actualOfAnimation [i] < timesOfAnimation [i] / 2) {
-						Debug.Log ("actual animation jest w 1 fazie");
+						//Debug.Log ("actual animation jest w 1 fazie");
 						if (cams [i].enabled == false)
 							ChangeCamera (cams [i], anims [i]);
 						rcc.gameObject.GetComponent<Rigidbody> ().Sleep ();
@@ -107,7 +107,7 @@ public class HouseAndGateScript : MonoBehaviour {
 					}
 					else if (actualOfAnimation [i] > timesOfAnimation [i]) {
 						BackCamera (cams [i]);
-						Debug.Log ("koniec");
+						//Debug.Log ("koniec");
 						names [i] = "skonczonaBajkaDla" + i;
 					}
 				}
@@ -167,9 +167,9 @@ public class HouseAndGateScript : MonoBehaviour {
 	private void TransformObiect (GameObject obj, bool uP)
 	{
 		if (uP == true) {
-			obj.transform.position = new Vector3 (obj.transform.position.x, obj.transform.position.y + 0.1f, obj.transform.position.z);
+			obj.transform.position = new Vector3 (obj.transform.position.x, obj.transform.position.y + 0.05f, obj.transform.position.z);
 		} else {
-			obj.transform.position = new Vector3 (obj.transform.position.x, obj.transform.position.y - 0.1f, obj.transform.position.z);
+			obj.transform.position = new Vector3 (obj.transform.position.x, obj.transform.position.y - 0.05f, obj.transform.position.z);
 		}
 	}
 }

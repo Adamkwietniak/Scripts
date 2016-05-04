@@ -56,7 +56,7 @@ public class ChangeMaterialScript : MonoBehaviour {
 		}
 
 		if (counting == false) {
-			for(int i = 0; i < ms.psTire.Count; i++)
+  			for(int i = 0; i < ms.psTire.Count; i++)
 			{
 				if(ms.psTire[i].generateMud == true){
 					counting = true;

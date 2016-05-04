@@ -22,6 +22,7 @@ public class LoadGameScript : MonoBehaviour {
 	private List<ImagesToLoadGame> activ = new List<ImagesToLoadGame>();
 	private Image loadFr;
 	private int actualIndex;
+	private Canvas GZMissionComplete;
 
 	private string[] nameLvls = {"Scene02Forest", "Scene03River", "Scene04City", "Scene05Desert", "Scene06Snow"};
 
@@ -62,10 +63,10 @@ public class LoadGameScript : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.P)) {
 			unlockIndex = 0;
 		}
-		if (Input.GetKeyDown (KeyCode.O)) {
+		/*if (Input.GetKeyDown (KeyCode.O)) {
 			LoadGameScript.unlockIndex ++;
 			//Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
-		}
+		}*/
 	}
 	public void PreparationOfImages (int unlockValiu)	//Przesylamy wartosc, która wskazuje na ilosc odblokowanych scen liczoną od 0
 	{

@@ -25,6 +25,7 @@ public class PlayerHealth : MonoBehaviour
 	private float blinkingSpeed = 3f;
 	private int maximusSpeedus = 0;
 	public AudioClip hornSound;
+	MenuScript mns;
 
 
 	public Canvas gameOver;
@@ -68,6 +69,7 @@ public class PlayerHealth : MonoBehaviour
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		blendShapeCount = srodek.blendShapeCount;
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
         {
@@ -122,9 +124,9 @@ public class PlayerHealth : MonoBehaviour
 		if(sthOnScreen == true)
 			BlinkEngineWarning ();
 
-		if (Input.GetKeyDown(KeyCode.CapsLock)){
+		/*if (Input.GetKeyDown(KeyCode.CapsLock)){
 			currentHealth = 1;
-		}
+		}*/
 
 		if (Input.GetKey (KeyCode.H) && soundSource.isPlaying == false) {
 			soundSource.PlayOneShot (hornSound);
@@ -243,6 +245,12 @@ public class PlayerHealth : MonoBehaviour
 		
 		Application.LoadLevel ("SceneCanvas");
 
+		if (mns.menuUI.enabled == false)
+		{
+			mns.menuUI.enabled = true;
+		}
+		mns.IsResume (false);
+		mns.escUse = false;
 		
 		if (soundSource != null)
 		{

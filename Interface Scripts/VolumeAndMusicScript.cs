@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class VolumeAndMusicScript : MonoBehaviour {
 	
@@ -43,6 +44,8 @@ public class VolumeAndMusicScript : MonoBehaviour {
 		if (rcc.gameObject.GetComponent<SprawdzTerenScript> ().enabled == true) {
 			gzComplete = GameObject.Find ("GZMissionComplete").GetComponent<Canvas> ();
 			greenLight = true;
+		} else {
+			greenLight = false;
 		}
 		allAudios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
 		for (int i = 0; i < allAudios.Length; i++) {
@@ -112,13 +115,15 @@ public class VolumeAndMusicScript : MonoBehaviour {
 			c = false;
 		}
 		if (greenLight == true) {
-			if (gzComplete.enabled == true && ms.menuUI.enabled == false && g == false) {
-				oldValue3 = rcc.actualValue;
-				rcc.WriteNewValueOfCar (0);
-				g = true;
-			} else if (gzComplete.enabled == false && ms.menuUI.enabled == false && g == true) {
-				rcc.WriteNewValueOfCar (oldValue3);
-				g = false;
+			if (SceneManager.GetActiveScene ().name != "SceneCanvas") {
+				if (gzComplete.enabled == true && ms.menuUI.enabled == false && g == false) {
+					oldValue3 = rcc.actualValue;
+					rcc.WriteNewValueOfCar (0);
+					g = true;
+				} else if (gzComplete.enabled == false && ms.menuUI.enabled == false && g == true) {
+					rcc.WriteNewValueOfCar (oldValue3);
+					g = false;
+				}
 			}
 		}
 	}

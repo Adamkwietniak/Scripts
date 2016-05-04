@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class GetOutFromWayScript : MonoBehaviour {
 
 	private List<ObstaclesTr> obsTr = new List<ObstaclesTr> ();
-	private GameObject [] objGameObstacle = new GameObject[22];
+	private GameObject [] objGameObstacle = new GameObject[23];
 	SprawdzTerenScript sts;
 	public int[] indexesOfTexturesToMS;  //Przypisujesz indexy tekstur na terenie, z których trzeba usuwać przeszkody
 	public GameObject arrowPrefab;			//Prefab strzałki który będzie duplikowany na każda przeszkode
-	private GameObject [] arrowS = new GameObject[22];
-	private Transform [] arrowSTr = new Transform[22];
+	private GameObject [] arrowS = new GameObject[23];
+	private Transform [] arrowSTr = new Transform[23];
 	[HideInInspector]public bool reachBase = false; // czy dotarles do bazy
 	private bool enabledArrows = false;
 	public int maxItemsToAwayFromWay = 10;
@@ -22,6 +22,7 @@ public class GetOutFromWayScript : MonoBehaviour {
 	MissionRiverScript mrs;
 	[HideInInspector] public bool isComplete = false;
 	[HideInInspector]public string keepTextLanguageGetOutFromWay;
+	public Canvas msnComp;
 	void Awake ()
 	{
 		helpToCount = maxItemsToAwayFromWay;
@@ -30,10 +31,14 @@ public class GetOutFromWayScript : MonoBehaviour {
 		sts = (SprawdzTerenScript)FindObjectOfType (typeof(SprawdzTerenScript));
 		objGameObstacle = GameObject.FindGameObjectsWithTag("ObstacleTag");
 		mrs = (MissionRiverScript)FindObjectOfType(typeof(MissionRiverScript));
+
+
+
 		for(int i = 0; i < objGameObstacle.Length; i++)
 		{
 			obsTr.Add (new ObstaclesTr (objGameObstacle[i].GetComponent<Transform>(), objGameObstacle[i].transform.GetChild(0).transform.GetComponent<Transform>(),
 			false));
+			//Debug.Log (obsTr [i]);
 		}
 		for (int i = 0; i < obsTr.Count; i++) {
 			obsTr[i].isMc = false;
@@ -82,6 +87,8 @@ public class GetOutFromWayScript : MonoBehaviour {
 			if (maxItemsToAwayFromWay <= 0) {
 				maxItemsToAwayFromWay = 0;
 				DisableAllArrows ();
+				msnComp.enabled = true;
+				Time.timeScale = 0f;
 			}
 		}
 	}

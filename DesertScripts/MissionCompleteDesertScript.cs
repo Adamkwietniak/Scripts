@@ -13,6 +13,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	public GameObject obj;
 	MissionDesertScript mds;
 	private GameObject loadingObj;
+	MenuScript mns;
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -26,6 +27,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 		missionComplete = missionComplete.GetComponent<Canvas>();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 	
 	}
 
@@ -46,6 +48,12 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	public void QuitGame (){
 
 		Application.LoadLevel ("SceneCanvas");
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
+		mns.IsResume (false);
+		mns.escUse = false;
 
 		if (soundSource != null)
 		{
@@ -67,7 +75,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 4)
+		if (LoadGameScript.unlockIndex == 3)
 			LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 

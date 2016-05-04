@@ -15,6 +15,7 @@ public class MissionCompleteCityScript : MonoBehaviour {
 	public GameObject obj;
 	MissionCityScript ms;
 	private GameObject loadingObj;
+	MenuScript mns;
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -29,6 +30,7 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		quitBtn = quitBtn.GetComponent<Button>();
 		ms = obj.GetComponent<MissionCityScript> ();
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		
 		
 	}
@@ -65,7 +67,13 @@ public class MissionCompleteCityScript : MonoBehaviour {
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
-		
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
+		mns.IsResume (false);
+		mns.escUse = false;
+
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
@@ -79,14 +87,14 @@ public class MissionCompleteCityScript : MonoBehaviour {
 			cLoad.enabled = true;
 
 			GameObject go = GameObject.Find ("DashboardOnScreen");
-			if (go.activeInHierarchy == true)
+			if (go != null)
 				go.SetActive (false);
 		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
 		Application.LoadLevel(nextLevel);
-		if (LoadGameScript.unlockIndex == 3)
+		if (LoadGameScript.unlockIndex == 2)
 		LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		
