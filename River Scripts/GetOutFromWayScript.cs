@@ -22,7 +22,7 @@ public class GetOutFromWayScript : MonoBehaviour {
 	MissionRiverScript mrs;
 	[HideInInspector] public bool isComplete = false;
 	[HideInInspector]public string keepTextLanguageGetOutFromWay;
-	public Canvas msnComp;
+	public static bool riverMissionComplete = false;
 	void Awake ()
 	{
 		helpToCount = maxItemsToAwayFromWay;
@@ -87,8 +87,8 @@ public class GetOutFromWayScript : MonoBehaviour {
 			if (maxItemsToAwayFromWay <= 0) {
 				maxItemsToAwayFromWay = 0;
 				DisableAllArrows ();
-				msnComp.enabled = true;
-				Time.timeScale = 0f;
+				riverMissionComplete = true;
+				//Time.timeScale = 0f;
 			}
 		}
 	}

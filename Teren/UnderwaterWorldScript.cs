@@ -81,9 +81,9 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			Instantiate(hudrantPref, camZderzakTr.position, Quaternion.Euler(0,1,0));
 			isHydrantOnScene = true;
 
-			Time.timeScale = 0.8f;
+			//Time.timeScale = 0.8f;
 
-			Time.timeScale = 0.3f;
+			Time.timeScale = 0.5f;
 
 		}
 		if(cameraTransform.position.y - offsetOfPlayer < heightOfWater && underWater == false)
@@ -95,6 +95,7 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			LoadDefaultSettings(true);
 			underWater = false;
 			setValue = false;
+			Time.timeScale = 1;
 		}
 		if(underWater == true)
 		{
@@ -108,8 +109,8 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			//rcc.engineRunning = false;
 			//rcc.canControl = false;
 
-			rcc.maxspeed = 2;
-			rcc.gameObject.GetComponent<Rigidbody> ().drag = 100;
+			//rcc.maxspeed = 2;
+			//rcc.gameObject.GetComponent<Rigidbody> ().drag = 100;
 			//rcc.gameObject.GetComponent<Rigidbody> ().mass = 0.01f;
 			RenderSettings.fogColor = underWaterColorOfFogStart;
 			//Przydałoby się jakieś gameover

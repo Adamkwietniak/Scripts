@@ -5,16 +5,14 @@ public class JointScript : MonoBehaviour {
 
 	public float emizionRate = 0; //deklarujemy i przypisujemy domyślne wartości dla zmiennych
 	public int maxParticle = 0;
-	int zycie = 0;
-	bool czyMozna = false; //Zmienna okresla czy ilość życia pojazdu spadła na tyle aby aktywować system cząstek
+	private bool czyMozna = false; //Zmienna okresla czy ilość życia pojazdu spadła na tyle aby aktywować system cząstek
 	PlayerHealth ph;
-
+	public static bool czyNaprawione = false;
 	public GameObject [] tab = new GameObject[1]; // Do tej tablicy przypisujemy manualnie elementy 
 	// Domyślne przypisanie wartości				 systemu cząstek Unity.
 	void Start () {
 		ph = GetComponentInParent<PlayerHealth> ();
-		zycie = ph.currentHealth;
-		if (zycie < 60) {							//Jeśli ilość życia samochodu jest mniejsza niż 60 aktywujemy
+		if (ph.currentHealth < 60) {							//Jeśli ilość życia samochodu jest mniejsza niż 60 aktywujemy
 			foreach (GameObject parti in tab) {		//pętlę w której włączamy obiekty w których zawarty jest system cząstek
 				parti.SetActive(true);				//dymu
 			}czyMozna = true;
@@ -27,8 +25,7 @@ public class JointScript : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		zycie = ph.currentHealth;
-		if (zycie < 60 && czyMozna == false) {
+		if (ph.currentHealth < 60 && czyMozna == false) {
 			czyMozna = true;
 			foreach (GameObject parti in tab) {
 				parti.active = true;
@@ -37,12 +34,19 @@ public class JointScript : MonoBehaviour {
 
 		if (czyMozna == true) {
 			 {
-				emizionRate = (float)((40 / (zycie + 0.1f))+0.65f); //Dynamiczne przypisanie wartości dla dymu
-				if(zycie > 0)
-					maxParticle = (int)(1000 / (zycie))+300;
+				emizionRate = (float)((40 / (ph.currentHealth + 0.1f))+0.65f); //Dynamiczne przypisanie wartości dla dymu
+				if(ph.currentHealth > 0)
+					maxParticle = (int)(1000 / (ph.currentHealth))+300;
 				else
 					maxParticle = (int)(1000 / 1)+300;
 			}
+		}
+		if (czyNaprawione == true && czyMozna == true) {
+			for (int i = 0; i < tab.Length; i++) {
+				tab [i].SetActive (false);
+			}
+			czyNaprawione = false;
+			czyMozna = false;
 		}
 	}
 }

@@ -85,12 +85,13 @@ public class SprawdzTerenScript : MonoBehaviour
 			if(tempGO != gejmObject){
 				gejmObjectCollider = GetColliderFromObj(gejmObject);
 				//Debug.Log("Phisics to: "+gejmObjectCollider.sharedMaterial.name+ " a phisic 2: "+ materialPhiysics[0].name);
-				if(gejmObjectCollider.sharedMaterial.name == materialPhiysics[0].name+" (Instance)")		//tu mozna dodac dzwiek jazdy po asfalcie
-				{
-					rcc.AssignMaterial(1);
-					skidMarkAspalt.SetActive(true);
+				if (gejmObjectCollider.sharedMaterial != null) {
+					if (gejmObjectCollider.sharedMaterial.name == materialPhiysics [0].name + " (Instance)") {		//tu mozna dodac dzwiek jazdy po asfalcie
+						rcc.AssignMaterial (1);
+						skidMarkAspalt.SetActive (true);
+					}
+					tempGO = gejmObject; 
 				}
-				tempGO = gejmObject;
 			}
 			if(gejmObjectCollider.material.name == materialPhiysics[0].name)		//tu mozna dodac dzwiek jazdy po asfalcie
 			{

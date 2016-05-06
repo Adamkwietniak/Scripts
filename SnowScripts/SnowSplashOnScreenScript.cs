@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class SnowSplashOnScreenScript : MonoBehaviour {
 
-	public Canvas canvasSnowSplash;
-	public Image snowSplash;
+	private Canvas canvasSnowSplash;
+	private Image snowSplash;
 	public float multiple = 1f;
 	private float timer = 0;
 	private float actualAlpha = 0;
@@ -18,8 +18,12 @@ public class SnowSplashOnScreenScript : MonoBehaviour {
 
 	void Awake ()
 	{
+		canvasSnowSplash = GameObject.Find ("SnowSplashCanvas").GetComponent<Canvas> ();
+		snowSplash = GameObject.Find ("SnowSplashCanvas").GetComponentInChildren<Image> ();
+		//Debug.Log (canvasSnowSplash);
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
-		canvasSnowSplash.enabled = false;
+		if(canvasSnowSplash.enabled == true)	
+			canvasSnowSplash.enabled = false;
 	}
 	void Update ()
 	{

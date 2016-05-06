@@ -20,6 +20,7 @@ public class MissionRiverScript : MonoBehaviour {
 	[HideInInspector]public bool firstOfSecondScript = false;
 	PlayerHealth ph;
 	GetOutFromWayScript gafw;
+	MissionCompleteRiverScript mcrs;
 	public Text instructionsForBumper;
 	public GameObject[] wounded = new GameObject[3];
 	public Image engineWarning;
@@ -227,7 +228,9 @@ public class MissionRiverScript : MonoBehaviour {
 			return true;
 			break;
 		case 6:
-			if (gafw.isComplete == true) {
+			if (GetOutFromWayScript.riverMissionComplete == true) {
+				if(mcrs.missionComplete.enabled == false)
+					mcrs.missionComplete.enabled = true;
 				return true;
 			}
 			break;

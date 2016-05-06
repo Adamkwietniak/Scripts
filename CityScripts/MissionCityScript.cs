@@ -83,7 +83,7 @@ public class MissionCityScript : MonoBehaviour {
 		dash = GameObject.Find ("DashboardOnScreen");
 		GameOver = GameObject.Find ("GAMEOVER").GetComponent<Canvas> ();
 		gzComplete = GameObject.Find ("GZMissionComplete").GetComponent<Canvas> ();
-		Debug.Log (gzComplete);
+		//Debug.Log (gzComplete);
 		if(GameOver.enabled == true)
 			GameOver.enabled = false;
 		if (gzComplete.enabled == true) {
