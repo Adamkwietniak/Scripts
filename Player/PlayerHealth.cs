@@ -50,6 +50,7 @@ public class PlayerHealth : MonoBehaviour
 	private Transform trans;
 	ObstacleTagScript ots;
 	RCCCarControllerV2 brum;
+	MenuScript mns;
 	
 	void Awake ()
 	{	//Pobieranie komponentów
@@ -68,6 +69,7 @@ public class PlayerHealth : MonoBehaviour
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		blendShapeCount = srodek.blendShapeCount;
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
         {
@@ -77,6 +79,7 @@ public class PlayerHealth : MonoBehaviour
         }//Przypisanie wartosci 0 do poszczególnych zmiennych odpowiedzialnych za wgniecenia samochodu.
 
 		maximusSpeedus = (int)brum.maxspeed;
+	
     }
 
 	void Update ()
@@ -226,6 +229,10 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
 
 		
 		if (soundSource != null)

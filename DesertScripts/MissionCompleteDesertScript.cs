@@ -14,6 +14,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 	MissionDesertScript mds;
 	private GameObject loadingObj;
 	MenuScript mns;
+	public GameObject hudMenu;
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -67,9 +68,7 @@ public class MissionCompleteDesertScript : MonoBehaviour {
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;
 
-			GameObject go = GameObject.Find ("DashboardOnScreen");
-			if (go.activeInHierarchy == true)
-				go.SetActive (false);
+			hudMenu.SetActive (false);
 		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;

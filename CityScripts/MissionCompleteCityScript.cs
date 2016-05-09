@@ -16,6 +16,8 @@ public class MissionCompleteCityScript : MonoBehaviour {
 	MissionCityScript ms;
 	private GameObject loadingObj;
 	MenuScript mns;
+	public GameObject hudMenu;
+
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -86,9 +88,11 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;
 
-			GameObject go = GameObject.Find ("DashboardOnScreen");
+			hudMenu.SetActive (false);
+
+			/*GameObject go = GameObject.Find ("DashboardOnScreen");
 			if (go != null)
-				go.SetActive (false);
+				go.SetActive (false);*/
 		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;

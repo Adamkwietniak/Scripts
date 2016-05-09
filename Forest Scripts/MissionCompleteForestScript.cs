@@ -18,6 +18,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	MissionForestScript ms;
 	private GameObject loadingObj;
 	MenuScript mns;
+	public GameObject hudMenu;
 
 	void Awake ()
 	{
@@ -101,9 +102,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;
 
-			GameObject go = GameObject.Find ("DashboardOnScreen");
-			if (go.activeInHierarchy == true)
-				go.SetActive (false);
+			hudMenu.SetActive (false);
 		}
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;

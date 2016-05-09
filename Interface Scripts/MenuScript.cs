@@ -59,6 +59,10 @@ public class MenuScript : MonoBehaviour {
 		helpbUTTONtAB [2] = btnSettings;
 		helpbUTTONtAB [3] = btnCredits;
 		helpbUTTONtAB [4] = btnExit;
+		/*for (int i = 0; i < helpbUTTONtAB.Length; i++) 
+		{
+			Debug.Log ("hdupencjanehhee" + helpbUTTONtAB [i].name);
+		}*/
 		mps = GetComponent<MenuProfileSaveAndReadScript> ();
 	}
 	// Use this for initialization
@@ -96,7 +100,8 @@ public class MenuScript : MonoBehaviour {
 	{
 		for(int i = 1; i < helpbUTTONtAB.Length; i++)
 		{
-			helpbUTTONtAB[i].enabled = chan;
+			if(i != 3)
+				helpbUTTONtAB[i].enabled = chan;
 		}
 	}
 	//Update is called once per frame
@@ -106,21 +111,19 @@ public class MenuScript : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.Escape)) {
 				if (escUse == true && duringGame == true)
 					menuUI.enabled = !menuUI.enabled;
-			
-				EnabledDisableButtonsMenu (true);
-			if (SceneManager.GetActiveScene ().name == "SceneCanvas" && SceneManager.GetActiveScene ().name == "SceneCredits") {
+			if(menuUI.enabled == true)
+			{
+				if ((SceneManager.GetActiveScene ().name == "SceneCanvas" || SceneManager.GetActiveScene ().name == "SceneCredits")) {
 					IsResume (false);
 					//Debug.Log ("zzz Wylaczam resume");
 				} else {
 					IsResume (true);
 					//Debug.Log ("wlaczam resume");
 				}
+			}
+				EnabledDisableButtonsMenu (true);
+
 				if (menuUI.enabled == true) {
-				if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name == "SceneCredits") {
-						/*if (dashboardWasLoaded == true) {
-							dashBoard.SetActive (false);
-						}*/
-					}
 					if (Cursor.visible == false) {
 						Cursor.visible = true;
 						Cursor.lockState = CursorLockMode.None;
@@ -135,11 +138,6 @@ public class MenuScript : MonoBehaviour {
 				} else {
 					//rcc.WriteNewValueOfCar (oldValue);
 					Time.timeScale = 1;
-					if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name != "SceneCredits") {
-						/*if (dashboardWasLoaded == true) {
-							dashBoard.SetActive (true);
-						}*/
-					}
 				}
 			}
 		
@@ -154,6 +152,7 @@ public class MenuScript : MonoBehaviour {
 		helpbUTTONtAB [3].enabled = !zmienna;
 		resumeGame.enabled = zmienna;
 		resumeButtonObj.SetActive (zmienna);
+		//Debug.Log ("DzienDobry");
 	}
 
 	public void ResumeGame ()
