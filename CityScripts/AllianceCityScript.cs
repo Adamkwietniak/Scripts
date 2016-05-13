@@ -165,17 +165,28 @@ public class AllianceCityScript : MonoBehaviour {
                 if(npc[i].inBase == true)
                     distFromBase = Distance(npc[i].selfTransform.position, targetInBase.position);
                 if (actualInsideBrum < maxNumberInBrum) {
-                    if (npc[i].discanceFromPlayer > distanceToPlayer && npc[i].discanceFromPlayer < distanceToPlayer + 50 && npc[i].inBase == false)
-                    {
-                        npc[i].agent.SetDestination(brumTrans.position);
-                        if (npc[i].anim.GetBool("isWalk") == false)
-                            npc[i].anim.SetBool("isWalk", true);
-                        if (npc[i].isWalk == false)
-                        {
-                            npc[i].agent.Resume();
-                            npc[i].isWalk = true;
-                        }
-                    }
+					if (npc [i].discanceFromPlayer > distanceToPlayer && npc [i].discanceFromPlayer < distanceToPlayer + 50 && npc [i].inBase == false) {
+						npc [i].agent.SetDestination (brumTrans.position);
+						if (npc [i].anim.GetBool ("isWalk") == false)
+							npc [i].anim.SetBool ("isWalk", true);
+						if (npc [i].isWalk == false) {
+							npc [i].agent.Resume ();
+							npc [i].isWalk = true;
+						}
+					} else if (npc [i].discanceFromPlayer > distanceToPlayer + 50 && npc [i].inBase == false && npc[i].anim.GetBool("isWalk") == true) {
+						float distBetweenDefPos = Distance (npc [i].selfTransform.position, npc [i].defaultPos.position);
+						if (distBetweenDefPos > 3) {
+							npc [i].agent.SetDestination (npc [i].defaultPos.position);
+							if (npc [i].isWalk == false)
+								npc [i].isWalk = true;
+						} else {
+							if (npc [i].isWalk == true) {
+								npc [i].agent.Stop ();
+								npc [i].isWalk = false;
+								npc [i].anim.SetBool ("isWalk", false);
+							}
+						}
+					}
                     else if (npc[i].discanceFromPlayer < distanceToPlayer && npc[i].inBase == false)
                     {
                         npc[i].agent.SetDestination(brumTrans.position);

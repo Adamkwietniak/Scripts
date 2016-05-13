@@ -5,15 +5,33 @@ using System.Collections;
 public class Mid : MonoBehaviour {
 
 	public GameObject Object;
+	PlayerHealth playDmg;
+
+	void Awake ()
+	{
+		playDmg = GetComponentInParent<PlayerHealth>();
+	}
 
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag != "Trigger" && other.tag !=  "NonCollider" && other.tag !=  "Forest01Triggers")
 		{
-			PlayerHealth playDmg = GetComponentInParent<PlayerHealth>();
 			playDmg.nameCollider = Object.name;
-            playDmg.ifdamage = true;
-			playDmg.checkStayInCollider = true;
+			if (playDmg.ifdamage == false) {
+				playDmg.poObrazeniach = false;
+				playDmg.ifdamage = true;
+				playDmg.checkStayInCollider = true;
+			}
+		}
+	}
+	void OnTriggerExit (Collider other)
+	{
+		if (playDmg.checkStayInCollider == true) {
+			playDmg.ifdamage = false;
+			playDmg.checkStayInCollider = false;
+			if (playDmg.poObrazeniach == false) {
+				playDmg.poObrazeniach = true;
+			}
 		}
 	}
 }

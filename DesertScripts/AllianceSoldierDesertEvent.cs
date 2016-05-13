@@ -87,9 +87,23 @@ public class AllianceSoldierDesertEvent : MonoBehaviour {
 				npc[i].discanceFromPlayer = Distance (i, npc[i].selfTransform.position, brumTrans.position);
 				if(npc[i].discanceFromPlayer>distanceToPlayer && npc[i].discanceFromPlayer<distanceToPlayer+10)
 				{
-					npc[i].agent.SetDestination(brumTrans.position);
-					npc[i].anim.SetBool("isWalk",true);
+					if (npc [i].anim.GetBool ("isWalk") == false) {
+						npc [i].agent.Resume ();
+						npc [i].anim.SetBool ("isWalk", true);
+					}
+					npc [i].agent.SetDestination (brumTrans.position);
 
+				}
+				else if (npc [i].discanceFromPlayer > distanceToPlayer + 50 && npc [i].anim.GetBool ("isWalk") == true) {
+					float distBetweenDefPos = Distance (i, npc [i].selfTransform.position, npc [i].defaultPos.position);
+					if (distBetweenDefPos > 3) {
+						npc [i].agent.SetDestination (npc [i].defaultPos.position);
+					} else {
+						if (npc [i].anim.GetBool("isWalk") == true) {
+							npc [i].agent.Stop ();
+							npc [i].anim.SetBool ("isWalk", false);
+						}
+					}
 				}
 				if(npc[i].discanceFromPlayer<distanceToPlayer)
 				{
@@ -164,7 +178,7 @@ public class AllianceSoldierDesertEvent : MonoBehaviour {
 			npc [i].isLife = false;
 			npc[i].anim.enabled = false;
 			EnableOrDisablePartSys(i, false);
-			for (int j = 0; j < 13; j++) {
+			for (int j = 0; j < npc[i].rBody.Length; j++) {
 				npc [i].rBody [j].isKinematic = false;
 			}
 		}

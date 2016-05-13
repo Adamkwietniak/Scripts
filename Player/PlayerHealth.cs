@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
 	private int speedMaxIndex = 0;
 	private int indexOfObstacleTag = 1000;
 	int [] tabUszk = new int[14];
-	public float mnoznikDoSpeed = 1;
+	public float mnoznikDoSpeed = 1.3f;
 
 	int obrazenia = 0;
     int predkosc = 0;
@@ -50,7 +50,7 @@ public class PlayerHealth : MonoBehaviour
 	private Transform trans;
 	ObstacleTagScript ots;
 	RCCCarControllerV2 brum;
-	MenuScript mns;
+	[HideInInspector]public bool poObrazeniach = false;
 	
 	void Awake ()
 	{	//Pobieranie komponentów
@@ -69,7 +69,6 @@ public class PlayerHealth : MonoBehaviour
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		blendShapeCount = srodek.blendShapeCount;
-		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
         {
@@ -79,7 +78,6 @@ public class PlayerHealth : MonoBehaviour
         }//Przypisanie wartosci 0 do poszczególnych zmiennych odpowiedzialnych za wgniecenia samochodu.
 
 		maximusSpeedus = (int)brum.maxspeed;
-	
     }
 
 	void Update ()
@@ -99,31 +97,31 @@ public class PlayerHealth : MonoBehaviour
 	
 		if (ifdamage == true) {					//Jeśli nastąpiły uszkodzenia, sprawd jakie a następnie odpowiednio się
 			//ustosunkuj w zależności od tego, jakie one były a następnie przeslij
-			int deltaPredkosc = (int)(SetDMG (speedMaxTab));
-
-			if (CheckObstacle ()) {
-				obrazenia = (int)((deltaPredkosc + (((ots.obstacleTab [indexOfObstacleTag].angularV + ots.obstacleTab [indexOfObstacleTag].speedD) * ots.obstacleTab [indexOfObstacleTag].rb.mass) / (mnoznikDoSpeed * 32))/**(predkosc/10)*/) / (mnoznikDoSpeed * 8));
-				//Debug.Log ("Predkosc katowa: " + ots.obstacleTab [indexOfObstacleTag].angularV + " predskosc zwykla: " + ots.obstacleTab [indexOfObstacleTag].speedD + " masa: " + ots.obstacleTab [indexOfObstacleTag].rb.mass + " wyszlo: " + obrazenia);
-			}
-			else
-			{
-				if(deltaPredkosc > 10){
-					obrazenia = (int)(deltaPredkosc / (mnoznikDoSpeed * 7f));	//max.speed
-					ResetTab ();
+			if (poObrazeniach == false) {
+				int deltaPredkosc = (int)(SetDMG (speedMaxTab));
+				poObrazeniach = true;
+				if (CheckObstacle ()) {
+					obrazenia = (int)((deltaPredkosc + (((ots.obstacleTab [indexOfObstacleTag].angularV + ots.obstacleTab [indexOfObstacleTag].speedD) * ots.obstacleTab [indexOfObstacleTag].rb.mass) / (mnoznikDoSpeed * 256))/**(predkosc/10)*/) / (mnoznikDoSpeed * 8));
+					//Debug.Log ("Predkosc katowa: " + ots.obstacleTab [indexOfObstacleTag].angularV + " predskosc zwykla: " + ots.obstacleTab [indexOfObstacleTag].speedD + " masa: " + ots.obstacleTab [indexOfObstacleTag].rb.mass + " wyszlo: " + obrazenia);
+				} else {
+					if (deltaPredkosc > 10) {
+						obrazenia = (int)(deltaPredkosc / (mnoznikDoSpeed * 7f));	//max.speed
+						ResetTab ();
+					}
 				}
-			}
-			if (obrazenia < 0)
-				obrazenia = obrazenia * (-1);
-			if (brum.maxspeed > 90) {
-				brum.maxspeed -= obrazenia*(mnoznikDoSpeed * 2f);
-				//Debug.Log (obrazenia);
-			} else if (brum.maxspeed <= 89 && brum.maxspeed > 60)
-				brum.maxspeed -= obrazenia*(mnoznikDoSpeed * 1.25f);
-			else
-				brum.maxspeed -= obrazenia * (mnoznikDoSpeed*0.3f);
+				if (obrazenia < 0)
+					obrazenia = obrazenia * (-1);
+				if (brum.maxspeed > 90) {
+					brum.maxspeed -= obrazenia * (mnoznikDoSpeed * 2f);
+					//Debug.Log (obrazenia);
+				} else if (brum.maxspeed <= 89 && brum.maxspeed > 60)
+					brum.maxspeed -= obrazenia * (mnoznikDoSpeed * 1.25f);
+				else
+					brum.maxspeed -= obrazenia * (mnoznikDoSpeed * 0.3f);
         
-			CarDMG (obrazenia); 
-			//Debug.Log (obrazenia);
+				CarDMG (obrazenia); 
+				//Debug.Log (obrazenia);
+			}
 		}
 		ifdamage = false;
 		checkStayInCollider = false;
@@ -136,9 +134,9 @@ public class PlayerHealth : MonoBehaviour
 	public void RepairCar ()
 	{
 		brum.maxspeed = maximusSpeedus;
-		engineWarning.enabled = false;
 		currentHealth = startingHealth;
 		JointScript.czyNaprawione = true;
+		engineWarning.enabled = false;
 		for(int i = 0; i < tabUszk.Length;i++)
 		{
 			tabUszk[i] = 0;
@@ -229,10 +227,6 @@ public class PlayerHealth : MonoBehaviour
 	public void QuitGame (){
 		
 		Application.LoadLevel ("SceneCanvas");
-		if (mns.menuUI.enabled == false) 
-		{
-			mns.menuUI.enabled = true;
-		}
 
 		
 		if (soundSource != null)
