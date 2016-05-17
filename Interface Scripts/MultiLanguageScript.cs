@@ -13,15 +13,12 @@ public class MultiLanguageScript : MonoBehaviour{
 	private List<TextsClass> attTexts = new List<TextsClass> ();
 	private List<TextInsideScripts> insiderText = new List<TextInsideScripts>();
 	private int actualIndex = 1;
-
-	void Awake ()
-	{
-		//actualIndex = MenuScript.indexOfLang;
-	}
+	public static bool lowerWord = false;
+	public int indexOfRussia = 3;
+	public int valueOfWielkoscLiter = 20;
+	//Rosyjski index to 3 a wielkosc to 35
 	void Start ()
 	{
-		if (obiectWithScript == null)
-			obiectWithScript = this.gameObject;
 		for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
 			//for (int j = 0; j < listOfClass [i].languages.Length; j++) {
 			attTexts.Add (new TextsClass (listOfClassWithoutScripts [i].obiectWithText, listOfClassWithoutScripts [i].obiectWithText.GetComponent<Text>(),
@@ -32,19 +29,31 @@ public class MultiLanguageScript : MonoBehaviour{
 		{
 			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfSht));
 		}
+		actualIndex = MenuScript.indexOfLang;
+		if (obiectWithScript == null)
+			obiectWithScript = this.gameObject;
+
+		if (actualIndex == 1 && lowerWord == false) {
+			SetHighWord (1, 20);
+			lowerWord = true;
+		}
 		ChangeLange ();
 	}
 	void Update ()
 	{
+		if (Input.GetKeyDown (KeyCode.Home))
+			MenuScript.indexOfLang++;
 		if (actualIndex != MenuScript.indexOfLang) {
 			actualIndex = MenuScript.indexOfLang;
+
+			if (actualIndex == indexOfRussia && lowerWord == false) {
+				SetHighWord (actualIndex, valueOfWielkoscLiter);
+				lowerWord = true;
+			} else if (actualIndex != indexOfRussia && lowerWord == true) {
+				SetHighWord (actualIndex, valueOfWielkoscLiter);
+				lowerWord = false;
+			}
 			ChangeLange ();
-		}
-		if (Input.GetKeyDown (KeyCode.Home)) {
-			if (MenuScript.indexOfLang == 0)
-				MenuScript.indexOfLang = 1;
-			else
-				MenuScript.indexOfLang = 0;
 		}
 	}
 	public void ChangeLange ()
@@ -62,6 +71,33 @@ public class MultiLanguageScript : MonoBehaviour{
 					/*if (obiectWithScript.name == "BomberArea") {
 						obiectWithScript.SendMessage ("SetNewString", str);
 					}*/
+				}
+			}
+		}
+	}
+	private void SetHighWord (int idx, int wielkosc)
+	{
+		if (idx == indexOfRussia) { //Należt podać wartość indexu dla jez rosyjskiego
+			for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
+				Debug.Log(attTexts [i].textsInsideObiect.name);
+				attTexts [i].textsInsideObiect.fontSize -= wielkosc;
+			}
+			if (textsInScripts == true) {
+				for (int i = 0; i < listTextsInsideScript.Length; i++) {
+					for (int j = 0; j < listTextsInsideScript [i].nameOfSht.Length; j++) {
+						insiderText [i].nameOfSht [j].textToCHange.fontSize -= wielkosc;
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < attTexts.Count; i++) {
+				attTexts [i].textsInsideObiect.fontSize += wielkosc;
+			}
+			if (textsInScripts == true) {
+				for (int i = 0; i < listTextsInsideScript.Length; i++) {
+					for (int j = 0; j < listTextsInsideScript [i].nameOfSht.Length; j++) {
+						insiderText [i].nameOfSht [j].textToCHange.fontSize += wielkosc;
+					}
 				}
 			}
 		}
@@ -94,11 +130,14 @@ public class TextInsideScripts{
 }
 [Serializable]
 public class ZmienneDoNapisow {
+	
+	public Text textToCHange;
 	public string nameOfVariable;
 	public string [] languagesScript;
 
-	public ZmienneDoNapisow (string name, string [] langs)
+	public ZmienneDoNapisow (Text tToCHange, string name, string [] langs)
 	{
+		this.textToCHange = tToCHange;
 		this.nameOfVariable = name;
 		this.languagesScript = langs;
 	}

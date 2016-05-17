@@ -4,10 +4,17 @@ using System.Collections;
 public class CheckAboutPositionScript : MonoBehaviour {
 
 	SprawdzTerenScript sts;
+	private Terrain terr;
+	private float maxDist = 25f;
+	private AudioSource audioS;
+	private Transform thisTR;
 	// Use this for initialization
 	void Awake ()
 	{
+		thisTR = this.GetComponent<Transform> ();
 		sts = GetComponentInParent<SprawdzTerenScript>();
+		terr = sts.terrain;
+		audioS = this.GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -25,8 +32,15 @@ public class CheckAboutPositionScript : MonoBehaviour {
 	}
 	void OnTriggerExit(Collider other)
 	{
+		float dist;
 		if (sts.kolizjaZCzymkolwiek == true) {
 			sts.kolizjaZCzymkolwiek = false;
+		}
+		dist = Mathf.Abs(thisTR.position.y - terr.SampleHeight (thisTR.position));
+		if (dist > maxDist) {
+			if (audioS.isPlaying == false) {
+				audioS.Play ();
+			}
 		}
 	}
 }

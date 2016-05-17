@@ -26,13 +26,16 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		FileStream plik = File.Create(Application.persistentDataPath + "/profile.data");
 		
 		MenuProff menuP = new MenuProff (vms.valueOfVolumeMusic, vms.valueOfVolumeSound,
-			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution);
+			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution,
+			MultiLanguageScript.lowerWord);
+		
 		menuP.musicValue = vms.valueOfVolumeMusic;
 		menuP.soundValue = vms.valueOfVolumeSound;
 		menuP.numberOfUnlockedScene = LoadGameScript.unlockIndex;
 		menuP.valueOfGraphic = GraphicsScript.qualityLevel;
 		menuP.language = MenuScript.indexOfLang;
 		menuP.res = ChangeResolutionScript.resolution;
+		menuP.isRussian = MultiLanguageScript.lowerWord;
 
 		BinaryFormatter binFormat = new BinaryFormatter ();
 		binFormat.Serialize(plik, menuP);
@@ -55,6 +58,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 			GraphicsScript.qualityLevel = menuP.valueOfGraphic;
 			MenuScript.indexOfLang = menuP.language;
 			ChangeResolutionScript.resolution = menuP.res;
+			MultiLanguageScript.lowerWord = menuP.isRussian;
 			plik.Close();
 			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
 				//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
@@ -76,8 +80,9 @@ public class MenuProff{
 	public int valueOfGraphic;
 	public int language;
 	public int res;
+	public bool isRussian;
 
-	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol)
+	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol, bool isRus)
 	{
 		this.musicValue = musikValu;
 		this.soundValue = soundValu;
@@ -85,5 +90,6 @@ public class MenuProff{
 		this.valueOfGraphic = valuOfGraph;
 		this.language = lang;
 		this.res = resol;
+		this.isRussian = isRus;
 	}
 }
