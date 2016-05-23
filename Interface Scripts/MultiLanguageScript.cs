@@ -29,12 +29,13 @@ public class MultiLanguageScript : MonoBehaviour{
 		{
 			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfSht));
 		}
+		Debug.Log ("Lower word: " + lowerWord);
 		actualIndex = MenuScript.indexOfLang;
 		if (obiectWithScript == null)
 			obiectWithScript = this.gameObject;
 
-		if (actualIndex == 1 && lowerWord == false) {
-			SetHighWord (1, 20);
+		if (actualIndex == indexOfRussia) {
+			SetHighWord (actualIndex, valueOfWielkoscLiter);
 			lowerWord = true;
 		}
 		ChangeLange ();
@@ -79,24 +80,28 @@ public class MultiLanguageScript : MonoBehaviour{
 	{
 		if (idx == indexOfRussia) { //Należt podać wartość indexu dla jez rosyjskiego
 			for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
-				Debug.Log(attTexts [i].textsInsideObiect.name);
-				attTexts [i].textsInsideObiect.fontSize -= wielkosc;
+				//Debug.Log(attTexts [i].textsInsideObiect.name);
+				if(attTexts [i].textsInsideObiect.fontSize - wielkosc > 25)
+					attTexts [i].textsInsideObiect.fontSize -= wielkosc;
 			}
 			if (textsInScripts == true) {
 				for (int i = 0; i < listTextsInsideScript.Length; i++) {
 					for (int j = 0; j < listTextsInsideScript [i].nameOfSht.Length; j++) {
-						insiderText [i].nameOfSht [j].textToCHange.fontSize -= wielkosc;
+						if(insiderText [i].nameOfSht [j].textToCHange.fontSize - wielkosc > 25)
+							insiderText [i].nameOfSht [j].textToCHange.fontSize -= wielkosc;
 					}
 				}
 			}
 		} else {
 			for (int i = 0; i < attTexts.Count; i++) {
-				attTexts [i].textsInsideObiect.fontSize += wielkosc;
+				if(attTexts [i].textsInsideObiect.fontSize - wielkosc > 25)
+					attTexts [i].textsInsideObiect.fontSize += wielkosc;
 			}
 			if (textsInScripts == true) {
 				for (int i = 0; i < listTextsInsideScript.Length; i++) {
 					for (int j = 0; j < listTextsInsideScript [i].nameOfSht.Length; j++) {
-						insiderText [i].nameOfSht [j].textToCHange.fontSize += wielkosc;
+						if(insiderText [i].nameOfSht [j].textToCHange.fontSize - wielkosc > 25)
+							insiderText [i].nameOfSht [j].textToCHange.fontSize += wielkosc;
 					}
 				}
 			}

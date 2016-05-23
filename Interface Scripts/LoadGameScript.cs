@@ -177,6 +177,7 @@ public class LoadGameScript : MonoBehaviour {
 					/*if (GameObject.Find ("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
 						GameObject.Find ("DashboardOnScreen").gameObject.SetActive (false);
 					}*/
+					GameObject.FindGameObjectWithTag ("Respawn").SetActive (false);
 					ms.Disable (ms.loadGameComponents);
 					//Attendance buttons
 					activ [i].okButton.enabled = false;

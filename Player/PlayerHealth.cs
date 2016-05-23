@@ -51,6 +51,7 @@ public class PlayerHealth : MonoBehaviour
 	ObstacleTagScript ots;
 	RCCCarControllerV2 brum;
 	[HideInInspector]public bool poObrazeniach = false;
+	MenuScript mns;
 	
 	void Awake ()
 	{	//Pobieranie komponentów
@@ -60,6 +61,7 @@ public class PlayerHealth : MonoBehaviour
 		speedMaxTab [speedMaxIndex] = 0;
 		// Przypisanie początkowego życia to życia gracza
 		currentHealth = startingHealth;
+
 	}
 
 	void Start () 
@@ -68,6 +70,7 @@ public class PlayerHealth : MonoBehaviour
 		//Przypisanie ilości blendShape do ilosci odpowiedzialnej za iterowanie operacji
 		trans = this.GetComponent <Transform> ();
 		ots = GetComponentInParent<ObstacleTagScript> ();
+		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		blendShapeCount = srodek.blendShapeCount;
 		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
 		
@@ -228,10 +231,15 @@ public class PlayerHealth : MonoBehaviour
 		
 		Application.LoadLevel ("SceneCanvas");
 
+
 		
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
+		}
+		if (mns.menuUI.enabled == false)
+		{
+			mns.menuUI.enabled = true;
 		}
 	}
 

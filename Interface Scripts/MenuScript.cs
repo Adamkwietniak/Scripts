@@ -218,6 +218,7 @@ public class MenuScript : MonoBehaviour {
 		Time.timeScale = 1;
 
 		IsResume (false);
+		mps.SaveInfo ();
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
@@ -288,6 +289,7 @@ public class MenuScript : MonoBehaviour {
 			soundSource.PlayOneShot(clickSound);
 		}
 		Disable (loadGameComponents);
+		mps.SaveInfo ();
 
 		/*if((SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 6) && helpbUTTONtAB[1].enabled == true) 
 		{

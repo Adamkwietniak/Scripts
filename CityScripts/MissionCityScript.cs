@@ -52,6 +52,7 @@ public class MissionCityScript : MonoBehaviour {
 	public Image blackScreen;
 	private GameObject dash;
 	public GameObject shootingMission;
+	public Rigidbody rbBrum;
 
 	CursorLockMode cursorMode;
 	[HideInInspector]public string keepTextFromMissionCity;
@@ -73,6 +74,7 @@ public class MissionCityScript : MonoBehaviour {
 		obiectWithMiniGun.playAutomatically = false;
 		tankAudioS = obiectWithMiniGun.gameObject.GetComponent<AudioSource> ();
 		tankRb = obiectWithMiniGun.gameObject.GetComponent<Rigidbody> ();
+		rbBrum = rbBrum.GetComponent<Rigidbody> ();
 		enemyToKills.enabled = false;
 		for (int i = 0; i < dustOfTank.Length; i++) {
 			dustOfTank [i].SetActive (false);
@@ -345,6 +347,8 @@ public class MissionCityScript : MonoBehaviour {
 		GameObject.Find ("EngineHelp").SetActive (false);
 		dash.SetActive (false);
 		shootingMission.SetActive (true);
+		rbBrum.isKinematic = true;
+
 	}
 }
 

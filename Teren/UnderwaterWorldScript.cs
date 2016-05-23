@@ -38,17 +38,18 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	//private float wB = 0;
 	//private Color actualColor;
 	public GameObject hudrantPref;
-	private bool isHydrantOnScene = false;
+	public bool isHydrantOnScene = false;
 	private Transform camZderzakTr;
 
 	private List <Camera> camList = new List<Camera>();
 	private List <Transform> camListTr = new List<Transform>();
 	private Camera activeCam;
 	private float valueOfDistance = 0; // dystans ktory okresla maksymalna odleglosc miedzy tafla wody a calkowitym przejsciem w glebiny
-	private float heightOfWater = 0; // wysokosc tafli wody
+	public float heightOfWater = 0; // wysokosc tafli wody
 	UseCameraScript ucs;
 	RCCCarControllerV2 rcc;
 	PlayerHealth ph;
+	public float underwaterTimer = 0;
 	void Awake ()
 	{
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
@@ -89,12 +90,32 @@ public class UnderwaterWorldScript : MonoBehaviour {
 		if(cameraTransform.position.y - offsetOfPlayer < heightOfWater && underWater == false)
 		{
 			underWater = true;
-
+		}
+		if (isHydrantOnScene == true) {
+			if (underwaterTimer < 21) {
+				underwaterTimer += Time.deltaTime;
+			} else {
+				ph.GameOver ();
+			}
+			if (camZderzakTr.position.y > heightOfWater){
+				underwaterTimer = 0;
+				Time.timeScale = 1;
+				isHydrantOnScene = false;
+				hudrantPref.SetActive (false);
+			}
+		}
+		if (isHydrantOnScene == true && camZderzakTr.position.y > heightOfWater){
+			underwaterTimer = 0;
+			Time.timeScale = 1;
+			isHydrantOnScene = false;
+			hudrantPref.SetActive (false);
 		}
 		else if(cameraTransform.position.y - offsetOfPlayer > heightOfWater && underWater == true){
 			LoadDefaultSettings(true);
 			underWater = false;
 			setValue = false;
+			//isHydrantOnScene = false;
+			//underwaterTimer = 0;
 			Time.timeScale = 1;
 		}
 		if(underWater == true)
@@ -106,14 +127,7 @@ public class UnderwaterWorldScript : MonoBehaviour {
 
 			}
 			ph.GameOver ();
-			//rcc.engineRunning = false;
-			//rcc.canControl = false;
-
-			//rcc.maxspeed = 2;
-			//rcc.gameObject.GetComponent<Rigidbody> ().drag = 100;
-			//rcc.gameObject.GetComponent<Rigidbody> ().mass = 0.01f;
 			RenderSettings.fogColor = underWaterColorOfFogStart;
-			//Przydałoby się jakieś gameover
 		}
 	}
 	private void AssignActiveCamera ()
