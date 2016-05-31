@@ -53,7 +53,7 @@ public class MissionCompleteSnowScript : MonoBehaviour {
 		{
 			mns.menuUI.enabled = true;
 		}
-
+		mns.newGameDisabled = false;
 		mns.IsResume (false);
 		mns.escUse = false;
 

@@ -50,6 +50,8 @@ public class MenuScript : MonoBehaviour {
 	private bool dashboardWasLoaded = false;
 
 	public bool isFullScreen = true;
+	public Canvas languagePanel;
+	public static bool isLanguagePanel = false;
 	void Awake()
 	{
 		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
@@ -59,6 +61,7 @@ public class MenuScript : MonoBehaviour {
 		helpbUTTONtAB [2] = btnSettings;
 		helpbUTTONtAB [3] = btnCredits;
 		helpbUTTONtAB [4] = btnExit;
+		languagePanel.enabled = false;
 		/*for (int i = 0; i < helpbUTTONtAB.Length; i++) 
 		{
 			Debug.Log ("hdupencjanehhee" + helpbUTTONtAB [i].name);
@@ -82,7 +85,10 @@ public class MenuScript : MonoBehaviour {
 		settings.enabled = false;
 		loadingTime.enabled = false;
 		loadGame.enabled = false;
-
+		if (isLanguagePanel == false && languagePanel.enabled == false) {
+			languagePanel.enabled = true;
+		}
+			
 		
 		Time.timeScale = 0;
 		Disable (loadGameComponents);
@@ -259,7 +265,7 @@ public class MenuScript : MonoBehaviour {
 
 			//cms.tempBoolCredits = false;
 		
-			Application.LoadLevel (2);
+			Application.LoadLevel ("Scene01Tutorial");
 		
 			Time.timeScale = 1;
 		
@@ -299,6 +305,8 @@ public class MenuScript : MonoBehaviour {
 	public void SetLang(int i)
 	{
 		MenuScript.indexOfLang = i;
+		languagePanel.enabled = false;
+		isLanguagePanel = true;
 	}
 	public void ButtonConfirmExit()
 	{

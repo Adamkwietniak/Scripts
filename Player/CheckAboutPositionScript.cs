@@ -6,21 +6,52 @@ public class CheckAboutPositionScript : MonoBehaviour {
 	SprawdzTerenScript sts;
 	PlayerHealth ph;
 	private Terrain terr;
-	private float maxDist = 25f;
+	private float maxDist = 15.0f;
 	private AudioSource audioS;
-	private Transform thisTR;
-	private bool turnOnMusic = false;
+	//private Transform thisTR;
+	public bool turnOnMusic = false;
+	private Transform brumTR;
+	private float lastDist = 0;
 	// Use this for initialization
 	void Awake ()
 	{
-		thisTR = this.GetComponent<Transform> ();
+		//thisTR = this.GetComponent<Transform> ();
 		sts = GetComponentInParent<SprawdzTerenScript>();
 		audioS = this.GetComponent<AudioSource> ();
 		ph = this.GetComponentInChildren<PlayerHealth> ();
+		brumTR = this.transform.parent.GetComponent<Transform> ();
+		//audioS.Stop ();
 	}
 	void Start ()
 	{
 		terr = sts.terrain;
+		if (audioS.isPlaying == true)
+			audioS.Stop ();
+	}
+	void Update ()
+	{
+		if (turnOnMusic == true) {
+			float dist;
+			bool isPlay = false;
+			dist = Mathf.Abs (brumTR.position.y - terr.SampleHeight (brumTR.position));
+			if (dist > maxDist)
+				isPlay = true;
+			if (audioS.isPlaying == false && isPlay == true) {
+				audioS.Play ();
+			}
+			if (dist > maxDist * 5 && brumTR.position.y < -50 && isPlay == true) {
+				ph.GameOver ();
+			}
+			if (dist <= maxDist && lastDist > dist) {
+				turnOnMusic = false;
+			}
+			lastDist = dist;
+		} else if (turnOnMusic == false && audioS.isPlaying == true) {
+			audioS.Stop ();
+			lastDist = 0;
+		}
+		/*if (Input.GetKeyDown (KeyCode.G))
+			brumTR.position = new Vector3 (brumTR.position.x, brumTR.position.y+25f, brumTR.position.z);*/
 	}
 	// Update is called once per frame
 	void OnTriggerStay(Collider other)
@@ -38,25 +69,13 @@ public class CheckAboutPositionScript : MonoBehaviour {
 	}
 	void OnTriggerExit(Collider other)
 	{
-		float dist;
 		if (sts.kolizjaZCzymkolwiek == true) {
 			sts.kolizjaZCzymkolwiek = false;
+			turnOnMusic = true;
 		}
-		dist = Mathf.Abs(thisTR.position.y - terr.SampleHeight (thisTR.position));
-		if (dist > maxDist) {
-			if (turnOnMusic == false)
-				turnOnMusic = true;
-			if (audioS.isPlaying == false && turnOnMusic == true) {
-				audioS.Play ();
-			}
-			if (dist > maxDist * 5 && thisTR.position.y < -50) {
-				ph.GameOver ();
-			}
-		} else if (dist <= maxDist && turnOnMusic == true) {
-			turnOnMusic = false;
-			if (audioS.isPlaying == true)
-				audioS.Stop ();
-		}
+		//if (turnOnMusic == false)
+			
 	}
 
 }
+

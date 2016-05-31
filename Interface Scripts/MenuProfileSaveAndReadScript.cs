@@ -27,7 +27,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		
 		MenuProff menuP = new MenuProff (vms.valueOfVolumeMusic, vms.valueOfVolumeSound,
 			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution,
-			MultiLanguageScript.lowerWord);
+			MultiLanguageScript.lowerWord, MenuScript.isLanguagePanel);
 		
 		menuP.musicValue = vms.valueOfVolumeMusic;
 		menuP.soundValue = vms.valueOfVolumeSound;
@@ -36,6 +36,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		menuP.language = MenuScript.indexOfLang;
 		menuP.res = ChangeResolutionScript.resolution;
 		menuP.isRussian = MultiLanguageScript.lowerWord;
+		menuP.isLang = MenuScript.isLanguagePanel;
 
 		BinaryFormatter binFormat = new BinaryFormatter ();
 		binFormat.Serialize(plik, menuP);
@@ -59,6 +60,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 			MenuScript.indexOfLang = menuP.language;
 			ChangeResolutionScript.resolution = menuP.res;
 			MultiLanguageScript.lowerWord = menuP.isRussian;
+			MenuScript.isLanguagePanel = menuP.isLang;
 			plik.Close();
 			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
 				//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
@@ -81,8 +83,9 @@ public class MenuProff{
 	public int language;
 	public int res;
 	public bool isRussian;
+	public bool isLang;
 
-	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol, bool isRus)
+	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol, bool isRus, bool isLangi)
 	{
 		this.musicValue = musikValu;
 		this.soundValue = soundValu;
@@ -91,5 +94,6 @@ public class MenuProff{
 		this.language = lang;
 		this.res = resol;
 		this.isRussian = isRus;
+		this.isLang = isLangi;
 	}
 }

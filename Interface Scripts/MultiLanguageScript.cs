@@ -29,7 +29,7 @@ public class MultiLanguageScript : MonoBehaviour{
 		{
 			insiderText.Add(new TextInsideScripts(listTextsInsideScript[i].nameOfSht));
 		}
-		Debug.Log ("Lower word: " + lowerWord);
+		//Debug.Log ("Lower word: " + lowerWord);
 		actualIndex = MenuScript.indexOfLang;
 		if (obiectWithScript == null)
 			obiectWithScript = this.gameObject;

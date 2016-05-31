@@ -67,15 +67,16 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	} 
 	
 	public void QuitGame (){
-		
+
 		Application.LoadLevel ("SceneCanvas");
 		if (mns.menuUI.enabled == false) 
 		{
 			mns.menuUI.enabled = true;
 		}
+		mns.newGameDisabled = false;
 		mns.IsResume (false);
 		mns.escUse = false;
-		
+
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);

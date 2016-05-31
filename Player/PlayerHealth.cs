@@ -130,8 +130,17 @@ public class PlayerHealth : MonoBehaviour
 		checkStayInCollider = false;
 		if(sthOnScreen == true)
 			BlinkEngineWarning ();
-		if (Input.GetKey (KeyCode.H) && soundSource.isPlaying == false) {
-			soundSource.PlayOneShot (hornSound);
+		if (Input.GetKey (KeyCode.H)) {
+			if (soundSource.clip != hornSound) {
+				soundSource.clip = hornSound;
+				soundSource.loop = true;
+			}
+			if (soundSource.isPlaying == false) {
+				soundSource.Play ();
+			}
+		} else if (!Input.GetKey (KeyCode.H) && soundSource.clip == hornSound) {
+			soundSource.clip = null;
+			soundSource.loop = false;
 		}
 	}
 	public void RepairCar ()
