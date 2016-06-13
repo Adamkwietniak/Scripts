@@ -22,7 +22,7 @@ public class MissionCompleteCityScript : MonoBehaviour {
 	{
 		if (loadingObj == null) {
 			loadingObj = GameObject.Find ("LOADING");
-			Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
+			//Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
 		}
 	}
 	
@@ -81,10 +81,12 @@ public class MissionCompleteCityScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+		mns.EnableButtonsAfterExit ();
 	}
 
 	
 	public void NextMission (){
+		mns.escUse = true;
 		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;

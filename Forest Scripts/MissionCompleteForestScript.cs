@@ -24,7 +24,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	{
 		if (loadingObj == null) {
 			loadingObj = GameObject.Find ("LOADING");
-			Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
+			//Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
 		}
 	}
 	void Start (){
@@ -81,6 +81,7 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+		mns.EnableButtonsAfterExit ();
 	}
 
 	public void DemoButton () {
@@ -98,7 +99,8 @@ public class MissionCompleteForestScript : MonoBehaviour {
 	}
 	
 	public void NextMission (){
-
+		
+		mns.escUse = true;
 		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;

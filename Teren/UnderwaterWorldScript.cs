@@ -50,11 +50,13 @@ public class UnderwaterWorldScript : MonoBehaviour {
 	RCCCarControllerV2 rcc;
 	PlayerHealth ph;
 	public float underwaterTimer = 0;
+    MenuScript ms;
 	void Awake ()
 	{
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
 		ph = (PlayerHealth)FindObjectOfType (typeof(PlayerHealth)) as PlayerHealth;
 		hudrantPref.SetActive (false);
+        ms = (MenuScript)FindObjectOfType(typeof(MenuScript)) as MenuScript;
 	}
 	void Start ()
 	{
@@ -90,18 +92,20 @@ public class UnderwaterWorldScript : MonoBehaviour {
 		if(cameraTransform.position.y - offsetOfPlayer < heightOfWater && underWater == false)
 		{
 			underWater = true;
-		}
+            RenderSettings.fog = true;
+        }
 		if (isHydrantOnScene == true) {
 			if (underwaterTimer < 21) {
 				underwaterTimer += Time.deltaTime;
 			} else {
+                ms.escUse = false;
 				ph.GameOver ();
 			}
 			if (camZderzakTr.position.y > heightOfWater){
 				underwaterTimer = 0;
 				Time.timeScale = 1;
 				isHydrantOnScene = false;
-				hudrantPref.SetActive (false);
+                hudrantPref.SetActive(false);
 			}
 		}
 		if (isHydrantOnScene == true && camZderzakTr.position.y > heightOfWater){
@@ -114,9 +118,10 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			LoadDefaultSettings(true);
 			underWater = false;
 			setValue = false;
-			//isHydrantOnScene = false;
-			//underwaterTimer = 0;
-			Time.timeScale = 1;
+            RenderSettings.fog = false;
+            //isHydrantOnScene = false;
+            //underwaterTimer = 0;
+            Time.timeScale = 1;
 		}
 		if(underWater == true)
 		{
@@ -124,11 +129,12 @@ public class UnderwaterWorldScript : MonoBehaviour {
 			{
 				SetValueOfFog();
 				setValue = true;
-
-			}
-			ph.GameOver ();
-			RenderSettings.fogColor = underWaterColorOfFogStart;
-		}
+                RenderSettings.fogColor = underWaterColorOfFogStart;
+                ms.escUse = false;
+            }
+            
+            ph.GameOver ();
+        }
 	}
 	private void AssignActiveCamera ()
 	{

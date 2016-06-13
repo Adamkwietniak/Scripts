@@ -39,6 +39,7 @@ public class AttendanceEnemy : MonoBehaviour {
 	PlayerHealth ph;
 	private Transform[] tankAndShooter = new Transform[2];
 	private bool changedTarget = false;
+	public bool takeDmg = true;
 
 	public AudioClip soundShoot;
 
@@ -121,6 +122,10 @@ public class AttendanceEnemy : MonoBehaviour {
 			}
 
 		if (isShooterNow == true) {
+			if (takeDmg == true) {
+				LowDMG ();
+				takeDmg = false;
+			}
 			AttendanceEvent (tankAndShooter[0], tankAndShooter[1]);
 		} else {
 			StartCoroutine (AttendanceUpdate ());
@@ -519,6 +524,12 @@ public class AttendanceEnemy : MonoBehaviour {
 			}
 		}
 		
+	}
+	private void LowDMG ()
+	{
+		for (int i = 0; i < mainEnemy.Count; i++) {
+			mainEnemy [i].dmgFromShoot = 0;
+		}
 	}
 
 }

@@ -61,10 +61,12 @@ public class MissionCompleteSnowScript : MonoBehaviour {
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
+		mns.EnableButtonsAfterExit ();
 	}
 	
 
 	public void NextMission (){
+		mns.escUse = true;
 		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
 			cLoad.enabled = true;

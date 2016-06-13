@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
 {
 	SkinnedMeshRenderer skinned; //poprostu skinnedMeshRenderer wywolujemy przez skinned.
 	Mesh srodek;
-
+    SparkleScript ss;
 	public int startingHealth = 100; // ilosc zycia                          
 	public int currentHealth; //ilosc zycia w danym momencie 
 	[HideInInspector]public float dmg = 0f;
@@ -16,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
 	[HideInInspector]public string nameCollider;
 	[HideInInspector]public bool ifdamage = false;
 	[HideInInspector]public bool checkStayInCollider = false;
+    [HideInInspector]
+    public bool contactWithCollider = false;
 	public Image engineWarning;
 	private bool sthOnScreen = false;
 	private bool upColor = false;
@@ -61,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
 		speedMaxTab [speedMaxIndex] = 0;
 		// Przypisanie początkowego życia to życia gracza
 		currentHealth = startingHealth;
-
+        ss = GetComponentInParent<SparkleScript>();
 	}
 
 	void Start () 
@@ -98,7 +100,7 @@ public class PlayerHealth : MonoBehaviour
 			GameOver ();
 		} 
 	
-		if (ifdamage == true) {					//Jeśli nastąpiły uszkodzenia, sprawd jakie a następnie odpowiednio się
+		if (ifdamage == true && ss.isDam == true) {					//Jeśli nastąpiły uszkodzenia, sprawd jakie a następnie odpowiednio się
 			//ustosunkuj w zależności od tego, jakie one były a następnie przeslij
 			if (poObrazeniach == false) {
 				int deltaPredkosc = (int)(SetDMG (speedMaxTab));
@@ -108,7 +110,7 @@ public class PlayerHealth : MonoBehaviour
 					//Debug.Log ("Predkosc katowa: " + ots.obstacleTab [indexOfObstacleTag].angularV + " predskosc zwykla: " + ots.obstacleTab [indexOfObstacleTag].speedD + " masa: " + ots.obstacleTab [indexOfObstacleTag].rb.mass + " wyszlo: " + obrazenia);
 				} else {
 					if (deltaPredkosc > 10) {
-						obrazenia = (int)(deltaPredkosc / (mnoznikDoSpeed * 7f));	//max.speed
+						obrazenia = (int)(deltaPredkosc / (mnoznikDoSpeed * 6.5f));	//max.speed
 						ResetTab ();
 					}
 				}
@@ -125,9 +127,12 @@ public class PlayerHealth : MonoBehaviour
 				CarDMG (obrazenia); 
 				//Debug.Log (obrazenia);
 			}
-		}
-		ifdamage = false;
-		checkStayInCollider = false;
+            ifdamage = false;
+            contactWithCollider = false;
+            checkStayInCollider = false;
+            ss.isDam = false;
+        }
+		
 		if(sthOnScreen == true)
 			BlinkEngineWarning ();
 		if (Input.GetKey (KeyCode.H)) {
@@ -237,25 +242,31 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	public void QuitGame (){
-		
+
 		Application.LoadLevel ("SceneCanvas");
+		if (mns.menuUI.enabled == false) 
+		{
+			mns.menuUI.enabled = true;
+		}
 
+		mns.newGameDisabled = false;
+		mns.IsResume (false);
+		mns.escUse = false;
 
-		
 		if (soundSource != null)
 		{
 			soundSource.PlayOneShot(clickSound);
 		}
-		if (mns.menuUI.enabled == false)
-		{
-			mns.menuUI.enabled = true;
-		}
+		mns.EnableButtonsAfterExit ();
 	}
 
 	public void TryAgain (){
-		
+
+
 		gameOver.enabled = false;
 		Application.LoadLevel(sameLevel);
+		mns.escUse = true;
+
 
 
 		
@@ -266,6 +277,7 @@ public class PlayerHealth : MonoBehaviour
 	}
 	public void GameOver ()
 	{
+		mns.escUse = false;
 		brum.maxspeed = 0;
 		//currentHealth = 0;
 		brum.engineRunning = false;

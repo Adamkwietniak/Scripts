@@ -7,7 +7,9 @@ public class SparkleScript : MonoBehaviour {
 
 	private ParticleSystem [] sparklesPS = new ParticleSystem[5];
 	private Transform[] transformPS = new Transform[5];
-	public bool isDmgCar = false;
+	[HideInInspector]public bool isDmgCar = false;
+    [HideInInspector]
+    public bool isDam = false;
 	private ContactPoint contact;
 	private Quaternion rot;
 	private Vector3 pos = new Vector3(0, 0, 0);
@@ -30,10 +32,12 @@ public class SparkleScript : MonoBehaviour {
 	{
 		if (isDmgCar == false) {
 			isDmgCar = true;
-			contact = collision.contacts[0];
+            contact = collision.contacts[0];
 			SparkleFunction ();
 		}
-	}
+        if(isDam == false)
+            isDam = true;
+    }
 	private void SparkleFunction ()
 	{
 			rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
@@ -43,7 +47,8 @@ public class SparkleScript : MonoBehaviour {
 			else if(sparkles.Length == 1)
 				randSparkle = 0;
 			Instantiate(sparkles[randSparkle], pos, rot);
-			isDmgCar = false;
+       // Debug.Log("Uderzylem, co mi szkodzi");
+        isDmgCar = false;
 
 	}
 }

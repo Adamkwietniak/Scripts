@@ -40,8 +40,6 @@ public class ChangeOfRiverGraphicScript : MonoBehaviour {
 		switch (i) {
 		case 0:						//Fastest
 			directLight.shadows = LightShadows.None;
-			directLight.shadowStrength = 0;
-			RenderSettings.fog = false;
 			wb.waterQuality = WaterQuality.Low;
 			wb.edgeBlend = false;
 			sl.enabled = false;
@@ -50,18 +48,14 @@ public class ChangeOfRiverGraphicScript : MonoBehaviour {
 			break;
 		case 1:						//Fast
 			directLight.shadows = LightShadows.None;
-			directLight.shadowStrength = 0;
 			wb.waterQuality = WaterQuality.Low;
 			wb.edgeBlend = false;
 			sl.enabled = true;
 			pr.enabled = false;
 			gd.enabled = false;
-			RenderSettings.fog = false;
 			break;
 		case 2:						//Simple
 			directLight.shadows = LightShadows.Hard;
-			directLight.shadowStrength = 1;
-			RenderSettings.fog = false;
 			wb.waterQuality = WaterQuality.Medium;
 			wb.edgeBlend = false;
 			sl.enabled = true;
@@ -70,8 +64,6 @@ public class ChangeOfRiverGraphicScript : MonoBehaviour {
 			break;
 		case 3:						//Good
 			directLight.shadows = LightShadows.Hard;
-			directLight.shadowStrength = 1;
-			RenderSettings.fog = true;
 			wb.waterQuality = WaterQuality.Medium;
 			wb.edgeBlend = true;
 			sl.enabled = true;
@@ -80,8 +72,6 @@ public class ChangeOfRiverGraphicScript : MonoBehaviour {
 			break;
 		case 4:						//Beautyfull
 			directLight.shadows = LightShadows.Soft;
-			directLight.shadowStrength = 1;
-			RenderSettings.fog = true;
 			wb.waterQuality = WaterQuality.High;
 			wb.edgeBlend = true;
 			sl.enabled = true;
@@ -90,8 +80,6 @@ public class ChangeOfRiverGraphicScript : MonoBehaviour {
 			break;
 		case 5:						//Fantastic
 			directLight.shadows = LightShadows.Soft;
-			directLight.shadowStrength = 1;
-			RenderSettings.fog = true;
 			wb.waterQuality = WaterQuality.High;
 			wb.edgeBlend = true;
 			sl.enabled = true;

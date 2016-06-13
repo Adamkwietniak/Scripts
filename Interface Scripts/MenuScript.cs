@@ -317,7 +317,7 @@ public class MenuScript : MonoBehaviour {
 			soundSource.PlayOneShot(clickSound);
 		}
 	}
-	private void Enable (GameObject [] tab)
+	public void Enable (GameObject [] tab)
 	{
 		for (int i = 0; i < tab.Length; i++) {
 			tab [i].SetActive (true);
@@ -329,11 +329,11 @@ public class MenuScript : MonoBehaviour {
 			tab [i].SetActive (false);
 		}
 	}
-	public void ReloadDash ()
+	public void EnableButtonsAfterExit ()
 	{
-		if (GameObject.Find("BrumBrume").GetComponent<SprawdzTerenScript> ().enabled == true) {
-			//dashBoard = GameObject.Find ("DashboardOnScreen");
-			//dashboardWasLoaded = true;
+		for (int i = 0; i < helpbUTTONtAB.Length; i++) {
+			if (helpbUTTONtAB [i].enabled == false)
+				helpbUTTONtAB [i].enabled = true;
 		}
 	}
 }

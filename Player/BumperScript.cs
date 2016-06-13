@@ -64,7 +64,7 @@ public class BumperScript : MonoBehaviour {
 		}
 		if (Input.GetKey(KeyCode.LeftBracket)){
 
-			if (timer1 <= 1) {
+			if (timer1 >= 0) {
 				timer1 -= Time.deltaTime / 2;
 			}
 			else if (timer1 < 0) {

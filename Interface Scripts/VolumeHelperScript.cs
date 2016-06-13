@@ -19,7 +19,7 @@ public class VolumeHelperScript : MonoBehaviour {
 		
 		if (loading != null)
 			loading.GetComponent<Canvas> ().enabled = false;
-		ms.ReloadDash ();
+		//ms.ReloadDash ();
 		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
 		//vms.ResetTabs();
 		vms.Initiate();

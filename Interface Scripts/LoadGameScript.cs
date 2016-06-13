@@ -60,13 +60,13 @@ public class LoadGameScript : MonoBehaviour {
 			Intate ();
 			PreparationOfImages (actualIndex);
 		}
-		if (Input.GetKeyDown (KeyCode.P)) {
+		/*if (Input.GetKeyDown (KeyCode.P)) {
 			unlockIndex = 0;
 		}
 		if (Input.GetKeyDown (KeyCode.O)) {
 			LoadGameScript.unlockIndex ++;
 			//Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
-		}
+		}*/
 	}
 	public void PreparationOfImages (int unlockValiu)	//Przesylamy wartosc, która wskazuje na ilosc odblokowanych scen liczoną od 0
 	{

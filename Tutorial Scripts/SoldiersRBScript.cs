@@ -13,10 +13,14 @@ public class SoldiersRBScript : MonoBehaviour {
 	private bool timerrek = false;
 	public AudioSource soldierSource;
 	public AudioClip deadSoldierClip;
+    MenuScript ms;
 
 	private bool isKinematic = false;
 
-
+    void Awake ()
+    {
+        ms = (MenuScript)FindObjectOfType(typeof(MenuScript)) as MenuScript;
+    }
 	// Use this for initialization
 	void Start () {
 
@@ -61,6 +65,7 @@ public class SoldiersRBScript : MonoBehaviour {
 		isKinematic = false;
 		timerrek = true;
 		soldierSource.PlayOneShot (deadSoldierClip);
+        ms.escUse = false;
 	}
 
 }

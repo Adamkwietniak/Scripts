@@ -41,6 +41,10 @@ public class SprawdzTerenScript : MonoBehaviour
 	private float statAsfalt = 0;
 	private PhysicMaterialCombine fAsfalt;
 	private PhysicMaterialCombine cAsfalt = 0;
+	private bool offAll = false;
+
+	private float timerToNext = 0;
+	private bool timerNow = false;
 
 	void Awake ()
 	{
@@ -70,20 +74,32 @@ public class SprawdzTerenScript : MonoBehaviour
 
 	void Update ()
 	{
-		StartCoroutine (AttendanceScriptUpdate ());		
+		if (timerNow == false) {
+			if (timerToNext < 0.1)
+				timerToNext += Time.deltaTime*2;
+			else {
+				timerNow = true;
+				timerToNext = 0;
+			}
+		}
+		if (timerNow == true) {
+			AttendanceScriptUpdate ();
+			timerNow = false;
+		}
     }
-	private IEnumerator AttendanceScriptUpdate ()
+	private void AttendanceScriptUpdate ()
 	{
-		yield return new WaitForSeconds (1);
 		if(kolizjaZObjektem == false && kolizjaZCzymkolwiek == true){
+			if (offAll == true)
+				offAll = false;
 			AttendanceAllTextures ();
 			if(tempGO != null)
 				tempGO = null;
 		}
 		else if(kolizjaZObjektem == true && kolizjaZCzymkolwiek == true)
 		{
-			if(tempGO != gejmObject){
-				gejmObjectCollider = GetColliderFromObj(gejmObject);
+			if (tempGO != gejmObject) {
+				gejmObjectCollider = GetColliderFromObj (gejmObject);
 				//Debug.Log("Phisics to: "+gejmObjectCollider.sharedMaterial.name+ " a phisic 2: "+ materialPhiysics[0].name);
 				if (gejmObjectCollider.sharedMaterial != null) {
 					if (gejmObjectCollider.sharedMaterial.name == materialPhiysics [0].name + " (Instance)") {		//tu mozna dodac dzwiek jazdy po asfalcie
@@ -92,6 +108,19 @@ public class SprawdzTerenScript : MonoBehaviour
 					}
 					tempGO = gejmObject; 
 				}
+				if (offAll == false) {
+					for (int i = 0; i < ms.psTire.Count; i++) {
+						ms.psTire [i].generateMud = false;
+					}
+					dss.sprawdzam = false;
+					offAll = true;
+				}
+			} else if (kolizjaZObjektem == false && kolizjaZCzymkolwiek == false && offAll == false) {
+				for (int i = 0; i < ms.psTire.Count; i++) {
+					ms.psTire [i].generateMud = false;
+				}
+				dss.sprawdzam = false;
+				offAll = true;
 			}
 			if(gejmObjectCollider.material.name == materialPhiysics[0].name)		//tu mozna dodac dzwiek jazdy po asfalcie
 			{
@@ -122,9 +151,9 @@ public class SprawdzTerenScript : MonoBehaviour
 					if (czyKurz [i].czyKurz == true) {
 						Wykonaj (i);
 					}
-					if (czyKurz [i].czyBagno == true || czyKurz [i].changeTex == true) {
+					/*if (czyKurz [i].czyBagno == true || czyKurz [i].changeTex == true) {
 						AssignDeform (i);
-					}
+					}*/
 					if (czyKurz [i].wspolczynnikOporu != 0.1f) {
 						SetOfDrag (i);
 					}
@@ -171,7 +200,7 @@ public class SprawdzTerenScript : MonoBehaviour
 		activeMaterial.staticFriction = czyKurz[i].valDynFric+0.05F;
 		activeMaterial.bounciness = czyKurz[i].bauc;              
     }
-	private void AssignDeform (int i)
+	/*private void AssignDeform (int i)
 	{
 		if (rcc.speed>0) {
 			deformIs = false;
@@ -198,16 +227,28 @@ public class SprawdzTerenScript : MonoBehaviour
 				}
 			}
 		}
-	}
+	}*/
 	private void AttendanceMudSrc (int i)
 	{
 		mudIs = false;
 		for (int j = 0; j < ms.psTire.Count; j++) {
-			if (TexInPosition(i, ms.psTire [j].particle.transform.position)) {
+			if(czyKurz[i].collor != ms.psTire[j].rend[0].material.GetColor("_TintColor"))
+            {
+                for (int k = 0; k < ms.psTire[j].rend.Length; k++)
+                {
+                    ms.psTire[j].rend[k].material.SetColor("_TintColor", czyKurz[i].collor);
+                }
+            }
+			if (TexInPosition(i, ms.psTire [j].particleGO.transform.position)) {
+				//Vector2 randOffset;
+				//randOffset.x = Random.Range (0, 2);
+				//randOffset.y = Random.Range (0, 2);
 				mudIs = true;
 				ms.psTire [j].generateMud = true;
-				ms.psTire[j].rend.material.color = czyKurz[i].collor;
-				ms.psTire[j].rend.material.color = czyKurz[i].collor;
+				//ms.psTire [j].rend.material.SetTextureOffset ("_MainTex", randOffset);
+				//ms.psTire[j].rend.material.color = czyKurz[i].collor;
+				//ms.psTire[j].rend.material.color = czyKurz[i].collor;
+				//Debug.Log ("Działam: "+ms.psTire[j].rend.material.color);
 			}
 			if(!mudIs) {
 				ms.psTire [j].generateMud = false;
@@ -229,7 +270,7 @@ public class SprawdzTerenScript : MonoBehaviour
 	private Color32 AverageOfColorInTexture (Texture2D tex)
 	{
 		Color32[] texColors = tex.GetPixels32 ();
-		
+		int wsp = 15;
 		int total = texColors.Length;
 		
 		float r = 0;
@@ -246,8 +287,14 @@ public class SprawdzTerenScript : MonoBehaviour
 			b += texColors[i].b;
 			
 		}
-		
-		return new Color32((byte)(r / total) , (byte)(g / total) , (byte)(b / total) , 255);
+		Vector3 col = new Vector3 ((r / total) - wsp, (g / total) - wsp, (b / total) - wsp);
+		if (col.x < 0)
+			col.x = 0;
+		if (col.y < 0)
+			col.y = 0;
+		if (col.z < 0)
+			col.z = 0;
+		return new Color32((byte)col.x , (byte)col.y , (byte)col.z , 255);
 	}
 
 	void UstawFric (int i)

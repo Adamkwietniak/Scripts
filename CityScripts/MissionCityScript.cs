@@ -221,8 +221,11 @@ public class MissionCityScript : MonoBehaviour {
 				}
 				isOver = true;
 				enemyToKills.enabled = false;
-				if (gzComplete.enabled == false)
-					gzComplete.enabled = true;
+                if (gzComplete.enabled == false)
+                {
+                    gzComplete.enabled = true;
+                    ms.escUse = false;
+                }
 			}
 			if (suma > 0 && enemyToKills.enabled == true)
 				enemyToKills.text = (suma.ToString () + " " + keepTextFromMissionCity);
@@ -234,7 +237,8 @@ public class MissionCityScript : MonoBehaviour {
 				}
 				if (GameOver.enabled == false) {
 					GameOver.enabled = true;
-				}
+                    ms.escUse = false;
+                }
 			}
 			tankAudioS.pitch = Mathf.Lerp (0.9f, 1.1f, tankRb.velocity.magnitude);
 

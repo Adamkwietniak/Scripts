@@ -23,8 +23,12 @@ public class AllianceSoliderEvent : MonoBehaviour {
 	public AudioClip clickSound;
 	public AudioSource soldierSource;
 	public AudioClip deadSoldierClip;
+    MenuScript ms;
 
-
+    void Awake ()
+    {
+        ms = (MenuScript)FindObjectOfType(typeof(MenuScript)) as MenuScript;
+    }
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("BrumBrume");
@@ -48,6 +52,7 @@ public class AllianceSoliderEvent : MonoBehaviour {
 		if (allianceDead == true) { //Ten if dziala wtedy kiedy pieprznie go brum
 			SetKinematic ();
 			allianceDead = false;
+            ms.escUse = false;
 		}
 		if (allianceDead == false && wantTableToAnim == true) {
 			dist = Vector3.Distance(this.trans.position, destPoints[n].position);
