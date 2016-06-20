@@ -5,7 +5,7 @@ public class HeheScript : MonoBehaviour {
 
 	void Start ()
 	{
-		Debug.Log ("Nosz kurwa");
+		//Debug.Log ("Nosz kurwa");
 	}
 
 }
