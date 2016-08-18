@@ -4,7 +4,8 @@ using UnityEngine.Audio;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class MenuScript : MonoBehaviour {
+public class MenuScript : MonoBehaviour
+{
 	
 	[HideInInspector]public Canvas menuUI;
 	
@@ -23,7 +24,8 @@ public class MenuScript : MonoBehaviour {
 	public Button btnQuit;
 	public Button btnCancel;
 
-	public GameObject [] loadGameComponents = new GameObject[3]; //mapki z load game bo się kurwa zasłaniały
+	public GameObject[] loadGameComponents = new GameObject[3];
+	//mapki z load game bo się kurwa zasłaniały
 	
 	[HideInInspector]public bool escUse;
 	[HideInInspector]public bool duringGame;
@@ -43,7 +45,7 @@ public class MenuScript : MonoBehaviour {
 	CreditsMovingScript cms;
 	RCCCarControllerV2 rcc;
 	MenuProfileSaveAndReadScript mps;
-	private Button []helpbUTTONtAB = new Button[5];
+	private Button[] helpbUTTONtAB = new Button[5];
 	private GameObject resumeButtonObj;
 
 	private GameObject dashBoard;
@@ -52,9 +54,10 @@ public class MenuScript : MonoBehaviour {
 	public bool isFullScreen = true;
 	public Canvas languagePanel;
 	public static bool isLanguagePanel = false;
-	void Awake()
+
+	void Awake ()
 	{
-		rcc = GameObject.Find("BrumBrume").GetComponent<RCCCarControllerV2>();
+		rcc = GameObject.Find ("BrumBrume").GetComponent<RCCCarControllerV2> ();
 		//ReloadDash ();
 		helpbUTTONtAB [0] = btnNewGame;
 		helpbUTTONtAB [1] = btnLoadGame;
@@ -69,15 +72,18 @@ public class MenuScript : MonoBehaviour {
 		mps = GetComponent<MenuProfileSaveAndReadScript> ();
 	}
 	// Use this for initialization
-	void Start () {
-		menuUI = (Canvas)GetComponent<Canvas>();
-		quitMenu = quitMenu.GetComponent<Canvas>();
-		settings = settings.GetComponent<Canvas>();
+	void Start ()
+	{
+		menuUI = (Canvas)GetComponent<Canvas> ();
+		quitMenu = quitMenu.GetComponent<Canvas> ();
+		settings = settings.GetComponent<Canvas> ();
 		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//loadGame = loadGame.GetComponent<Canvas> ();
 		resumeButtonObj = resumeGame.gameObject;
 		escUse = false;
 		duringGame = false;
+
+
 		//cms = creditMovingObj.GetComponent<CreditsMovingScript>();
 		
 		quitMenu.enabled = false;
@@ -93,7 +99,7 @@ public class MenuScript : MonoBehaviour {
 		Time.timeScale = 0;
 		Disable (loadGameComponents);
 		
-		if(gameMusic == null)
+		if (gameMusic == null)
 			gameMusic = GameObject.FindWithTag ("music");
 		if (gameMusic == null)
 			Debug.Log ("GameMusic zostal niezaladowany");
@@ -102,56 +108,61 @@ public class MenuScript : MonoBehaviour {
 		//helpbUTTONtAB [5] = ;
 		//Debug.Log (helpbUTTONtAB [5]);
 	}
+
 	public void EnabledDisableButtonsMenu (bool chan)
 	{
-		for(int i = 1; i < helpbUTTONtAB.Length; i++)
-		{
-			if(i != 3)
-				helpbUTTONtAB[i].enabled = chan;
+		for (int i = 1; i < helpbUTTONtAB.Length; i++) {
+			if (i != 3)
+				helpbUTTONtAB [i].enabled = chan;
 		}
 	}
 	//Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		//if (cms.tempBoolCredits == true)
-			//escUse = false;
-			if (Input.GetKeyUp (KeyCode.Escape)) {
-				if (escUse == true && duringGame == true)
-					menuUI.enabled = !menuUI.enabled;
-			if(menuUI.enabled == true)
-			{
+		//escUse = false;
+		if (Input.GetKeyUp (KeyCode.Escape)) {
+			if (escUse == true && duringGame == true)
+				menuUI.enabled = !menuUI.enabled;
+			if (menuUI.enabled == true) {
 				if ((SceneManager.GetActiveScene ().name == "SceneCanvas" || SceneManager.GetActiveScene ().name == "SceneCredits")) {
 					IsResume (false);
+					Cursor.visible = false;
 					//Debug.Log ("zzz Wylaczam resume");
 				} else {
 					IsResume (true);
+					Cursor.visible = true;
 					//Debug.Log ("wlaczam resume");
 				}
 			}
-				EnabledDisableButtonsMenu (true);
+			EnabledDisableButtonsMenu (true);
 
-				if (menuUI.enabled == true) {
-					if (Cursor.visible == false) {
-						Cursor.visible = true;
-						Cursor.lockState = CursorLockMode.None;
-					}
-					Time.timeScale = 0;
+			if (menuUI.enabled == true) {
+				Cursor.visible = true;
+				Cursor.lockState = CursorLockMode.None;
+				/*if (Cursor.visible == false) {
 
-					/*quitMenu.enabled = false;
+				}*/
+				Time.timeScale = 0;
+
+				/*quitMenu.enabled = false;
 				settings.enabled = false;
 				credits.enabled = false;*/
 				
 				
-				} else {
-					//rcc.WriteNewValueOfCar (oldValue);
-					Time.timeScale = 1;
-				}
+			} else {
+				//rcc.WriteNewValueOfCar (oldValue);
+				Time.timeScale = 1;
+				Cursor.visible = false;
+
 			}
+		}
 		
 
 		//setSounds ();
 		
 	}
-	
+
 	public void IsResume (bool zmienna)
 	{
 		helpbUTTONtAB [0].enabled = !zmienna;
@@ -166,6 +177,7 @@ public class MenuScript : MonoBehaviour {
 		EnabledDisableButtonsMenu (false);
 		resumeGame.enabled = false;
 		menuUI.enabled = false;
+		Cursor.visible = false;
 		if (SceneManager.GetActiveScene ().name != "SceneCanvas" && SceneManager.GetActiveScene ().name != "SceneCredits") {
 			/*if (dashboardWasLoaded == true && dashBoard.activeInHierarchy == false) {
 				dashBoard.SetActive (true);
@@ -174,7 +186,8 @@ public class MenuScript : MonoBehaviour {
 		if (Time.timeScale == 0)
 			Time.timeScale = 1;
 	}
-	public void ButtonLoadGame()
+
+	public void ButtonLoadGame ()
 	{
 		loadGame.enabled = true;
 		btnNewGame.enabled = false;
@@ -184,13 +197,14 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		Cursor.visible = true;
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		Enable (loadGameComponents);
 	}
-	public void ButtonSettings()
+
+	public void ButtonSettings ()
 	{
 		settings.enabled = true;
 		btnNewGame.enabled = false;
@@ -200,16 +214,16 @@ public class MenuScript : MonoBehaviour {
 		btnExit.enabled = false;
 		quitMenu.enabled = false;
 		duringGame = false;
+		Cursor.visible = true;
 		loadGame.enabled = false;
 		
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
-	
-	public void ButtonCredits()
+
+	public void ButtonCredits ()
 	{
 
 		Application.LoadLevel (creditsScene);
@@ -225,12 +239,12 @@ public class MenuScript : MonoBehaviour {
 
 		IsResume (false);
 		mps.SaveInfo ();
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
-	public void ButtonExit()
+
+	public void ButtonExit ()
 	{
 		
 		
@@ -240,19 +254,19 @@ public class MenuScript : MonoBehaviour {
 		btnSettings.enabled = false;
 		btnCredits.enabled = false;
 		duringGame = false;
+		Cursor.visible = true;
 		btnExit.enabled = false;
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 
 		mps.SaveInfo ();
 
 		
 	}
-	
-	public void ButtonNewGame()
+
+	public void ButtonNewGame ()
 	{
 
 		if (newGameDisabled == false) {
@@ -261,6 +275,7 @@ public class MenuScript : MonoBehaviour {
 			loadingTime.enabled = true;
 			escUse = true;
 			duringGame = true;
+			Cursor.visible = false;
 			newGameDisabled = true;
 
 			//cms.tempBoolCredits = false;
@@ -276,9 +291,9 @@ public class MenuScript : MonoBehaviour {
 		}
 		IsResume (true);
 	}
+
 	
-	
-	public void ButtondoNotExit()
+	public void ButtondoNotExit ()
 	{
 		settings.enabled = false;
 		quitMenu.enabled = false;
@@ -289,10 +304,10 @@ public class MenuScript : MonoBehaviour {
 		btnSettings.enabled = true;
 		btnLoadGame.enabled = true;
 		duringGame = true;
+	
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		Disable (loadGameComponents);
 		mps.SaveInfo ();
@@ -302,33 +317,37 @@ public class MenuScript : MonoBehaviour {
 			IsResume (false);
 		}*/
 	}
-	public void SetLang(int i)
+
+	public void SetLang (int i)
 	{
 		MenuScript.indexOfLang = i;
 		languagePanel.enabled = false;
 		isLanguagePanel = true;
 	}
-	public void ButtonConfirmExit()
+
+	public void ButtonConfirmExit ()
 	{
-		Application.Quit();
+		Application.Quit ();
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
-	public void Enable (GameObject [] tab)
+
+	public void Enable (GameObject[] tab)
 	{
 		for (int i = 0; i < tab.Length; i++) {
 			tab [i].SetActive (true);
 		}
 	}
-	public void Disable (GameObject [] tab)
+
+	public void Disable (GameObject[] tab)
 	{
 		for (int i = 0; i < tab.Length; i++) {
 			tab [i].SetActive (false);
 		}
 	}
+
 	public void EnableButtonsAfterExit ()
 	{
 		for (int i = 0; i < helpbUTTONtAB.Length; i++) {

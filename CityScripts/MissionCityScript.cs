@@ -3,23 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class MissionCityScript : MonoBehaviour {
+public class MissionCityScript : MonoBehaviour
+{
 
-	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
-	public GameObject[] trigger = new GameObject[1]; //tablica triggerow w ktora bd wpisywane kolejne 
+	public int wpiszIloscTriggerow = 2;
+	// Okresla ilosc triggerow Sets amount of triggers
+	public GameObject[] trigger = new GameObject[1];
+	//tablica triggerow w ktora bd wpisywane kolejne
 	public Canvas message;
-	public GameObject [] texts = new GameObject[1];
-	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
-	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
+	public GameObject[] texts = new GameObject[1];
+	[HideInInspector]public int i = 0;
+	// ogolna zmienna pomocnicza pod triggery misji
+	[HideInInspector]public int y = 0;
+	// ogolna zmienna pomocniczya pod wiadomosci
 	RCCCarControllerV2 rcc;
 	private bool clearingBlackScreen = false;
 	[HideInInspector]public bool firstOfSecondScript = false;
 	PlayerHealth ph;
-    AllianceCityScript acs;
-    UseCameraScript ucs;
-    MiniGunScript mgs;
+	AllianceCityScript acs;
+	UseCameraScript ucs;
+	MiniGunScript mgs;
 	MissionCompleteCityScript mccs;
-    private bool canDoIt = false;
+	private bool canDoIt = false;
 	public Image engineWarning;
 	public Text enemyToKills;
 	AttendanceEnemy ae;
@@ -27,7 +32,7 @@ public class MissionCityScript : MonoBehaviour {
 	[HideInInspector]public int nowKill = 0;
 	public int killToMC = 10;
 	private List<bool> listOfObj = new List<bool> ();
-	private bool changeMC = false; 
+	private bool changeMC = false;
 	private float timerToEnd = 0;
 	private bool isOver = false;
 	public Animation obiectWithMiniGun;
@@ -53,6 +58,7 @@ public class MissionCityScript : MonoBehaviour {
 	private GameObject dash;
 	public GameObject shootingMission;
 	public Rigidbody rbBrum;
+	public Text hintAboutClose;
 
 	CursorLockMode cursorMode;
 	[HideInInspector]public string keepTextFromMissionCity;
@@ -60,14 +66,14 @@ public class MissionCityScript : MonoBehaviour {
 	void Awake ()
 	{
 		radioFrame = radioFrame.GetComponent<Canvas> ();
-		ph = GetComponentInChildren<PlayerHealth>();
+		ph = GetComponentInChildren<PlayerHealth> ();
 		blackScreen.enabled = false;
 		rcc = GetComponent<RCCCarControllerV2> ();
-        acs = (AllianceCityScript)FindObjectOfType(typeof(AllianceCityScript)) as AllianceCityScript;
-        mgs = (MiniGunScript)FindObjectOfType(typeof(MiniGunScript)) as MiniGunScript;
-        ucs = GetComponentInChildren<UseCameraScript>();
+		acs = (AllianceCityScript)FindObjectOfType (typeof(AllianceCityScript)) as AllianceCityScript;
+		mgs = (MiniGunScript)FindObjectOfType (typeof(MiniGunScript)) as MiniGunScript;
+		ucs = GetComponentInChildren<UseCameraScript> ();
 		ae = (AttendanceEnemy)FindObjectOfType (typeof(AttendanceEnemy)) as AttendanceEnemy;
-		mccs = (MissionCompleteCityScript)FindObjectOfType(typeof(MissionCompleteCityScript)) as MissionCompleteCityScript;
+		mccs = (MissionCompleteCityScript)FindObjectOfType (typeof(MissionCompleteCityScript)) as MissionCompleteCityScript;
 		tankClip = Resources.Load ("Prefabs/MiniGun/tankSound", typeof(AudioClip)) as AudioClip;
 		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		engineWarning.enabled = false;
@@ -81,12 +87,12 @@ public class MissionCityScript : MonoBehaviour {
 		}
 		GameObject.Find ("EngineHelp").SetActive (true);
 		//goalMC.SetActive (false);
-		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript));
 		dash = GameObject.Find ("DashboardOnScreen");
 		GameOver = GameObject.Find ("GAMEOVER").GetComponent<Canvas> ();
 		gzComplete = GameObject.Find ("GZMissionComplete").GetComponent<Canvas> ();
 		//Debug.Log (gzComplete);
-		if(GameOver.enabled == true)
+		if (GameOver.enabled == true)
 			GameOver.enabled = false;
 		if (gzComplete.enabled == true) {
 			gzComplete.enabled = false;
@@ -97,58 +103,55 @@ public class MissionCityScript : MonoBehaviour {
 
 	private void BlackScreen (bool white, bool black, float timer)
 	{
-		if(white == false && black == false)
-		{
-			if(blackScreen.enabled == false)
+		if (white == false && black == false) {
+			if (blackScreen.enabled == false)
 				blackScreen.enabled = true;
 			timer += Time.deltaTime;
-			if(timer>=1)
+			if (timer >= 1)
 				black = true;
-			else
-			{
-				float alpha = Mathf.Clamp(timer, 0, 255);
+			else {
+				float alpha = Mathf.Clamp (timer, 0, 255);
 				blackScreen.color = new Color (blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, alpha);
 			}
 		}
-		if(black == true && white == false)
-		{
+		if (black == true && white == false) {
 			timer -= Time.deltaTime;
-			if(timer<=0)
+			if (timer <= 0)
 				white = true;
-			else
-			{
-				float alpha = Mathf.Clamp(timer, 0, 255);
+			else {
+				float alpha = Mathf.Clamp (timer, 0, 255);
 				blackScreen.color = new Color (blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, alpha);
 			}
 		}
-		if(white == true && black == true && blackScreen.enabled == true)
+		if (white == true && black == true && blackScreen.enabled == true)
 			blackScreen.enabled = false;
 
 		timeToBlack = black;
 		timeToWhite = white;
 		timerScreenBlack = timer;
 	}
-	void Start () {
+
+	void Start ()
+	{
 		message = message.GetComponent<Canvas> ();
-		for(int z = 0; z==wpiszIloscTriggerow; z++) //petla for po tablicy
-		{
-			trigger[z] = GameObject.FindGameObjectWithTag("Trigger"); //wpisywanie do tablicy obiektow z gry
+		for (int z = 0; z == wpiszIloscTriggerow; z++) { //petla for po tablicy
+			trigger [z] = GameObject.FindGameObjectWithTag ("Trigger"); //wpisywanie do tablicy obiektow z gry
 		}
 		Messengery (y);
-		Podmianka(i); // wywolanie metody podmianka
+		Podmianka (i); // wywolanie metody podmianka
 
 
 		//Debug.Log ("KillToMc wynosi: " + killToMC + " zas nowKill: " + nowKill + " allEnemys: "+allEnemys);
 	}
-	
-	void Update()
+
+	void Update ()
 	{
-        if (canDoIt == false) {
+		if (canDoIt == false) {
 			if (acs.allTake == true) {
 				canDoIt = true;
 				//Ładowanie niezbednych danych do masakry w city
 				for (int u = 0; u < ae.mainEnemy.Count; u++) {
-					if (ae.mainEnemy [u].isLife == true){
+					if (ae.mainEnemy [u].isLife == true) {
 						allEnemys++;
 					}
 				}
@@ -156,31 +159,28 @@ public class MissionCityScript : MonoBehaviour {
 					killToMC = allEnemys;
 			}
 
-        }
-        if(canDoIt == true && changeMC == false)
-		{
-			if(timeToWhite == false || timeToBlack == false)
+		}
+		if (canDoIt == true && changeMC == false) {
+			if (timeToWhite == false || timeToBlack == false)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
-            //Wyczekuje na wcisniecie klawisza F
-			if (acs.playerInBase == true && timeToWhite == false && timeToBlack == true)
-			{
-                rcc.engineRunning = false;
-                rcc.canControl = false;
+			//Wyczekuje na wcisniecie klawisza F
+			if (acs.playerInBase == true && timeToWhite == false && timeToBlack == true) {
+				rcc.engineRunning = false;
+				rcc.canControl = false;
 				mgs.camGun.enabled = true;
 				mgs.camGun.gameObject.GetComponent<AudioListener> ().enabled = true;
-				for(int u = 0; u < ucs.camers.Length; u++)
-                {
-					if(ucs.camers [u].gameObject.GetComponent<AudioListener> ().enabled == true)
+				for (int u = 0; u < ucs.camers.Length; u++) {
+					if (ucs.camers [u].gameObject.GetComponent<AudioListener> ().enabled == true)
 						ucs.camers [u].gameObject.GetComponent<AudioListener> ().enabled = false;
-					if(ucs.camers[u].enabled == true)
-                    	ucs.camers[u].enabled = false;
+					if (ucs.camers [u].enabled == true)
+						ucs.camers [u].enabled = false;
 
-                }
+				}
 				for (int i = 0; i < dustOfTank.Length; i++) {
 					dustOfTank [i].SetActive (true);
 				}
 				ucs.blockCamera = true;
-                mgs.isTimeToShoot = true;
+				mgs.isTimeToShoot = true;
 				changeMC = true;
 				isTimeToAnimationTank = true;
 				obiectWithMiniGun.Play ();
@@ -191,41 +191,38 @@ public class MissionCityScript : MonoBehaviour {
 				mgs.camGun.gameObject.GetComponent<AudioListener> ().enabled = true;
 				DisableAllCanvass ();
 
-            }
+			}
 			ae.isShooterNow = true;
 			this.gameObject.isStatic = true;
 			this.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
             
-        }
+		}
 
-		if(changeMC == true)
-		{
-			if(timeToWhite == false && timeToBlack == true)
+		if (changeMC == true) {
+			if (timeToWhite == false && timeToBlack == true)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
-			if(timeToWhite == false)
+			if (timeToWhite == false)
 				BlackScreen (timeToWhite, timeToBlack, timerScreenBlack);
 			int suma = killToMC - nowKill;
 			if (dash.activeInHierarchy == true)
 				dash.SetActive (false);
-			if(enemyToKills.enabled == false && suma > 0){
+			if (enemyToKills.enabled == false && suma > 0) {
 				enemyToKills.enabled = true;
 			}
 			if (Cursor.visible == true && ms.menuUI.enabled == false) {
 				Cursor.visible = false;
 				Cursor.lockState = CursorLockMode.Confined;
-			}
-			else if(suma == 0 && enemyToKills.enabled == true && isOver == false){
+			} else if (suma == 0 && enemyToKills.enabled == true && isOver == false) {
 				if (Cursor.visible == false) {
 					Cursor.visible = true;
 					Cursor.lockState = CursorLockMode.None;
 				}
 				isOver = true;
 				enemyToKills.enabled = false;
-                if (gzComplete.enabled == false)
-                {
-                    gzComplete.enabled = true;
-                    ms.escUse = false;
-                }
+				if (gzComplete.enabled == false) {
+					gzComplete.enabled = true;
+					ms.escUse = false;
+				}
 			}
 			if (suma > 0 && enemyToKills.enabled == true)
 				enemyToKills.text = (suma.ToString () + " " + keepTextFromMissionCity);
@@ -237,8 +234,8 @@ public class MissionCityScript : MonoBehaviour {
 				}
 				if (GameOver.enabled == false) {
 					GameOver.enabled = true;
-                    ms.escUse = false;
-                }
+					ms.escUse = false;
+				}
 			}
 			tankAudioS.pitch = Mathf.Lerp (0.9f, 1.1f, tankRb.velocity.magnitude);
 
@@ -248,7 +245,7 @@ public class MissionCityScript : MonoBehaviour {
 		}
 		if (isOver == true) {
 			timerToEnd += Time.deltaTime;
-			if(timerToEnd > 3)
+			if (timerToEnd > 3)
 				mccs.EnabledMissionComplete ();
 		}
 		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
@@ -258,50 +255,46 @@ public class MissionCityScript : MonoBehaviour {
 		if (rcc.engineRunning == false && engineHelpActive == false) {
 			engineHelp.enabled = true;
 			engineHelpActive = true;
-		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+		} else if (rcc.engineRunning == true && engineHelpActive == true) {
 			engineHelp.enabled = false;
 			engineHelpActive = false;
 		}
 	}
 	
 	// Update is called once per frame
-	void OnTriggerEnter(Collider other) //wykrywanie kolizji
+	void OnTriggerEnter (Collider other) //wykrywanie kolizji
 	{
-		if (other.tag == "Trigger") //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
-		{
-			if (Zadania(i) == true)
-			{
+		if (other.tag == "Trigger") { //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
+			if (Zadania (i) == true) {
 				i++; //zwieksz wartosc pomocnicza za kazdym razem gdy obiekt bedzie mial kontakt z triggerem
-				Podmianka(i);//wywolanie metody podmianka i przeslanie wartosci i do metody
+				Podmianka (i);//wywolanie metody podmianka i przeslanie wartosci i do metody
 			}
 		}
 	}
-	void Podmianka(int i) //metoda Podmianka
+
+	void Podmianka (int i) //metoda Podmianka
 	{
-		for (int z = 0; z < wpiszIloscTriggerow; z++) // jedz po elementach tablicy
-		{
+		for (int z = 0; z < wpiszIloscTriggerow; z++) { // jedz po elementach tablicy
 			if (i == z) //jesli wartosc zmiennej wyslanej z metody jest rowna wartosci zmiennej petli to:
-				trigger[z].SetActive(true); //wlaczenie danego obiektu
+				trigger [z].SetActive (true); //wlaczenie danego obiektu
 			else
-				trigger[z].SetActive(false);//wylaczenie danego obiektu
+				trigger [z].SetActive (false);//wylaczenie danego obiektu
 		}
 	}
-	
+
 	void Messengery (int y)// funkcja w zaleznosci od wartosci indexu y wlacza msg lub go wylacza
 	{
-		for (int z=0; z<texts.Length; z++) {
+		for (int z = 0; z < texts.Length; z++) {
 			
-			if (z == y)
-			{
+			if (z == y) {
 				radioFrame.enabled = true;
+				hintAboutClose.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
-				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
+				texts [z].SetActive (true);//buttonu close gra wraca do standardowej prędkości.
 				//Cursor.visible = true;
 				
-			}
-			else
-			{
-				texts[z].SetActive(false);
+			} else {
+				texts [z].SetActive (false);
 			}
 		}
 	}
@@ -311,6 +304,7 @@ public class MissionCityScript : MonoBehaviour {
 		foreach (GameObject mess in texts) {
 			if (mess.activeInHierarchy == true) {
 				radioFrame.enabled = false;
+				hintAboutClose.enabled = false;
 				mess.SetActive (false);
 				vms.isMsg = false;
 				Time.timeScale = 1;
@@ -318,11 +312,10 @@ public class MissionCityScript : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	bool Zadania (int i) // funkcja odpowiedzialna za zapętlenie zadan w grze
 	{
-		switch (i) //case 0: - pierwszy prefab
-		{
+		switch (i) { //case 0: - pierwszy prefab
 		case 1:
 			Messengery (y);
 			return true;
@@ -338,12 +331,13 @@ public class MissionCityScript : MonoBehaviour {
 		}
 		return false;
 	}
+
 	private void DisableAllCanvass ()
 	{
 		engineWarning.enabled = false;
-		GameObject.Find("KMH").SetActive(false);
-		GameObject.Find("RPM").SetActive(false);
-		GameObject.Find("DirtyMirror").SetActive(false);
+		GameObject.Find ("KMH").SetActive (false);
+		GameObject.Find ("RPM").SetActive (false);
+		GameObject.Find ("DirtyMirror").SetActive (false);
 		GameObject.Find ("Group1").SetActive (false);
 		GameObject.Find ("Group2").SetActive (false);
 		GameObject.Find ("Group3").SetActive (false);

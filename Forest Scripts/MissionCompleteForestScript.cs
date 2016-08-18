@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class MissionCompleteForestScript : MonoBehaviour {
+public class MissionCompleteForestScript : MonoBehaviour
+{
 	
-	public Canvas missionComplete; 
+	public Canvas missionComplete;
 	public Button quitBtn;
 	public Button nextMissionBtn;
 	public AudioSource soundSource;
@@ -27,11 +28,13 @@ public class MissionCompleteForestScript : MonoBehaviour {
 			//Debug.Log ("Załadwałem GameObiect w MissionCmplte: " + loadingObj.name);
 		}
 	}
-	void Start (){
+
+	void Start ()
+	{
 		
-		missionComplete = missionComplete.GetComponent<Canvas>();
+		missionComplete = missionComplete.GetComponent<Canvas> ();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		quitBtn = quitBtn.GetComponent<Button>();
+		quitBtn = quitBtn.GetComponent<Button> ();
 		ms = (MissionForestScript)FindObjectOfType (typeof(MissionForestScript)) as MissionForestScript;
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 
@@ -58,47 +61,50 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		
 	}*/
 
-	public void EnabledMissionComplete (){
+	public void EnabledMissionComplete ()
+	{
 	
 		missionComplete.enabled = true;
+
 		if (missionComplete.enabled == true) {
 			Time.timeScale = 0f;
+			Cursor.visible = true;
 		}
-	} 
-	
-	public void QuitGame (){
+	}
+
+	public void QuitGame ()
+	{
 
 		Application.LoadLevel ("SceneCanvas");
-		if (mns.menuUI.enabled == false) 
-		{
+		if (mns.menuUI.enabled == false) {
 			mns.menuUI.enabled = true;
 		}
 		mns.newGameDisabled = false;
 		mns.IsResume (false);
 		mns.escUse = false;
 
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		mns.EnableButtonsAfterExit ();
 	}
 
-	public void DemoButton () {
+	public void DemoButton ()
+	{
 		
-		Application.LoadLevel(demoEnd);
+		Application.LoadLevel (demoEnd);
 		MenuInstanceScript.respawn = true;
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
-	
-	public void NextMission (){
+
+	public void NextMission ()
+	{
 		
 		mns.escUse = true;
 		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
@@ -110,16 +116,15 @@ public class MissionCompleteForestScript : MonoBehaviour {
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
-		Application.LoadLevel(nextLevel);
+		Application.LoadLevel (nextLevel);
 		if (LoadGameScript.unlockIndex == 0)
-		LoadGameScript.unlockIndex++;
+			LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 		
 	
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
 	

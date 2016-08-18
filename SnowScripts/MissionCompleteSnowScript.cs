@@ -2,9 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MissionCompleteSnowScript : MonoBehaviour {
+public class MissionCompleteSnowScript : MonoBehaviour
+{
 
-	public Canvas missionComplete; 
+	public Canvas missionComplete;
 	public Button nextMissionBtn;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
@@ -15,6 +16,7 @@ public class MissionCompleteSnowScript : MonoBehaviour {
 	private GameObject loadingObj;
 	MenuScript mns;
 	public GameObject hudMenu;
+
 	void Awake ()
 	{
 		if (loadingObj == null) {
@@ -23,49 +25,52 @@ public class MissionCompleteSnowScript : MonoBehaviour {
 		}
 	}
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 
-		missionComplete = missionComplete.GetComponent<Canvas>();
+		missionComplete = missionComplete.GetComponent<Canvas> ();
 		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
 		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 	
 	}
 
-	void OnTriggerEnter(Collider other){ 
+	void OnTriggerEnter (Collider other)
+	{ 
 
-		if (other.tag == "Player"){
+		if (other.tag == "Player") {
 			missionComplete.enabled = true;
-			}
+
+		}
 
 
 		if (missionComplete.enabled == true) {
-			
+			Cursor.visible = true;
 			Time.timeScale = 0;
 		}
 		
 	}
-	
-	public void QuitGame (){
+
+	public void QuitGame ()
+	{
 
 		Application.LoadLevel ("SceneCanvas");
-		if (mns.menuUI.enabled == false) 
-		{
+		if (mns.menuUI.enabled == false) {
 			mns.menuUI.enabled = true;
 		}
 		mns.newGameDisabled = false;
 		mns.IsResume (false);
 		mns.escUse = false;
 
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		mns.EnableButtonsAfterExit ();
 	}
-	
 
-	public void NextMission (){
+
+	public void NextMission ()
+	{
 		mns.escUse = true;
 		Canvas cLoad = loadingObj.GetComponent<Canvas> ();
 		if (loadingObj.activeInHierarchy == true && cLoad.enabled == false) {
@@ -76,14 +81,13 @@ public class MissionCompleteSnowScript : MonoBehaviour {
 		missionComplete.enabled = false;
 		MenuInstanceScript.respawnPlace = respawnPlace;
 		MenuInstanceScript.respawn = true;
-		Application.LoadLevel(nextLevel);
+		Application.LoadLevel (nextLevel);
 		if (LoadGameScript.unlockIndex < 5)
 			LoadGameScript.unlockIndex++;
 		Time.timeScale = 1;
 
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		CreditsMovingScript.fromSnow = true;
 	}

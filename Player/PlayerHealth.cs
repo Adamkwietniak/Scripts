@@ -4,20 +4,23 @@ using System.Collections;
 using UnityEngine.Audio;
 
 
-public class PlayerHealth : MonoBehaviour 
+public class PlayerHealth : MonoBehaviour
 {
-	SkinnedMeshRenderer skinned; //poprostu skinnedMeshRenderer wywolujemy przez skinned.
+	SkinnedMeshRenderer skinned;
+	//poprostu skinnedMeshRenderer wywolujemy przez skinned.
 	Mesh srodek;
-    SparkleScript ss;
-	public int startingHealth = 100; // ilosc zycia                          
-	public int currentHealth; //ilosc zycia w danym momencie 
+	SparkleScript ss;
+	public int startingHealth = 100;
+	// ilosc zycia
+	public int currentHealth;
+	//ilosc zycia w danym momencie
 	[HideInInspector]public float dmg = 0f;
 	[HideInInspector]public float timer;
 	[HideInInspector]public string nameCollider;
 	[HideInInspector]public bool ifdamage = false;
 	[HideInInspector]public bool checkStayInCollider = false;
-    [HideInInspector]
-    public bool contactWithCollider = false;
+	[HideInInspector]
+	public bool contactWithCollider = false;
 	public Image engineWarning;
 	private bool sthOnScreen = false;
 	private bool upColor = false;
@@ -36,37 +39,38 @@ public class PlayerHealth : MonoBehaviour
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	
-	public GameObject [] coli = new GameObject [14];
-	protected string [] coliName = new string[14];
-	private float [] speedTab = new float[2];
-	private float [] speedMaxTab = new float[10];
+	public GameObject[] coli = new GameObject [14];
+	protected string[] coliName = new string[14];
+	private float[] speedTab = new float[2];
+	private float[] speedMaxTab = new float[10];
 	private int speedMaxIndex = 0;
 	private int indexOfObstacleTag = 1000;
-	int [] tabUszk = new int[14];
+	int[] tabUszk = new int[14];
 	public float mnoznikDoSpeed = 1.3f;
 
 	int obrazenia = 0;
-    int predkosc = 0;
+	int predkosc = 0;
 	int uszkodzenia = 0;
-	int blendShapeCount; //ilosc colliderow animacyjnych
+	int blendShapeCount;
+	//ilosc colliderow animacyjnych
 	private Transform trans;
 	ObstacleTagScript ots;
 	RCCCarControllerV2 brum;
 	[HideInInspector]public bool poObrazeniach = false;
 	MenuScript mns;
-	
+
 	void Awake ()
 	{	//Pobieranie komponentów
-		brum = GetComponentInParent<RCCCarControllerV2>();
+		brum = GetComponentInParent<RCCCarControllerV2> ();
 		skinned = GetComponent<SkinnedMeshRenderer> ();
 		srodek = GetComponent<SkinnedMeshRenderer> ().sharedMesh;
 		speedMaxTab [speedMaxIndex] = 0;
 		// Przypisanie początkowego życia to życia gracza
 		currentHealth = startingHealth;
-        ss = GetComponentInParent<SparkleScript>();
+		ss = GetComponentInParent<SparkleScript> ();
 	}
 
-	void Start () 
+	void Start ()
 	{
 		engineWarning.enabled = false;
 		//Przypisanie ilości blendShape do ilosci odpowiedzialnej za iterowanie operacji
@@ -74,29 +78,26 @@ public class PlayerHealth : MonoBehaviour
 		ots = GetComponentInParent<ObstacleTagScript> ();
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		blendShapeCount = srodek.blendShapeCount;
-		for (int i=0; i<blendShapeCount;i++) //Przypisanie wszystkim shape wartosci 0
-		
-        {
-			coliName[i] = coli[i].name; //Przypisanie nazw koliderów do pomocniczej tablicy nazw
-			tabUszk[i] = 0;				//Przypisanie do pomocniczej tablicy uszkodzeń wartości 0 (nieoptymalne,
-            skinned.SetBlendShapeWeight(i, 0f); // ale daje poczycie bezpieczeństwa, że nie wpisza się randomowe liczby).
-        }//Przypisanie wartosci 0 do poszczególnych zmiennych odpowiedzialnych za wgniecenia samochodu.
+		for (int i = 0; i < blendShapeCount; i++) { //Przypisanie wszystkim shape wartosci 0
+			coliName [i] = coli [i].name; //Przypisanie nazw koliderów do pomocniczej tablicy nazw
+			tabUszk [i] = 0;				//Przypisanie do pomocniczej tablicy uszkodzeń wartości 0 (nieoptymalne,
+			skinned.SetBlendShapeWeight (i, 0f); // ale daje poczycie bezpieczeństwa, że nie wpisza się randomowe liczby).
+		}//Przypisanie wartosci 0 do poszczególnych zmiennych odpowiedzialnych za wgniecenia samochodu.
 
 		maximusSpeedus = (int)brum.maxspeed;
-    }
+	}
 
 	void Update ()
 	{
 		predkosc = (int)brum.speed;
-		if (speedMaxIndex < speedMaxTab.Length - 1 ) {
+		if (speedMaxIndex < speedMaxTab.Length - 1) {
 			speedMaxIndex++;
 			speedMaxTab [speedMaxIndex] = predkosc;
 		} else {
 			speedMaxIndex = 0;
 			speedMaxTab [speedMaxIndex] = predkosc;
 		}
-		if(currentHealth <=0)	//Co się stanie jak samochód ma 0 życia?
-		{						//nie będzie działać xD
+		if (currentHealth <= 0) {	//Co się stanie jak samochód ma 0 życia?//nie będzie działać xD
 			GameOver ();
 		} 
 	
@@ -127,13 +128,13 @@ public class PlayerHealth : MonoBehaviour
 				CarDMG (obrazenia); 
 				//Debug.Log (obrazenia);
 			}
-            ifdamage = false;
-            contactWithCollider = false;
-            checkStayInCollider = false;
-            ss.isDam = false;
-        }
+			ifdamage = false;
+			contactWithCollider = false;
+			checkStayInCollider = false;
+			ss.isDam = false;
+		}
 		
-		if(sthOnScreen == true)
+		if (sthOnScreen == true)
 			BlinkEngineWarning ();
 		if (Input.GetKey (KeyCode.H)) {
 			if (soundSource.clip != hornSound) {
@@ -147,23 +148,28 @@ public class PlayerHealth : MonoBehaviour
 			soundSource.clip = null;
 			soundSource.loop = false;
 		}
+			
 	}
+
 	public void RepairCar ()
 	{
 		brum.maxspeed = maximusSpeedus;
-		currentHealth = startingHealth;
-		JointScript.czyNaprawione = true;
+		sthOnScreen = false;
+		currentHealth = 100;
 		engineWarning.enabled = false;
-		for(int i = 0; i < tabUszk.Length;i++)
-		{
-			tabUszk[i] = 0;
+
+		JointScript.czyNaprawione = true;
+
+		for (int i = 0; i < tabUszk.Length; i++) {
+			tabUszk [i] = 0;
 		}
 	}
-	private float [] CheckGoodDmg (float [] tab)
+
+	private float [] CheckGoodDmg (float[] tab)
 	{
 		float tempPlus = 0;
 		float tempMinus = 0;
-		float [] tempTab= new float[2];
+		float[] tempTab = new float[2];
 		for (int i = 0; i < tab.Length; i++) {
 			if (tab [i] > tempPlus)
 				tempPlus = tab [i];
@@ -174,26 +180,26 @@ public class PlayerHealth : MonoBehaviour
 		tempTab [1] = tempMinus;
 		return tempTab;
 	}
-	private void BlinkEngineWarning (){   // metoda od pokazywania się na ekranie znaczka od silnika "WArning".
 
-			engineWarning.enabled = true;
-			if(varOfAlpha<=1 && upColor == true ) {
-				varOfAlpha+=Time.deltaTime*blinkingSpeed;
-				if(varOfAlpha >= 1)
-				{
-					upColor = false;
-					varOfAlpha = 1;
-				}
+	private void BlinkEngineWarning ()
+	{   // metoda od pokazywania się na ekranie znaczka od silnika "WArning".
+
+		engineWarning.enabled = true;
+		if (varOfAlpha <= 1 && upColor == true) {
+			varOfAlpha += Time.deltaTime * blinkingSpeed;
+			if (varOfAlpha >= 1) {
+				upColor = false;
+				varOfAlpha = 1;
 			}
-			if(varOfAlpha>=0 && upColor == false){
-				varOfAlpha-=Time.deltaTime*blinkingSpeed;
-				if(varOfAlpha <= 0)
-				{
-					upColor = true;
-					varOfAlpha = 0;
-				}
+		}
+		if (varOfAlpha >= 0 && upColor == false) {
+			varOfAlpha -= Time.deltaTime * blinkingSpeed;
+			if (varOfAlpha <= 0) {
+				upColor = true;
+				varOfAlpha = 0;
 			}
-			engineWarning.color = new Color (0.58f, 0f, 0f, varOfAlpha);
+		}
+		engineWarning.color = new Color (0.58f, 0f, 0f, varOfAlpha);
 	
 	}
 
@@ -202,20 +208,19 @@ public class PlayerHealth : MonoBehaviour
 		if (currentHealth > 30)
 			currentHealth -= obrazenia;
 		else
-			currentHealth -= (int)obrazenia/2;
-        uszkodzenia = obrazenia*5;
+			currentHealth -= (int)obrazenia / 2;
+		uszkodzenia = obrazenia * 5;
 
 		if (currentHealth < 30)
 			sthOnScreen = true;
 
-		for (int i=0; i < blendShapeCount; i++)
-        {
-            if(coliName[i] == nameCollider)
-            {
-                skinned.SetBlendShapeWeight(i, tabUszk[i] += uszkodzenia);	//W tym miejscu następuje podstawienie wartości
-            }																// uszkodzeń wizualnych w grze
-        }
+		for (int i = 0; i < blendShapeCount; i++) {
+			if (coliName [i] == nameCollider) {
+				skinned.SetBlendShapeWeight (i, tabUszk [i] += uszkodzenia);	//W tym miejscu następuje podstawienie wartości
+			}																// uszkodzeń wizualnych w grze
+		}
 	}
+
 	private bool CheckObstacle ()
 	{
 		if (brum.speed < 15) {
@@ -228,24 +233,26 @@ public class PlayerHealth : MonoBehaviour
 		}
 		return false;
 	}
+
 	private float SetDMG (float[] tab)
 	{
 		float[] temp = CheckGoodDmg (tab);
 		return temp [0] - temp [1];
 	}
+
 	private void ResetTab ()
 	{
 		for (int i = 0; i < speedMaxTab.Length; i++) {
-			speedMaxTab[i] = 0;
+			speedMaxTab [i] = 0;
 		}
 		speedMaxIndex = 0;
 	}
 
-	public void QuitGame (){
+	public void QuitGame ()
+	{
 
 		Application.LoadLevel ("SceneCanvas");
-		if (mns.menuUI.enabled == false) 
-		{
+		if (mns.menuUI.enabled == false) {
 			mns.menuUI.enabled = true;
 		}
 
@@ -253,49 +260,52 @@ public class PlayerHealth : MonoBehaviour
 		mns.IsResume (false);
 		mns.escUse = false;
 
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 		mns.EnableButtonsAfterExit ();
 	}
 
-	public void TryAgain (){
+	public void TryAgain ()
+	{
 
 
 		gameOver.enabled = false;
-		Application.LoadLevel(sameLevel);
+		Application.LoadLevel (sameLevel);
 		mns.escUse = true;
 
 
 
 		
-		if (soundSource != null)
-		{
-			soundSource.PlayOneShot(clickSound);
+		if (soundSource != null) {
+			soundSource.PlayOneShot (clickSound);
 		}
 	}
+
 	public void GameOver ()
 	{
 		mns.escUse = false;
 		brum.maxspeed = 0;
 		//currentHealth = 0;
 		brum.engineRunning = false;
-		timer+=Time.deltaTime;
-		if(timer>=1.5f){
+		timer += Time.deltaTime;
+		if (timer >= 1.5f) {
 
 
 			gameOver.enabled = true;
 
 
+
+
 		}
-		if(gameOver.enabled==true){
-			timer=0f;
+		if (gameOver.enabled == true) {
+			Cursor.visible = true;
+			timer = 0f;
 			Time.timeScale = 0;
 		}
 
 	}
-}	
+}
 /*
  * Działanie skryptu:
  * Skrypt ten odpowiada za obliczanie ilości życia po uderzeniach, obliczanie wartości uszkodzeń i przypisywanie

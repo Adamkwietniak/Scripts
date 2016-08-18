@@ -2,15 +2,21 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MissionRiverScript : MonoBehaviour {
+public class MissionRiverScript : MonoBehaviour
+{
 
-	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
-	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
+	public int wpiszIloscTriggerow = 2;
+	// Okresla ilosc triggerow Sets amount of triggers
+	public GameObject[] trigger = new GameObject[2];
+	//tablica triggerow w ktora bd wpisywane kolejne
 	public Canvas message;
 	public Canvas radioFrame;
-	public GameObject [] texts = new GameObject[1];
-	[HideInInspector]public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
-	[HideInInspector]public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
+	public Text hintAboutClose;
+	public GameObject[] texts = new GameObject[1];
+	[HideInInspector]public int i = 0;
+	// ogolna zmienna pomocnicza pod triggery misji
+	[HideInInspector]public int y = 0;
+	// ogolna zmienna pomocniczya pod wiadomosci
 	RCCCarControllerV2 rcc;
 	public Image blackScreen;
 	private float timer1;
@@ -32,57 +38,55 @@ public class MissionRiverScript : MonoBehaviour {
 
 	void Awake ()
 	{
-		ph = GetComponentInChildren<PlayerHealth>();
+		ph = GetComponentInChildren<PlayerHealth> ();
 		blackScreen.enabled = false;
 		rcc = GetComponent<RCCCarControllerV2> ();
 		gafw = GetComponent<GetOutFromWayScript> ();
-		obstacleToCleanWay.SetActive(false);
+		obstacleToCleanWay.SetActive (false);
 		engineWarning.enabled = false;
 
 		timer1 = 0;
 		//goalMC.SetActive (false);
 	}
-	void Start () {
+
+	void Start ()
+	{
 		message = message.GetComponent<Canvas> ();
 		radioFrame = radioFrame.GetComponent<Canvas> ();
 		instructionsForBumper.enabled = false;
 		for (int o = 0; o < wounded.Length; o++) {
 			wounded [o].SetActive (false);
 		}
-		for(int z = 0; z==wpiszIloscTriggerow; z++) //petla for po tablicy
-		{
-			trigger[z] = GameObject.FindGameObjectWithTag("Trigger"); //wpisywanie do tablicy obiektow z gry
+		for (int z = 0; z == wpiszIloscTriggerow; z++) { //petla for po tablicy
+			trigger [z] = GameObject.FindGameObjectWithTag ("Trigger"); //wpisywanie do tablicy obiektow z gry
 		}
 		Messengery (y);
-		Podmianka(i); // wywolanie metody podmianka
-		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		Podmianka (i); // wywolanie metody podmianka
+		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript));
 	}
 
 	
-	void Update()
+	void Update ()
 	{
-		if(firstOfSecondScript == false){
+		if (firstOfSecondScript == false) {
 			if (y == 0) {					//Ify tu zostały przypisane ze względu na to, że pojawiają się one na samym
 				Messengery (y);				//poczatku gry i sa niezależne od triggerów.
 			}
-			if(y == 6) 						//Włącz black screen
-			{
+			if (y == 6) { 						//Włącz black screen
 				if (blackScreen.enabled == false) {
 					blackScreen.enabled = true;
 					blackScreenIs = true;
 
 				}
-				blackScreen.color = new Color(0,0,0,Mathf.Clamp(timer1, 0, 255));
+				blackScreen.color = new Color (0, 0, 0, Mathf.Clamp (timer1, 0, 255));
 			}
-			if(blackScreenIs == true && clearingBlackScreen == false)
-			{
-				if(timer1<1)
-					timer1 += Time.deltaTime/3;
-				else 
-				{
+			if (blackScreenIs == true && clearingBlackScreen == false) {
+				if (timer1 < 1)
+					timer1 += Time.deltaTime / 3;
+				else {
 					timer1 = 1;
-					ph.RepairCar();
-					obstacleToCleanWay.SetActive(true);
+					ph.RepairCar ();
+					obstacleToCleanWay.SetActive (true);
 					blackScreenIs = false;
 					gafw.reachBase = true;
 					clearingBlackScreen = true;
@@ -91,12 +95,10 @@ public class MissionRiverScript : MonoBehaviour {
 
 				}
 			}
-			if(clearingBlackScreen == true && blackScreenIs == false)
-			{
-				if(timer1>0)
-					timer1 -= Time.deltaTime/3;
-				else 
-				{
+			if (clearingBlackScreen == true && blackScreenIs == false) {
+				if (timer1 > 0)
+					timer1 -= Time.deltaTime / 3;
+				else {
 					timer1 = 0;
 					clearingBlackScreen = false;
 					instructionsForBumper.enabled = true;
@@ -110,62 +112,57 @@ public class MissionRiverScript : MonoBehaviour {
 
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) 
-			{		//wywołujemy zamykanie canvasa
+			if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
 				DisableEnableMsg ();
 			}
 		}
-		if (gafw.isComplete == true && i == wpiszIloscTriggerow-2) {
+		if (gafw.isComplete == true && i == wpiszIloscTriggerow - 2) {
 			i++;
 			Podmianka (i);
 		}
 		if (rcc.engineRunning == false && engineHelpActive == false) {
 			engineHelp.enabled = true;
 			engineHelpActive = true;
-		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+		} else if (rcc.engineRunning == true && engineHelpActive == true) {
 			engineHelp.enabled = false;
 			engineHelpActive = false;
 		}
 	}
 	
 	// Update is called once per frame
-	void OnTriggerEnter(Collider other) //wykrywanie kolizji
+	void OnTriggerEnter (Collider other) //wykrywanie kolizji
 	{
-		if (other.tag == "Trigger") //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
-		{
-			if (Zadania(i) == true)
-			{
+		if (other.tag == "Trigger") { //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
+			if (Zadania (i) == true) {
 				i++; //zwieksz wartosc pomocnicza za kazdym razem gdy obiekt bedzie mial kontakt z triggerem
-				Podmianka(i);//wywolanie metody podmianka i przeslanie wartosci i do metody
+				Podmianka (i);//wywolanie metody podmianka i przeslanie wartosci i do metody
 			}
 		}
 	}
-	void Podmianka(int i) //metoda Podmianka
+
+	void Podmianka (int i) //metoda Podmianka
 	{
-		for (int z = 0; z < wpiszIloscTriggerow; z++) // jedz po elementach tablicy
-		{
+		for (int z = 0; z < wpiszIloscTriggerow; z++) { // jedz po elementach tablicy
 			if (i == z) //jesli wartosc zmiennej wyslanej z metody jest rowna wartosci zmiennej petli to:
-				trigger[z].SetActive(true); //wlaczenie danego obiektu
+				trigger [z].SetActive (true); //wlaczenie danego obiektu
 			else
-				trigger[z].SetActive(false);//wylaczenie danego obiektu
+				trigger [z].SetActive (false);//wylaczenie danego obiektu
 		}
 	}
-	
+
 	void Messengery (int y)// funkcja w zaleznosci od wartosci indexu y wlacza msg lub go wylacza
 	{
-		for (int z=0; z<texts.Length; z++) {
+		for (int z = 0; z < texts.Length; z++) {
 			
-			if (z == y)
-			{
+			if (z == y) {
 				radioFrame.enabled = true;
+				hintAboutClose.enabled = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
-				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
+				texts [z].SetActive (true);//buttonu close gra wraca do standardowej prędkości.
 				//Cursor.visible = true;
 				
-			}
-			else
-			{
-				texts[z].SetActive(false);
+			} else {
+				texts [z].SetActive (false);
 			}
 		}
 	}
@@ -190,6 +187,7 @@ public class MissionRiverScript : MonoBehaviour {
 		foreach (GameObject mess in texts) {
 			if (mess.activeInHierarchy == true) {
 				radioFrame.enabled = false;
+				hintAboutClose.enabled = false;
 				mess.SetActive (false);
 				vms.isMsg = false;
 				Time.timeScale = 1;
@@ -197,11 +195,10 @@ public class MissionRiverScript : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	bool Zadania (int i) // funkcja odpowiedzialna za zapętlenie zadan w grze
 	{
-		switch (i) //case 0: - pierwszy prefab
-		{
+		switch (i) { //case 0: - pierwszy prefab
 		case 0:
 			Messengery (y);
 			return true;
@@ -229,7 +226,7 @@ public class MissionRiverScript : MonoBehaviour {
 			break;
 		case 6:
 			if (GetOutFromWayScript.riverMissionComplete == true) {
-				if(mcrs.missionComplete.enabled == false)
+				if (mcrs.missionComplete.enabled == false)
 					mcrs.missionComplete.enabled = true;
 				return true;
 			}

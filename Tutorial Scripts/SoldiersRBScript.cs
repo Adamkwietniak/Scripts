@@ -2,62 +2,68 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class SoldiersRBScript : MonoBehaviour {
+public class SoldiersRBScript : MonoBehaviour
+{
 
-	private Rigidbody [] rb = new Rigidbody[13];
+	private Rigidbody[] rb = new Rigidbody[13];
 	private Animator anim;
 	private float timer;
 	public Canvas gameOver;
 	public AudioSource soundSource;
 	public AudioClip clickSound;
 	private bool timerrek = false;
-	public AudioSource soldierSource;
+	private AudioSource soldierSource;
 	public AudioClip deadSoldierClip;
-    MenuScript ms;
+	MenuScript ms;
 
 	private bool isKinematic = false;
 
-    void Awake ()
-    {
-        ms = (MenuScript)FindObjectOfType(typeof(MenuScript)) as MenuScript;
-    }
+	void Awake ()
+	{
+		ms = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
+	}
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 
 		rb = GetComponentsInChildren<Rigidbody> ();
-		anim = GetComponent<Animator>();
+		anim = GetComponent<Animator> ();
 		//gameOver = GetComponent<Canvas> ();
 	
 	}
-	
-	void OnTriggerEnter (Collider other) {
+
+	void OnTriggerEnter (Collider other)
+	{
 
 		if (other.tag == "Player") {
 			isKinematic = true;
-			}
+		}
 	}
 
 
 
-	void Update () {
+	void Update ()
+	{
 
 		if (isKinematic == true) {
 			SetKinematic ();
-		}
-		else if(timerrek == true){
-				timer+=Time.deltaTime;
+		} else if (timerrek == true) {
+			timer += Time.deltaTime;
 			//Debug.Log("timerek wynosi: " + timer);
-			}
-		if (timer>=3f){
+		}
+		if (timer >= 3f) {
 			gameOver.enabled = true;
+			Cursor.visible = true;
 			Time.timeScale = 0;
 			timer = 0f;
 			timerrek = false;
-			}
 		}
-	private void SetKinematic (){
+	}
+
+	private void SetKinematic ()
+	{
 		
-		for (int i=0; i < rb.Length; i++) {
+		for (int i = 0; i < rb.Length; i++) {
 			rb [i].isKinematic = false;
 		}
 		//Debug.Log("dziala setKinematic");
@@ -65,7 +71,7 @@ public class SoldiersRBScript : MonoBehaviour {
 		isKinematic = false;
 		timerrek = true;
 		soldierSource.PlayOneShot (deadSoldierClip);
-        ms.escUse = false;
+		ms.escUse = false;
 	}
 
 }

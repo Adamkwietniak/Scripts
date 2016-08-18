@@ -2,12 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class AwakeWorldScript : MonoBehaviour {
+public class AwakeWorldScript : MonoBehaviour
+{
 
-	public Canvas missionComplete; 
+	public Canvas missionComplete;
 	public Canvas gameOver;
 	public Image lightOnDB;
-	private Color [] lightsColor = new Color[2];
+	private Color[] lightsColor = new Color[2];
 	RCCCarControllerV2 rcc;
 	MenuScript mns;
 
@@ -30,9 +31,12 @@ public class AwakeWorldScript : MonoBehaviour {
 		mns = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
 		mns.escUse = true;
+		Cursor.visible = false;
+		Time.timeScale = 1;
 
 
 	}
+
 	void LateUpdate ()
 	{
 		if (Input.GetKeyDown (KeyCode.L)) {

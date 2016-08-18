@@ -2,19 +2,25 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MissionsScript : MonoBehaviour {
+public class MissionsScript : MonoBehaviour
+{
 	
 	//public Button lostClose;
-	public int wpiszIloscTriggerow = 2; // Okresla ilosc triggerow Sets amount of triggers
-	public GameObject[] trigger = new GameObject[2]; //tablica triggerow w ktora bd wpisywane kolejne 
+	public int wpiszIloscTriggerow = 2;
+	// Okresla ilosc triggerow Sets amount of triggers
+	public GameObject[] trigger = new GameObject[2];
+	//tablica triggerow w ktora bd wpisywane kolejne
 	public Canvas message;
 	public Canvas radioFrame;
-	public GameObject [] texts = new GameObject[1];
+	public Text hintAbouClose;
+	public GameObject[] texts = new GameObject[1];
 	private GameObject brumBrume;
 	
 	//RCCCarControllerV2 carScript = gameObject.GetComponent<RCCCarControllerV2>();
-	public int i = 0; // ogolna zmienna pomocnicza pod triggery misji
-	public int y = 0; // ogolna zmienna pomocniczya pod wiadomosci
+	public int i = 0;
+	// ogolna zmienna pomocnicza pod triggery misji
+	public int y = 0;
+	// ogolna zmienna pomocniczya pod wiadomosci
 	bool predkosc = false;
 	bool checkPos = false;
 	private Vector3 triggerTr;
@@ -26,33 +32,32 @@ public class MissionsScript : MonoBehaviour {
 	private bool engineHelpActive = false;
 	VolumeAndMusicScript vms;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		brumBrume = GameObject.Find ("BrumBrume");
 		radioFrame = radioFrame.GetComponent<Canvas> ();
 		kmh.enabled = false;
 		sideMirrors.enabled = false;
-		vms = (VolumeAndMusicScript)FindObjectOfType(typeof(VolumeAndMusicScript));
+		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript));
 		rcc = brumBrume.GetComponent<RCCCarControllerV2> ();
 		message = message.GetComponent<Canvas> ();
 		triggerTr = trigger [2].GetComponent<Transform> ().position;
 		brumtr = brumBrume.GetComponent<Transform> ();
 		//lostClose = lostClose.GetComponent<Button> ();
-		for(int z = 0; z==wpiszIloscTriggerow; z++) //petla for po tablicy
-		{
-			trigger[z] = GameObject.FindGameObjectWithTag("Trigger"); //wpisywanie do tablicy obiektow z gry
+		for (int z = 0; z == wpiszIloscTriggerow; z++) { //petla for po tablicy
+			trigger [z] = GameObject.FindGameObjectWithTag ("Trigger"); //wpisywanie do tablicy obiektow z gry
 		}
 		Messengery (y);
-		Podmianka(i); // wywolanie metody podmianka
+		Podmianka (i); // wywolanie metody podmianka
 	}
-	
-	void Update()
+
+	void Update ()
 	{
 
-		if ((int)rcc.speed > 60 && i == 3)
-		{
+		if ((int)rcc.speed > 60 && i == 3) {
 			predkosc = true;
 			i++;
-			Podmianka(i);
+			Podmianka (i);
 		}
 
 		if (y == 1) {					//Ify tu zostały przypisane ze względu na to, że pojawiają się one na samym
@@ -61,73 +66,69 @@ public class MissionsScript : MonoBehaviour {
 		if (y == 2) {
 			Messengery (y);
 		}
-		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) 
-		{		//wywołujemy zamykanie canvasa
+		if (Input.GetKeyDown (KeyCode.C) && radioFrame.enabled == true) {		//wywołujemy zamykanie canvasa
 			DisableEnableMsg ();
 		}
 
 		if (rcc.engineRunning == false && engineHelpActive == false) {
 			engineHelp.enabled = true;
 			engineHelpActive = true;
-		} else if(rcc.engineRunning == true && engineHelpActive == true) {
+		} else if (rcc.engineRunning == true && engineHelpActive == true) {
 			engineHelp.enabled = false;
 			engineHelpActive = false;
 		}
 	}
 	
 	// Update is called once per frame
-	void OnTriggerEnter(Collider other) //wykrywanie kolizji
+	void OnTriggerEnter (Collider other) //wykrywanie kolizji
 	{
-		if (other.tag == "Trigger") //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
-		{
-			if (Zadania(i) == true && i != 2)
-			{
+		if (other.tag == "Trigger") { //sprawdzaj czy kolizja dotyczy obiektow o tagu Trigger
+			if (Zadania (i) == true && i != 2) {
 				i++; //zwieksz wartosc pomocnicza za kazdym razem gdy obiekt bedzie mial kontakt z triggerem
-				Podmianka(i);//wywolanie metody podmianka i przeslanie wartosci i do metody
+				Podmianka (i);//wywolanie metody podmianka i przeslanie wartosci i do metody
 			}
-			if (i == 2 && rcc.speed < 10 && checkPos == false)
-			{
+			if (i == 2 && rcc.speed < 10 && checkPos == false) {
 				checkPos = true;
 				i++;
 				Zadania (i);
-				Podmianka(i);
+				Podmianka (i);
 			}
 		}
 	}
-	void Podmianka(int i) //metoda Podmianka
+
+	void Podmianka (int i) //metoda Podmianka
 	{
-		for (int z = 0; z < wpiszIloscTriggerow; z++) // jedz po elementach tablicy
-		{
+		for (int z = 0; z < wpiszIloscTriggerow; z++) { // jedz po elementach tablicy
 			if (i == z) //jesli wartosc zmiennej wyslanej z metody jest rowna wartosci zmiennej petli to:
-				trigger[z].SetActive(true); //wlaczenie danego obiektu
+				trigger [z].SetActive (true); //wlaczenie danego obiektu
 			else
-				trigger[z].SetActive(false);//wylaczenie danego obiektu
+				trigger [z].SetActive (false);//wylaczenie danego obiektu
 		}
 	}
 
 	void Messengery (int y)// funkcja w zaleznosci od wartosci indexu y wlacza msg lub go wylacza
 	{
-		for (int z=0; z<texts.Length; z++) {
+		for (int z = 0; z < texts.Length; z++) {
 
-			if (z == y)
-			{
+			if (z == y) {
 				radioFrame.enabled = true;
+				hintAbouClose.enabled = true;
 				vms.isMsg = true;
 				Time.timeScale = 0; 	// Jeżeli gracz otrzymuje komunikat to gra się zatrzymuje. Po wciśnięciu
-				texts[z].SetActive(true);//buttonu close gra wraca do standardowej prędkości.
+				texts [z].SetActive (true);//buttonu close gra wraca do standardowej prędkości.
 
-			}
-			else
-			{
-				texts[z].SetActive(false);
+			} else {
+				texts [z].SetActive (false);
 			}
 		}
 	}
+
 	public void DisableEnableMsg ()			//to kurwa jest funkcja ktorej od teraz uzywamy do zamykania canvasów
 	{
 		foreach (GameObject mess in texts) {
 			if (mess.activeInHierarchy == true) {
 				radioFrame.enabled = false;
+				hintAbouClose.enabled = false;
 				mess.SetActive (false);
 				vms.isMsg = false;
 				Time.timeScale = 1;
@@ -135,11 +136,10 @@ public class MissionsScript : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	bool Zadania (int i) // funkcja odpowiedzialna za zapętlenie zadan w grze
 	{
-	switch (i) //case 0: - pierwszy prefab
-		{
+		switch (i) { //case 0: - pierwszy prefab
 		case 0:
 			sideMirrors.enabled = true;
 			Messengery (y);
@@ -152,9 +152,9 @@ public class MissionsScript : MonoBehaviour {
 			return true; 
 			break;
 		case 2:
-			if(checkPos == true){
-			Messengery (y);
-			return true;
+			if (checkPos == true) {
+				Messengery (y);
+				return true;
 			}
 			break;
 		case 3:
@@ -180,7 +180,7 @@ public class MissionsScript : MonoBehaviour {
 			return true;
 			break;
 		}
-	return false;
+		return false;
 	}
 }
 

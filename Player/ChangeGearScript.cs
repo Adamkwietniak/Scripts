@@ -1,31 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChangeGearScript : MonoBehaviour {
-	private bool isAutomatic = false;
+public class ChangeGearScript : MonoBehaviour
+{
+	private bool isAutomatic = true;
 	RCCCarControllerV2 rcc;
 	private float tempMax;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		rcc = GetComponent<RCCCarControllerV2> ();
 		isAutomatic = rcc.automaticGear;
+		isAutomatic = true;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (isAutomatic == false) {
-			NumericChange();
+			NumericChange ();
 		}
-		/*if (Input.GetKeyUp (KeyCode.F9)) {		//Do wyłączenia po testach
+		if (Input.GetKeyUp (KeyCode.F9)) {		//Do wyłączenia po testach
 			rcc.automaticGear = !rcc.automaticGear;
 			isAutomatic = rcc.automaticGear;
 			rcc.autoReverse = true;
-		}*/
+		}
 		if (rcc.reversing == true && rcc.currentGear != 0) {
 			rcc.currentGear = 0;
 		}
 	}
-	private void NumericChange()
+
+	private void NumericChange ()
 	{
 		if (Input.GetKeyUp (KeyCode.Keypad1) && rcc.totalGears >= 1) {
 			rcc.currentGear = 0;
