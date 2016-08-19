@@ -5,29 +5,32 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public class MenuProfileSaveAndReadScript : MonoBehaviour {
+public class MenuProfileSaveAndReadScript : MonoBehaviour
+{
 
 	VolumeAndMusicScript vms;
 
-	void Awake () {
+	void Awake ()
+	{
 		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript)) as VolumeAndMusicScript;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (Input.GetKeyDown (KeyCode.End))
 			SaveInfo ();
 	}
 
-	public void SaveInfo()
+	public void SaveInfo ()
 	{
-		if (!File.Exists (Application.persistentDataPath + "/profile.data"))
-			File.Delete ((Application.persistentDataPath + "/profile.data"));
-		FileStream plik = File.Create(Application.persistentDataPath + "/profile.data");
+		if (!File.Exists (Application.dataPath + "/profile.data"))
+			File.Delete ((Application.dataPath + "/profile.data"));
+		FileStream plik = File.Create (Application.dataPath + "/profile.data");
 		
 		MenuProff menuP = new MenuProff (vms.valueOfVolumeMusic, vms.valueOfVolumeSound,
-			LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution,
-			MultiLanguageScript.lowerWord, MenuScript.isLanguagePanel);
+			                  LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution,
+			                  MultiLanguageScript.lowerWord, MenuScript.isLanguagePanel);
 		
 		menuP.musicValue = vms.valueOfVolumeMusic;
 		menuP.soundValue = vms.valueOfVolumeSound;
@@ -39,19 +42,20 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 		menuP.isLang = MenuScript.isLanguagePanel;
 
 		BinaryFormatter binFormat = new BinaryFormatter ();
-		binFormat.Serialize(plik, menuP);
-		plik.Close();
+		binFormat.Serialize (plik, menuP);
+		plik.Close ();
 		//Debug.Log ("Profile status was saved");
 		//Debug.Log (Application.persistentDataPath + "/profile.data");
 	}
-	public void LoadInfo()
+
+	public void LoadInfo ()
 	{
 		
-		if(File.Exists(Application.persistentDataPath + "/profile.data")){
-			FileStream plik = File.Open(Application.persistentDataPath + "/profile.data", FileMode.Open);
+		if (File.Exists (Application.dataPath + "/profile.data")) {
+			FileStream plik = File.Open (Application.dataPath + "/profile.data", FileMode.Open);
 
-			BinaryFormatter binFormat = new BinaryFormatter();
-			MenuProff menuP = (MenuProff)binFormat.Deserialize(plik);
+			BinaryFormatter binFormat = new BinaryFormatter ();
+			MenuProff menuP = (MenuProff)binFormat.Deserialize (plik);
 
 			vms.valueOfVolumeMusic = menuP.musicValue;
 			vms.valueOfVolumeSound = menuP.soundValue;
@@ -61,12 +65,10 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 			ChangeResolutionScript.resolution = menuP.res;
 			MultiLanguageScript.lowerWord = menuP.isRussian;
 			MenuScript.isLanguagePanel = menuP.isLang;
-			plik.Close();
+			plik.Close ();
 			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
-				//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
-		}
-		else
-		{
+			//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
+		} else {
 			//Debug.Log("Dont read game status becouse program dont find file with profiler");
 			SaveInfo ();
 			LoadInfo ();
@@ -75,7 +77,8 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour {
 }
 
 [Serializable]
-public class MenuProff{
+public class MenuProff
+{
 	public int musicValue;
 	public int soundValue;
 	public int numberOfUnlockedScene;
@@ -85,7 +88,7 @@ public class MenuProff{
 	public bool isRussian;
 	public bool isLang;
 
-	public MenuProff(int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol, bool isRus, bool isLangi)
+	public MenuProff (int musikValu, int soundValu, int valuOfScene, int valuOfGraph, int lang, int resol, bool isRus, bool isLangi)
 	{
 		this.musicValue = musikValu;
 		this.soundValue = soundValu;
