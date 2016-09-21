@@ -65,7 +65,6 @@ public class MissionCityScript : MonoBehaviour
 
 	void Awake ()
 	{
-		radioFrame = radioFrame.GetComponent<Canvas> ();
 		ph = GetComponentInChildren<PlayerHealth> ();
 		blackScreen.enabled = false;
 		rcc = GetComponent<RCCCarControllerV2> ();

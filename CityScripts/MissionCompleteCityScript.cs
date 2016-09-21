@@ -30,8 +30,7 @@ public class MissionCompleteCityScript : MonoBehaviour
 	void Start ()
 	{
 		
-		missionComplete = missionComplete.GetComponent<Canvas> ();
-		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
+
 		quitBtn = quitBtn.GetComponent<Button> ();
 		ms = obj.GetComponent<MissionCityScript> ();
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();

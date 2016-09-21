@@ -28,8 +28,7 @@ public class MissionCompleteSnowScript : MonoBehaviour
 	void Start ()
 	{
 
-		missionComplete = missionComplete.GetComponent<Canvas> ();
-		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
+
 		//mds = (MissionDesertScript)FindObjectOfType(typeof(MissionDesertScript)) as MissionDesertScript;
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 	

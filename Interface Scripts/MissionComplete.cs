@@ -32,9 +32,8 @@ public class MissionComplete : MonoBehaviour
 
 	void Start ()
 	{
-		missionComplete = missionComplete.GetComponent<Canvas> ();
-		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		quitBtn = quitBtn.GetComponent<Button> ();
+
+
 		RCC = brumBrume.GetComponent<RCCCarControllerV2> ();
 		ms = brumBrume.GetComponent<MissionsScript> ();
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();

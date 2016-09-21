@@ -37,7 +37,6 @@ public class MissionForestScript : MonoBehaviour
 	{
 
 		message = message.GetComponent<Canvas> ();
-		radioFrame = radioFrame.GetComponent<Canvas> ();
 		rcc = GetComponent<RCCCarControllerV2> ();
 		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript));
 

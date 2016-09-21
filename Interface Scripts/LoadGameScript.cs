@@ -69,7 +69,7 @@ public class LoadGameScript : MonoBehaviour
 			unlockIndex = 0;
 		}*/
 		/*if (Input.GetKeyDown (KeyCode.O)) {
-			LoadGameScript.unlockIndex ++;
+			LoadGameScript.unlockIndex++;
 			//Debug.Log ("Unlock index = " + LoadGameScript.unlockIndex);
 		}*/
 	}

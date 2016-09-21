@@ -30,9 +30,8 @@ public class MissionCompleteRiverScript : MonoBehaviour
 	void Start ()
 	{
 		
-		missionComplete = missionComplete.GetComponent<Canvas> ();
-		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		quitBtn = quitBtn.GetComponent<Button> ();
+
+
 		ms = obj.GetComponent<MissionRiverScript> ();
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 		

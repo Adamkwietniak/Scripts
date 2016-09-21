@@ -75,9 +75,6 @@ public class MenuScript : MonoBehaviour
 	void Start ()
 	{
 		menuUI = (Canvas)GetComponent<Canvas> ();
-		quitMenu = quitMenu.GetComponent<Canvas> ();
-		settings = settings.GetComponent<Canvas> ();
-		loadingTime = loadingTime.GetComponent<Canvas> ();
 		//loadGame = loadGame.GetComponent<Canvas> ();
 		resumeButtonObj = resumeGame.gameObject;
 		escUse = false;
@@ -86,11 +83,7 @@ public class MenuScript : MonoBehaviour
 
 		//cms = creditMovingObj.GetComponent<CreditsMovingScript>();
 		
-		quitMenu.enabled = false;
-		resumeGame.enabled = false;
-		settings.enabled = false;
-		loadingTime.enabled = false;
-		loadGame.enabled = false;
+
 		if (isLanguagePanel == false && languagePanel.enabled == false) {
 			languagePanel.enabled = true;
 		}
@@ -127,19 +120,19 @@ public class MenuScript : MonoBehaviour
 			if (menuUI.enabled == true) {
 				if ((SceneManager.GetActiveScene ().name == "SceneCanvas" || SceneManager.GetActiveScene ().name == "SceneCredits")) {
 					IsResume (false);
-					Cursor.visible = false;
+					//Cursor.visible = false;
 					//Debug.Log ("zzz Wylaczam resume");
 				} else {
 					IsResume (true);
-					Cursor.visible = true;
+					//Cursor.visible = true;
 					//Debug.Log ("wlaczam resume");
 				}
 			}
 			EnabledDisableButtonsMenu (true);
 
 			if (menuUI.enabled == true) {
-				Cursor.visible = true;
-				Cursor.lockState = CursorLockMode.None;
+				//Cursor.visible = true;
+				//Cursor.lockState = CursorLockMode.None;
 				/*if (Cursor.visible == false) {
 
 				}*/
@@ -153,7 +146,7 @@ public class MenuScript : MonoBehaviour
 			} else {
 				//rcc.WriteNewValueOfCar (oldValue);
 				Time.timeScale = 1;
-				Cursor.visible = false;
+				//Cursor.visible = false;
 
 			}
 		}

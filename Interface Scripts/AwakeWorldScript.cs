@@ -11,7 +11,7 @@ public class AwakeWorldScript : MonoBehaviour
 	private Color[] lightsColor = new Color[2];
 	RCCCarControllerV2 rcc;
 	MenuScript mns;
-
+	public Canvas messages;
 
 
 	void Start ()
@@ -19,6 +19,8 @@ public class AwakeWorldScript : MonoBehaviour
 
 		lightsColor [0] = new Color (0.74f, 0.66f, 0.05f);
 		lightsColor [1] = new Color (0.96f, 0.96f, 0.96f);
+		messages.enabled = true;
+
 		//Debug.Log (rcc.LightIsTunnOn ());;
 
 	}
@@ -26,12 +28,11 @@ public class AwakeWorldScript : MonoBehaviour
 	void Awake ()
 	{
 		
-		missionComplete.enabled = false;
-		gameOver.enabled = false;
+
 		mns = (MenuScript)FindObjectOfType (typeof(MenuScript)) as MenuScript;
 		rcc = (RCCCarControllerV2)FindObjectOfType (typeof(RCCCarControllerV2)) as RCCCarControllerV2;
 		mns.escUse = true;
-		Cursor.visible = false;
+		Cursor.visible = true;
 		Time.timeScale = 1;
 
 

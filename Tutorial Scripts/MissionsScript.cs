@@ -35,7 +35,6 @@ public class MissionsScript : MonoBehaviour
 	void Start ()
 	{
 		brumBrume = GameObject.Find ("BrumBrume");
-		radioFrame = radioFrame.GetComponent<Canvas> ();
 		kmh.enabled = false;
 		sideMirrors.enabled = false;
 		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript));

@@ -52,7 +52,6 @@ public class MissionRiverScript : MonoBehaviour
 	void Start ()
 	{
 		message = message.GetComponent<Canvas> ();
-		radioFrame = radioFrame.GetComponent<Canvas> ();
 		instructionsForBumper.enabled = false;
 		for (int o = 0; o < wounded.Length; o++) {
 			wounded [o].SetActive (false);

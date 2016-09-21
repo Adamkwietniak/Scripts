@@ -32,9 +32,8 @@ public class MissionCompleteForestScript : MonoBehaviour
 	void Start ()
 	{
 		
-		missionComplete = missionComplete.GetComponent<Canvas> ();
-		nextMissionBtn = nextMissionBtn.GetComponent<Button> ();
-		quitBtn = quitBtn.GetComponent<Button> ();
+
+
 		ms = (MissionForestScript)FindObjectOfType (typeof(MissionForestScript)) as MissionForestScript;
 		mns = GameObject.Find ("GoodCanvas").GetComponentInChildren<MenuScript> ();
 
