@@ -16,6 +16,7 @@ public class MultiLanguageScript : MonoBehaviour
 	private int actualIndex = 1;
 	public static bool lowerWord = false;
 	public int indexOfRussia = 3;
+	public int indexOfChinese = 6;
 	public int valueOfWielkoscLiter = 20;
 	//Rosyjski index to 3 a wielkosc to 35
 	void Awake ()
@@ -39,7 +40,7 @@ public class MultiLanguageScript : MonoBehaviour
 		if (obiectWithScript == null)
 			obiectWithScript = this.gameObject;
 
-		if (actualIndex == indexOfRussia) {
+		if (actualIndex == indexOfRussia || actualIndex == indexOfChinese) {
 			SetHighWord (actualIndex, valueOfWielkoscLiter);
 			lowerWord = true;
 		}
@@ -57,6 +58,12 @@ public class MultiLanguageScript : MonoBehaviour
 				SetHighWord (actualIndex, valueOfWielkoscLiter);
 				lowerWord = true;
 			} else if (actualIndex != indexOfRussia && lowerWord == true) {
+				SetHighWord (actualIndex, valueOfWielkoscLiter);
+				lowerWord = false;
+			} else if (actualIndex == indexOfChinese && lowerWord == false) {
+				SetHighWord (actualIndex, valueOfWielkoscLiter);
+				lowerWord = true;
+			} else if (actualIndex != indexOfChinese && lowerWord == true) {
 				SetHighWord (actualIndex, valueOfWielkoscLiter);
 				lowerWord = false;
 			}
@@ -86,7 +93,7 @@ public class MultiLanguageScript : MonoBehaviour
 
 	private void SetHighWord (int idx, int wielkosc)
 	{
-		if (idx == indexOfRussia) { //Należt podać wartość indexu dla jez rosyjskiego
+		if (idx == indexOfRussia || idx == indexOfChinese) { //Należt podać wartość indexu dla jez rosyjskiego
 			for (int i = 0; i < listOfClassWithoutScripts.Length; i++) {
 				//Debug.Log(attTexts [i].textsInsideObiect.name);
 				if (attTexts [i].textsInsideObiect.fontSize - wielkosc > 25)
