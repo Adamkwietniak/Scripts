@@ -43,11 +43,11 @@ public class SparkleScript : MonoBehaviour {
 			rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
 			pos = contact.point;
 			if(sparkles.Length>1)
-				randSparkle = Random.Range(0, sparkles.Length-1);
+				randSparkle = Random.Range(0, sparkles.Length);
 			else if(sparkles.Length == 1)
 				randSparkle = 0;
 			Instantiate(sparkles[randSparkle], pos, rot);
-       // Debug.Log("Uderzylem, co mi szkodzi");
+		Debug.Log("Uderzylem, co mi szkodzi "+randSparkle);
         isDmgCar = false;
 
 	}

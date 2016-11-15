@@ -13,7 +13,11 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour
 	void Awake ()
 	{
 		vms = (VolumeAndMusicScript)FindObjectOfType (typeof(VolumeAndMusicScript)) as VolumeAndMusicScript;
+		if (File.Exists (Application.persistentDataPath + "//profile.data"))
+			File.SetAttributes (Application.persistentDataPath + "//profile.data", FileAttributes.Normal);
+
 	}
+
 	
 	// Update is called once per frame
 	void Update ()
@@ -22,11 +26,17 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour
 			SaveInfo ();
 	}
 
+	void OnApplicationQuit ()
+	{
+		File.SetAttributes (Application.persistentDataPath + "//profile.data", FileAttributes.Hidden);
+	}
+
 	public void SaveInfo ()
 	{
-		if (!File.Exists (Application.dataPath + "/profile.data"))
-			File.Delete ((Application.dataPath + "/profile.data"));
-		FileStream plik = File.Create (Application.dataPath + "/profile.data");
+		if (File.Exists (Application.persistentDataPath + "//profile.data"))
+			File.Delete (Application.persistentDataPath + "//profile.data");
+		
+		FileStream plik = File.Create (Application.persistentDataPath + "//profile.data");
 		
 		MenuProff menuP = new MenuProff (vms.valueOfVolumeMusic, vms.valueOfVolumeSound,
 			                  LoadGameScript.unlockIndex, GraphicsScript.qualityLevel, MenuScript.indexOfLang, ChangeResolutionScript.resolution,
@@ -44,6 +54,7 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour
 		BinaryFormatter binFormat = new BinaryFormatter ();
 		binFormat.Serialize (plik, menuP);
 		plik.Close ();
+		//File.SetAttributes (Application.dataPath+"//profile.data", FileAttributes.Hidden);
 		//Debug.Log ("Profile status was saved");
 		//Debug.Log (Application.persistentDataPath + "/profile.data");
 	}
@@ -51,8 +62,8 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour
 	public void LoadInfo ()
 	{
 		
-		if (File.Exists (Application.dataPath + "/profile.data")) {
-			FileStream plik = File.Open (Application.dataPath + "/profile.data", FileMode.Open);
+		if (File.Exists (Application.persistentDataPath + "//profile.data")) {
+			FileStream plik = File.Open (Application.persistentDataPath + "//profile.data", FileMode.Open);
 
 			BinaryFormatter binFormat = new BinaryFormatter ();
 			MenuProff menuP = (MenuProff)binFormat.Deserialize (plik);
@@ -66,13 +77,14 @@ public class MenuProfileSaveAndReadScript : MonoBehaviour
 			MultiLanguageScript.lowerWord = menuP.isRussian;
 			MenuScript.isLanguagePanel = menuP.isLang;
 			plik.Close ();
-			//Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " + 
-			//menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " +menuP.language);
+			Debug.Log ("Wczytano takie wartosci: MusicV: " + menuP.musicValue + " SoundV: " + menuP.soundValue + " UnlockScene: " +
+			menuP.numberOfUnlockedScene + " V of graf: " + menuP.valueOfGraphic + " Language: " + menuP.language);
 		} else {
 			//Debug.Log("Dont read game status becouse program dont find file with profiler");
 			SaveInfo ();
 			LoadInfo ();
 		}
+		//
 	}
 }
 
